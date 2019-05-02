@@ -43,7 +43,7 @@
         background-size: 12vw 12vh;;
       }
 
-#sunevents {
+#sun-events {
   position: absolute;
   left: 0;
   top: 0;
@@ -90,7 +90,18 @@
   width: 10vh;
   height: 10vh;
 }
-  
+ 
+#battery-warning {
+  position: absolute;
+  right: 0;
+  top: 10vh;
+  margin-top: 1vh;
+  margin-right: 1.6vw;
+  width: 4vw;
+  height: 8vh;
+}
+
+
 .favorites {
   position: static;
   left: 0;

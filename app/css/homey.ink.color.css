@@ -11,8 +11,22 @@ body {
   background: white;
 }
 
+#info-panel {
+  background: -webkit-linear-gradient(55deg, #009785 0%, #245AA5 50%, #B800E9 90%);
+  background-attachment: fixed;
+  border: 1px solid #009785;
+  border-radius: 6px;
+  box-sizing: border-box;
+  z-index: 99;
+  opacity: 0.95;
+}
+
 #logo {
   background-image: url(../img/logo-white.png);  
+}
+
+#battery-warning {
+  background: red;
 }
 
 #weather-state {
@@ -24,7 +38,7 @@ body {
     background-size: 100px;
   }
 
-#sunevents {
+#sun-events {
 
 }
   #sunrise {
@@ -34,7 +48,6 @@ body {
   #sunset {
     background: red;
   }
-
 
 .favorites h2 {
   font-weight: 300;
