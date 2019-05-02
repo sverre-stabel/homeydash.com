@@ -14,7 +14,7 @@
   height: 20vh;
   margin-bottom: 2vh;
 }
-  
+
 #weather {
   position: absolute;
   left: 0;
@@ -30,8 +30,38 @@
       content: "°";
     }
     #weather-state {
-      font-size: 5vh;
+      width: 12vw;
+      height: 12vh;
+      padding-left: 0vw;
+      padding-right: 0vw;
+      text-align: left;
     }
+      .weather-state .icon {
+        width: 12vw;
+        height: 12vh;
+        left: 0vw;
+        background-size: 12vw 12vh;;
+      }
+
+#sunevents {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 20vh;
+  margin-top: 4px;
+  margin-left: 13vw;
+}      
+  #sunset, #sunrise {
+    width: 6vh;
+    height: 2vw;
+    background-size: 6vh 2vw;
+    margin-bottom: 0.7vh;
+  }
+
+  #sunset-time, #sunrise-time {
+    font-size: 2.4vh;
+    line-height: 2.4vh;
+  }
 
 #text {
   position: absolute;

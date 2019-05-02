@@ -5,7 +5,10 @@ window.addEventListener('load', function() {
   
   var homey;
   var me;
+  var Sunrise = "";
+  var Sunset = "";
   
+  var $header = document.getElementById('header');
   var $textLarge = document.getElementById('text-large');
   var $textSmall = document.getElementById('text-small');
   var $logo = document.getElementById('logo');
@@ -57,7 +60,7 @@ window.addEventListener('load', function() {
       renderHomey();
     }, later.parse.text('every 1 hour'));
   }).catch(console.error);
-  
+
   function renderHomey() {
     homey.users.getUserMe().then(function(user) {
       me = user;
@@ -65,6 +68,25 @@ window.addEventListener('load', function() {
       me.properties.favoriteFlows = me.properties.favoriteFlows || [];
       me.properties.favoriteDevices = me.properties.favoriteDevices || [];
       
+      homey.i18n.getOptionLanguage().then(function(language) {
+        console.log(language)
+      }).catch(console.error);
+
+      homey.flowToken.getFlowTokens().then(function(tokens) {
+        console.log(tokens)
+        for (let token in tokens) {
+          if ( tokens[token].id == "sunrise" ) {
+            Sunrise = tokens[token].value
+          }
+          if ( tokens[token].id == "sunset"  ) {
+            Sunset = tokens[token].value
+          }          
+        }
+        if (Sunrise != "" || Sunset != "") {
+          renderSunevents();
+        }
+      }).catch(console.error);
+
       homey.weather.getWeather().then(function(weather) {
         return renderWeather(weather);
       }).catch(console.error);
@@ -103,9 +125,43 @@ window.addEventListener('load', function() {
     }).catch(console.error);
   }
   
+  function renderSunevents() {
+    var $sunevents = document.createElement('div');
+    $sunevents.id = 'sunevents';
+    $header.appendChild($sunevents)
+    
+    var $sunriseIcon = document.createElement('div');
+    $sunriseIcon.id = 'sunrise';
+    $sunriseIcon.style.webkitMaskImage = 'url(../img/sunrise.png)';
+    $sunevents.appendChild($sunriseIcon);
+
+    var $sunriseTime = document.createElement('div');
+    $sunriseTime.id = 'sunrise-time';
+    $sunevents.appendChild($sunriseTime);
+    $sunriseTime.innerHTML = Sunrise;
+
+    var $sunsetIcon = document.createElement('div');
+    $sunsetIcon.id = 'sunset';
+    $sunsetIcon.style.webkitMaskImage = 'url(../img/sunset.png)';
+    $sunevents.appendChild($sunsetIcon);
+
+    var $sunsetTime = document.createElement('div');
+    $sunsetTime.id = 'sunset-time';
+    $sunevents.appendChild($sunsetTime);   
+    $sunsetTime.innerHTML = Sunset;
+  }
+
   function renderWeather(weather) {
+    console.log(weather)
     $weatherTemperature.innerHTML = Math.round(weather.temperature);
-    $weatherState.innerHTML = weather.state;
+    $weatherState.innerHTML = "";
+    $weatherState.classList.add('weather-state');
+    var $icon = document.createElement('div');
+    $icon.classList.add('icon');
+    $icon.classList.add(weather.state.toLowerCase());
+    $icon.style.backgroundImage = 'url(../img/weather/' + weather.state.toLowerCase() + '.svg)';    
+    $icon.style.webkitMaskImage = 'url(../img/weather/' + weather.state.toLowerCase() + '.svg)';
+    $weatherState.appendChild($icon)
   }
   
   function renderFlows(flows) {

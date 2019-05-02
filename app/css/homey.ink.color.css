@@ -15,6 +15,27 @@ body {
   background-image: url(../img/logo-white.png);  
 }
 
+#weather-state {
+
+}
+  .weather-state .icon {
+    background: white;
+    background-repeat: no-repeat;
+    background-size: 100px;
+  }
+
+#sunevents {
+
+}
+  #sunrise {
+    background: orange;
+  }
+
+  #sunset {
+    background: red;
+  }
+
+
 .favorites h2 {
   font-weight: 300;
   color: white;

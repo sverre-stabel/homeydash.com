@@ -58,7 +58,7 @@ body {
       font-size: 34px;
       font-weight: 500;
     }
-  
+
   #weather {
     
   }
@@ -71,10 +71,36 @@ body {
       content: "°";
     }
     #weather-state {
-      font-size: 48px;
-      font-weight: 700;
+      display: inline-block;
+      position: relative;
+      width: 100px;
+      height: 100px;
+      padding-left: 20px;
+      padding-right: 20px;
     }
+      .weather-state .icon {
+        background: black;
+        margin-bottom: 6px;
+        -webkit-mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center center;
+        background-size: 0px;
+        height: inherit;
+      }
   
+  #sunevents {
+
+  }
+    #sunrise, #sunset {
+      background: black;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center center;
+      background-repeat: no-repeat;
+      background-size: 0px;
+      height: 25px;
+    }
+
   .favorites {
     
   }
