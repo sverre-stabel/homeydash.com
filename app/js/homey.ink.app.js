@@ -7,8 +7,11 @@ window.addEventListener('load', function() {
   var me;
   var sunrise = "";
   var sunset = "";
+  var tod = "";
+  var dn = "";
   var batteryWarning =[];
   
+  var $container = document.getElementById('container');
   var $header = document.getElementById('header');
   var $text = document.getElementById('text');
   var $textLarge = document.getElementById('text-large');
@@ -34,6 +37,8 @@ window.addEventListener('load', function() {
   $header.appendChild($batterywarning);
 
   $infopanel.addEventListener('click', function() {
+    $container.style.backgroundColor = "";
+    $container.style.opacity = "";
     $infopanel.style.visibility = "hidden";
   });
 
@@ -137,6 +142,7 @@ window.addEventListener('load', function() {
           }
         }
         if (sunrise != "" || sunset != "") {
+          calculateTOD();
           renderSunevents();
         }
         if ( Object.keys(batteryWarning).length ) {
@@ -190,11 +196,17 @@ window.addEventListener('load', function() {
         break;
       case "w": 
         $infopanel.innerHTML = '';
-        var $infopanelTemperature = document.createElement('div');
-        $infopanelTemperature.id = "weather-temperature"
-        $infopanel.appendChild($infopanelTemperature);
-        $infopanelTemperature.innerHTML = Math.round(info.temperature*10)/10;
-        
+        var $infoPanelWeather = document.createElement('div');
+        $infoPanelWeather.id = "infopanel-weather"
+        $infopanel.appendChild($infoPanelWeather);
+        $wi = "<center><h1>Weather information for " + info.city + "</h1><br />"
+        $wi = $wi + "<h2>The current temperature is " + Math.round(info.temperature*10)/10 + " degrees, "
+        $wi = $wi + "the humidity is " + Math.round(info.humidity*100) + "% and the pressure is "
+        pressure = info.pressure + " "
+        $wi = $wi + pressure.replace('.','') + " mbar</h2></center>";
+
+        $infoPanelWeather.innerHTML = $wi
+
         var $infopanelState = document.createElement('div');
         $infopanelState.id = "weather-state"
         $infopanel.appendChild($infopanelState);
@@ -203,28 +215,52 @@ window.addEventListener('load', function() {
         var $icon = document.createElement('div');
         $icon.classList.add('icon');
         $icon.classList.add(info.state.toLowerCase());
-        $icon.style.backgroundImage = 'url(../img/weather/' + info.state.toLowerCase() + '.svg)';    
-        $icon.style.webkitMaskImage = 'url(../img/weather/' + info.state.toLowerCase() + '.svg)';
+        $icon.style.backgroundImage = 'url(../img/weather/' + info.state.toLowerCase() + dn + '.svg)';    
+        $icon.style.webkitMaskImage = 'url(../img/weather/' + info.state.toLowerCase() + dn + '.svg)';
         $infopanelState.appendChild($icon)
-    
-        var $infopanelHumidity =  document.createElement('div');
-        $infopanelHumidity.id = "weather-humidity"
-        $infopanel.appendChild($infopanelHumidity);
-        $infopanelHumidity.innerHTML = " Humidity " + info.humidity*100 + "%";
-    
-        var $infopanelPressure = document.createElement('div');
-        $infopanelPressure.id = "weather-pressure"
-        $infopanel.appendChild($infopanelPressure);
-        pressure = info.pressure + " "
-        $infopanelPressure.innerHTML = pressure.replace('.','') + " mbar";     
+
+        var $infoPanelSunevents = document.createElement('div');
+        $infoPanelSunevents.id = "infopanel-sunevents"
+        $infopanel.appendChild($infoPanelSunevents);
+
+        switch(tod) {
+          case 1:
+            $se = "<center><h2>The sun will rise at " + sunrise + " and will set at " + sunset + "</h2></center>"
+            break;
+          case 2:
+            $se = "<center><h2>The sun rose at " + sunrise + " and will set at " + sunset + "</h2></center>"
+            break;
+          case 3:
+            $se = "<center><h2>The sun rose at " + sunrise + " and set at " + sunset + "</h2></center>"
+            break;
+          default:
+            $se = "<center><h2>The sun rises at " + sunrise + " and set at " + sunset + "</h2></center>"
+            break;
+        }
+        $infoPanelSunevents.innerHTML = $se
+
         break;
       case "b":
-        $infopanel.innerHTML = 'Batterystatus';
+        $infopanel.innerHTML = '';
+        var $infoPanelBattery = document.createElement('div');
+        $infoPanelBattery.id = "infopanel-battery"
+        $infopanel.appendChild($infoPanelBattery);
+        $bi = "<center><h1>Battery information</h1><br />"
+        $bi = $bi + "These devices have reported a low battery<br /><br />"
+        for (let device in batteryWarning) {
+          console.log(batteryWarning[device])
+          $bi = $bi + "<h2>" + batteryWarning[device].name + " in " 
+          $bi = $bi + batteryWarning[device].zone + " has "
+          $bi = $bi + batteryWarning[device].level + "% left</h2>"
+        }
+        $infopanel.innerHTML = $bi
 
         break;
     }
     console.log("style")
     $infopanel.style.visibility = "visible";
+    $container.style.backgroundColor = "Black";
+    $container.style.opacity = "0.6";
   }
 
   function renderSunevents() {
@@ -263,8 +299,8 @@ window.addEventListener('load', function() {
     var $icon = document.createElement('div');
     $icon.classList.add('icon');
     $icon.classList.add(weather.state.toLowerCase());
-    $icon.style.backgroundImage = 'url(../img/weather/' + weather.state.toLowerCase() + '.svg)';    
-    $icon.style.webkitMaskImage = 'url(../img/weather/' + weather.state.toLowerCase() + '.svg)';
+    $icon.style.backgroundImage = 'url(../img/weather/' + weather.state.toLowerCase() + dn + '.svg)';    
+    $icon.style.webkitMaskImage = 'url(../img/weather/' + weather.state.toLowerCase() + dn + '.svg)';
     $weatherState.appendChild($icon)
   }
   
@@ -348,4 +384,38 @@ window.addEventListener('load', function() {
     $textSmall.innerHTML = 'Today is ' + moment(now).format('dddd[, the ]Do[ of ]MMMM YYYY[.]');
   }
   
+  function calculateTOD() {
+
+    var d = new Date();
+    var m = d.getMinutes();
+    var h = d.getHours();
+    if(h == '0') {h = 24}
+
+    var currentTime = h+"."+m;
+
+    var time = sunrise.split(":");
+    var hour = time[0];
+    if(hour == '00') {hour = 24}
+    var min = time[1];
+    var sunriseTime = hour+"."+min;
+
+    var time = sunset.split(":");
+    var hour = time[0];
+    if(hour == '00') {hour = 24}
+    var min = time[1];
+    var sunsetTime = hour+"."+min;
+
+    if ( currentTime < sunriseTime  ) {
+      tod = 1;
+      dn = "n";
+    } 
+    else if ( currentTime < sunsetTime ) {
+      tod = 2;
+      dn = "";
+    } else {
+      tod = 3;
+      dn = "n";
+    }
+  }
+
 });
