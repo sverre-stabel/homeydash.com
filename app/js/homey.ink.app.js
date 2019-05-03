@@ -13,32 +13,26 @@ window.addEventListener('load', function() {
   
   var $container = document.getElementById('container');
   var $header = document.getElementById('header');
+  var $infopanel = document.getElementById('info-panel');
   var $text = document.getElementById('text');
   var $textLarge = document.getElementById('text-large');
   var $textSmall = document.getElementById('text-small');
   var $logo = document.getElementById('logo');
+  var $batterywarning = document.getElementById('battery-warning');
   var $weather = document.getElementById('weather');
   var $weatherTemperature = document.getElementById('weather-temperature');
   var $weatherState = document.getElementById('weather-state');
+  var $weatherStateIcon = document.getElementById('weather-state-icon');
+  var $sunevents = document.getElementById('sun-events');
+  var $sunriseicon = document.getElementById('sunrise-icon');
+  var $sunseticon = document.getElementById('sunset-icon');
+  var $sunrisetime = document.getElementById('sunrise-time');
+  var $sunsettime = document.getElementById('sunset-time');
   var $flowsInner = document.getElementById('flows-inner');
   var $devicesInner = document.getElementById('devices-inner');
-  
-  var $infopanel = document.createElement('div');
-  $infopanel.id = "info-panel";
-  $infopanel.classList.add('info-panel');
-  $header.appendChild($infopanel);
-
-  var $sunevents = document.createElement('div');
-  $sunevents.id = 'sun-events';
-  $header.appendChild($sunevents)
-
-  var $batterywarning = document.createElement('div');
-  $batterywarning.id = 'battery-warning';
-  $header.appendChild($batterywarning);
 
   $infopanel.addEventListener('click', function() {
-    $container.style.backgroundColor = "";
-    $container.style.opacity = "";
+    $container.classList.remove('container-dark');
     $infopanel.style.visibility = "hidden";
   });
 
@@ -213,10 +207,11 @@ window.addEventListener('load', function() {
         $infopanelState.innerHTML = "";
         $infopanelState.classList.add('weather-state');
         var $icon = document.createElement('div');
-        $icon.classList.add('icon');
+        $icon.id = 'weather-state-icon';
         $icon.classList.add(info.state.toLowerCase());
         $icon.style.backgroundImage = 'url(../img/weather/' + info.state.toLowerCase() + dn + '.svg)';    
         $icon.style.webkitMaskImage = 'url(../img/weather/' + info.state.toLowerCase() + dn + '.svg)';
+
         $infopanelState.appendChild($icon)
 
         var $infoPanelSunevents = document.createElement('div');
@@ -259,31 +254,14 @@ window.addEventListener('load', function() {
     }
     console.log("style")
     $infopanel.style.visibility = "visible";
-    $container.style.backgroundColor = "Black";
-    $container.style.opacity = "0.6";
+    $container.classList.add('container-dark');
   }
 
   function renderSunevents() {
-    
-    var $sunriseIcon = document.createElement('div');
-    $sunriseIcon.id = 'sunrise';
-    $sunriseIcon.style.webkitMaskImage = 'url(../img/sunrise.png)';
-    $sunevents.appendChild($sunriseIcon);
-
-    var $sunriseTime = document.createElement('div');
-    $sunriseTime.id = 'sunrise-time';
-    $sunevents.appendChild($sunriseTime);
-    $sunriseTime.innerHTML = sunrise;
-
-    var $sunsetIcon = document.createElement('div');
-    $sunsetIcon.id = 'sunset';
-    $sunsetIcon.style.webkitMaskImage = 'url(../img/sunset.png)';
-    $sunevents.appendChild($sunsetIcon);
-
-    var $sunsetTime = document.createElement('div');
-    $sunsetTime.id = 'sunset-time';
-    $sunevents.appendChild($sunsetTime);   
-    $sunsetTime.innerHTML = sunset;
+    $sunriseicon.style.webkitMaskImage = 'url(../img/sunrise.png)';
+    $sunrisetime.innerHTML = sunrise;
+    $sunseticon.style.webkitMaskImage = 'url(../img/sunset.png)';
+    $sunsettime.innerHTML = sunset;
   }
 
   function renderBatteryWarning() {
@@ -292,16 +270,10 @@ window.addEventListener('load', function() {
   }
 
   function renderWeather(weather) {
-    console.log(weather)
     $weatherTemperature.innerHTML = Math.round(weather.temperature);
-    $weatherState.innerHTML = "";
-    $weatherState.classList.add('weather-state');
-    var $icon = document.createElement('div');
-    $icon.classList.add('icon');
-    $icon.classList.add(weather.state.toLowerCase());
-    $icon.style.backgroundImage = 'url(../img/weather/' + weather.state.toLowerCase() + dn + '.svg)';    
-    $icon.style.webkitMaskImage = 'url(../img/weather/' + weather.state.toLowerCase() + dn + '.svg)';
-    $weatherState.appendChild($icon)
+    $weatherStateIcon.classList.add(weather.state.toLowerCase());
+    $weatherStateIcon.style.backgroundImage = 'url(../img/weather/' + weather.state.toLowerCase() + dn + '.svg)';    
+    $weatherStateIcon.style.webkitMaskImage = 'url(../img/weather/' + weather.state.toLowerCase() + dn + '.svg)';
   }
   
   function renderFlows(flows) {
@@ -392,7 +364,7 @@ window.addEventListener('load', function() {
     if(h == '0') {h = 24}
 
     var currentTime = h+"."+m;
-
+    console.log(currentTime)
     var time = sunrise.split(":");
     var hour = time[0];
     if(hour == '00') {hour = 24}

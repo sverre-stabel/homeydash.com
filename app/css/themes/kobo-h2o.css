@@ -11,6 +11,15 @@
   /*-webkit-transform: rotate(90deg) translateX(180px) translateY(180px);*/
 }
   
+#info-panel {
+  position: absolute;
+  width: 1152px;
+  height: 600px;
+  left: 144px;
+  top: 144px;
+  padding: 60px;
+}
+
 #weather {
   position: absolute;
   left: 0;

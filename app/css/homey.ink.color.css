@@ -7,11 +7,17 @@ body {
   color: white;
 }
 
+.container-dark {
+  background-color: Black;
+  opacity: 0.6;
+}
+
 #text-large:after {
   background: white;
 }
 
 #info-panel {
+  width: 75vw;
   background: -webkit-linear-gradient(55deg, #009785 0%, #245AA5 50%, #B800E9 90%);
   background-attachment: fixed;
   border: 1px solid #009785;
@@ -32,7 +38,7 @@ body {
 #weather-state {
 
 }
-  .weather-state .icon {
+  #weather-state #weather-state-icon {
     background: white;
     background-repeat: no-repeat;
     background-size: 100px;
@@ -41,11 +47,11 @@ body {
 #sun-events {
 
 }
-  #sunrise {
+  #sunrise-icon {
     background: orange;
   }
 
-  #sunset {
+  #sunset-icon {
     background: red;
   }
 

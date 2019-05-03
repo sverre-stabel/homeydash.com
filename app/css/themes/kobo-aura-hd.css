@@ -10,6 +10,16 @@
   padding: 64px;
   /*-webkit-transform: rotate(90deg) translateX(80px) translateY(60px);*/
 }
+
+#info-panel {
+  position: absolute;
+  width: 816px;
+  height: 444px;
+  left: 102px;
+  top: 74px;
+  padding: 60px;
+}
+
 #logo {
   position: absolute;
   right: 0;

@@ -18,13 +18,17 @@ body {
   font-family: Helvetica, sans-serif;
 }
 
-#container {
+.container {
   box-sizing: border-box;
 }
   #container-inner {
     position: relative;
     width: 100%;
     height: 100%;
+  }
+
+  #container-dark {
+
   }
   
   #info-panel {
@@ -108,7 +112,7 @@ body {
       padding-left: 20px;
       padding-right: 20px;
     }
-      .weather-state .icon {
+      #weather-state #weather-state-icon {
         background: black;
         margin-bottom: 6px;
         -webkit-mask-size: contain;
@@ -121,7 +125,7 @@ body {
   #sun-events {
 
   }
-    #sunrise, #sunset {
+    #sunrise-icon, #sunset-icon {
       background: black;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
