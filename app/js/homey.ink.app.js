@@ -267,8 +267,8 @@ window.addEventListener('load', function() {
   function renderWeather(weather) {
     $weatherTemperature.innerHTML = Math.round(weather.temperature);
     $weatherStateIcon.classList.add(weather.state.toLowerCase());
-    $weatherStateIcon.style.backgroundImage = 'url(../img/weather/' + weather.state.toLowerCase() + dn + '.svg)';    
-    $weatherStateIcon.style.webkitMaskImage = 'url(../img/weather/' + weather.state.toLowerCase() + dn + '.svg)';
+    $weatherStateIcon.style.backgroundImage = 'url(img/weather/' + weather.state.toLowerCase() + dn + '.svg)';    
+    $weatherStateIcon.style.webkitMaskImage = 'url(img/weather/' + weather.state.toLowerCase() + dn + '.svg)';
   }
   
   function renderFlows(flows) {
