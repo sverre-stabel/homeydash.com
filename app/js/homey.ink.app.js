@@ -140,7 +140,12 @@ window.addEventListener('load', function() {
           renderSunevents();
         }
         if ( Object.keys(batteryWarning).length ) {
-          renderBatteryWarning(batteryWarning);
+          console.log("Waarschuwing")
+          $batterywarning.style.visibility = "visible";
+          //renderBatteryWarning(batteryWarning);
+        } else {
+          console.log("Geen waarschuwing")
+          $batterywarning.style.visibility = "hidden";
         }
       }).catch(console.error);
 
@@ -264,10 +269,11 @@ window.addEventListener('load', function() {
     $sunsettime.innerHTML = sunset;
   }
 
+  /*
   function renderBatteryWarning() {
-    $batterywarning.style.webkitMaskImage = 'url(../img/battery.png)';
-    $header.appendChild($batterywarning)
+    $batterywarning.style.visibilitywebkitMaskImage = 'url(../img/battery.png)';
   }
+  */
 
   function renderWeather(weather) {
     $weatherTemperature.innerHTML = Math.round(weather.temperature);

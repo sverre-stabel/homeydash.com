@@ -33,6 +33,7 @@ body {
 
 #battery-warning {
   background: red;
+  -webkit-mask-image: url(../img/battery.png);
 }
 
 #weather-state {
