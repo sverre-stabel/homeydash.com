@@ -24,8 +24,6 @@ window.addEventListener('load', function() {
   var $weatherState = document.getElementById('weather-state');
   var $weatherStateIcon = document.getElementById('weather-state-icon');
   var $sunevents = document.getElementById('sun-events');
-  var $sunriseicon = document.getElementById('sunrise-icon');
-  var $sunseticon = document.getElementById('sunset-icon');
   var $sunrisetime = document.getElementById('sunrise-time');
   var $sunsettime = document.getElementById('sunset-time');
   var $flowsInner = document.getElementById('flows-inner');
@@ -142,7 +140,6 @@ window.addEventListener('load', function() {
         if ( Object.keys(batteryWarning).length ) {
           console.log("Waarschuwing")
           $batterywarning.style.visibility = "visible";
-          //renderBatteryWarning(batteryWarning);
         } else {
           console.log("Geen waarschuwing")
           $batterywarning.style.visibility = "hidden";
@@ -263,17 +260,9 @@ window.addEventListener('load', function() {
   }
 
   function renderSunevents() {
-    $sunriseicon.style.webkitMaskImage = 'url(../img/sunrise.png)';
     $sunrisetime.innerHTML = sunrise;
-    $sunseticon.style.webkitMaskImage = 'url(../img/sunset.png)';
     $sunsettime.innerHTML = sunset;
   }
-
-  /*
-  function renderBatteryWarning() {
-    $batterywarning.style.visibilitywebkitMaskImage = 'url(../img/battery.png)';
-  }
-  */
 
   function renderWeather(weather) {
     $weatherTemperature.innerHTML = Math.round(weather.temperature);
