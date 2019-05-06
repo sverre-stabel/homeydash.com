@@ -37,7 +37,7 @@ body {
     height: 60vh;
     left: 10vw;
     top: 10vh;
-    padding: 10vh;
+    padding: 5vh 10vh;
     background: white;
     background-attachment: fixed;
     border: 2px solid black;
@@ -45,7 +45,12 @@ body {
     box-sizing: border-box;
     z-index: 99;
     visibility: hidden;
+    overflow: auto;
   }
+    .info-message {
+      font-size: 24px;
+      font-weight: 350; 
+    }
 
   #logo {
     position: absolute;

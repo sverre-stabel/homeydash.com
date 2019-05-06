@@ -138,15 +138,14 @@ window.addEventListener('load', function() {
           renderSunevents();
         }
         if ( Object.keys(batteryWarning).length ) {
-          console.log("Waarschuwing")
           $batterywarning.style.visibility = "visible";
         } else {
-          console.log("Geen waarschuwing")
           $batterywarning.style.visibility = "hidden";
         }
       }).catch(console.error);
 
       homey.weather.getWeather().then(function(weather) {
+        console.log(weather);
         return renderWeather(weather);
       }).catch(console.error);
       
@@ -187,8 +186,30 @@ window.addEventListener('load', function() {
   function renderInfoPanel(type,info) {
     switch(type) {
       case "t":
-        $infopanel.innerHTML = 'Notifications';
+        $infopanel.innerHTML = '';
+        var nrMsg = 5;
+        var $infoPanelNotifications = document.createElement('div');
+        $infoPanelNotifications.id = "infopanel-notifications"
+        $infopanel.appendChild($infoPanelNotifications);
+        $wi = "<center><h1>Recent notifications</h1></center><br />"
+        var nots =[];
+        for (let inf in info) {
+            nots.push(info[inf]);
+        }
+        nots.sort(SortByName);
 
+        for (not = 0; not < nrMsg; not++) {
+            var formatedDate = new Date(nots[not].dateCreated);
+            today = new Date
+            if ( formatedDate.toLocaleDateString() != new Date().toLocaleDateString() ) {
+              formatedDate = formatedDate.toLocaleTimeString() + " (" +formatedDate.toLocaleDateString() + ")"
+            } else {
+              formatedDate = formatedDate.toLocaleTimeString()
+            }
+            $wi = $wi + "<div class='info-message'>" + nots[not].excerpt.replace("**","<b>").replace("**","</b>").replace("**","<b>").replace("**","</b>") + " </div> ";
+            $wi = $wi + "<div class='info-date'> " + formatedDate+ "</div>"
+        }
+        $infoPanelNotifications.innerHTML = $wi
         break;
       case "w": 
         $infopanel.innerHTML = '';
@@ -211,8 +232,8 @@ window.addEventListener('load', function() {
         var $icon = document.createElement('div');
         $icon.id = 'weather-state-icon';
         $icon.classList.add(info.state.toLowerCase());
-        $icon.style.backgroundImage = 'url(../img/weather/' + info.state.toLowerCase() + dn + '.svg)';    
-        $icon.style.webkitMaskImage = 'url(../img/weather/' + info.state.toLowerCase() + dn + '.svg)';
+        $icon.style.backgroundImage = 'url(img/weather/' + info.state.toLowerCase() + dn + '.svg)';    
+        $icon.style.webkitMaskImage = 'url(img/weather/' + info.state.toLowerCase() + dn + '.svg)';
 
         $infopanelState.appendChild($icon)
 
@@ -384,5 +405,11 @@ window.addEventListener('load', function() {
       dn = "n";
     }
   }
+
+  function SortByName(a, b){
+    var aName = a.dateCreated;
+    var bName = b.dateCreated;
+    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
+    }
 
 });

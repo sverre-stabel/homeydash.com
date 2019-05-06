@@ -15,6 +15,15 @@
   margin-bottom: 2vh;
 }
 
+.info-message {
+  font-size: 3.4vh;
+  font-weight: 350; 
+}
+
+.info-date {
+  margin-bottom: 1%;
+}
+
 #weather {
   position: absolute;
   left: 0;
