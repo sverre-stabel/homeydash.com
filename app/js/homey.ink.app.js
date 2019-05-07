@@ -165,17 +165,28 @@ window.addEventListener('load', function() {
           return !!device;
         }).filter(function(device){
           if(!device.ui) return false;
-          if(!device.ui.quickAction) return false;
+          //if(!device.ui.quickAction) return false;
           return true;
         });
         
         favoriteDevices.forEach(function(device){
-          device.makeCapabilityInstance(device.ui.quickAction, function(value){
-            var $device = document.getElementById('device-' + device.id);
-            if( $device ) {
-              $device.classList.toggle('on', !!value);
-            }
-          });
+          if ( device.ui.quickAction ) {
+            device.makeCapabilityInstance(device.ui.quickAction, function(value){
+              var $device = document.getElementById('device-' + device.id);
+              if( $device ) {
+                $device.classList.toggle('on', !!value);
+              }
+            });
+          }
+          if ( device.capabilitiesObj.alarm_generic ) {        
+            device.makeCapabilityInstance('alarm_generic', function(value){
+              var $device = document.getElementById('device-' + device.id);
+              if( $device ) {
+                $device.classList.toggle('alarm', !!value);
+              }
+            });
+            
+          }
         });
         
         return renderDevices(favoriteDevices);
@@ -326,26 +337,49 @@ window.addEventListener('load', function() {
   function renderDevices(devices) {
     $devicesInner.innerHTML = '';
     devices.forEach(function(device) {
+      console.log(device)
       var $device = document.createElement('div');
       $device.id = 'device-' + device.id;
       $device.classList.add('device');
       $device.classList.toggle('on', device.capabilitiesObj && device.capabilitiesObj[device.ui.quickAction] && device.capabilitiesObj[device.ui.quickAction].value === true);
-      $device.addEventListener('click', function(){
-        var value = !$device.classList.contains('on');
-        $device.classList.toggle('on', value);
-        homey.devices.setCapabilityValue({
-          deviceId: device.id,
-          capabilityId: device.ui.quickAction,
-          value: value,
-        }).catch(console.error);
-      });
+      if ( device.capabilitiesObj && device.capabilitiesObj.button ) {
+        $device.classList.toggle('on', true)
+      }
+      if ( device.capabilitiesObj && device.capabilitiesObj.onoff || device.capabilitiesObj && device.capabilitiesObj.button ) {
+        $device.addEventListener('click', function(){
+          var value = !$device.classList.contains('on');
+          var alarm = !$device.classList.contains('alarm');
+          if ( device.capabilitiesObj && device.capabilitiesObj.onoff ) {
+            $device.classList.toggle('on', value);
+          }
+          if ( device.capabilitiesObj && device.capabilitiesObj.alarm_generic ) {
+            $device.classList.toggle('alarm', alarm)
+          }
+          homey.devices.setCapabilityValue({
+            deviceId: device.id,
+            capabilityId: device.ui.quickAction,
+            value: value,
+          }).catch(console.error);
+        });
+      }
       $devicesInner.appendChild($device);
       
+      if ( device.capabilitiesObj && device.capabilitiesObj.alarm_generic && device.capabilitiesObj.alarm_generic.value ) {
+        $device.classList.add('alarm')
+      }
+
       var $icon = document.createElement('div');
       $icon.classList.add('icon');
       $icon.style.webkitMaskImage = 'url(https://icons-cdn.athom.com/' + device.iconObj.id + '-128.png)';
       $device.appendChild($icon);
-      
+    
+      var $value = document.createElement('div');
+      $value.classList.add('value');
+      if ( device.capabilitiesObj.measure_temperature && device.capabilitiesObj.measure_temperature.value ) {
+        $value.innerHTML  = Math.round(device.capabilitiesObj.measure_temperature.value*10)/10 + "°<br />"
+      }
+      $device.appendChild($value);
+
       var $name = document.createElement('div');
       $name.classList.add('name');
       $name.innerHTML = device.name;

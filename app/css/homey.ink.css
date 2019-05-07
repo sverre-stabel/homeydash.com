@@ -258,6 +258,17 @@ body {
           -webkit-mask-repeat: no-repeat;
           -webkit-mask-position: center center;
         }
+        .device .value {
+          width: 100%;
+          font-size: 28px;
+          height: 64px;
+          line-height: 32px;
+          font-weight: 700;
+          overflow: hidden;
+          white-space: normal;
+          text-overflow: ellipsis;
+        }
+
         .device .name {
           width: 100%;
           font-size: 28px;
