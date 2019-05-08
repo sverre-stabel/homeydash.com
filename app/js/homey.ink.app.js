@@ -185,7 +185,30 @@ window.addEventListener('load', function() {
                 $device.classList.toggle('alarm', !!value);
               }
             });
-            
+          }
+          if ( device.capabilitiesObj.alarm_motion ) {        
+            device.makeCapabilityInstance('alarm_motion', function(value){
+              var $device = document.getElementById('device-' + device.id);
+              if( $device ) {
+                $device.classList.toggle('alarm', !!value);
+              }
+            });
+          }
+          if ( device.capabilitiesObj.alarm_contact ) {        
+            device.makeCapabilityInstance('alarm_contact', function(value){
+              var $device = document.getElementById('device-' + device.id);
+              if( $device ) {
+                $device.classList.toggle('alarm', !!value);
+              }
+            });
+          }
+          if ( device.capabilitiesObj.alarm_vibration ) {        
+            device.makeCapabilityInstance('alarm_vibration', function(value){
+              var $device = document.getElementById('device-' + device.id);
+              if( $device ) {
+                $device.classList.toggle('alarm', !!value);
+              }
+            });
           }
         });
         
