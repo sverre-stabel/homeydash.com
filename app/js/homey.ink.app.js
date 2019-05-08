@@ -212,6 +212,25 @@ window.addEventListener('load', function() {
               }
             });
           }
+
+          if ( device.capabilitiesObj.measure_temperature ) {        
+            device.makeCapabilityInstance('measure_temperature', function(value){
+              var $device = document.getElementById('device-' + device.id);
+              if( $device ) {
+                var $value = document.getElementById('value-' + device.id);
+                
+                var integer = Math.floor(device.capabilitiesObj.measure_temperature.value)
+                n = Math.abs(device.capabilitiesObj.measure_temperature.value)
+                var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
+                var decimal = decimal.substring(2,3)
+                $value.innerHTML  = integer + "<span id='decimal'>"+decimal+"°</span><br />"
+
+                console.log(device.capabilitiesObj.measure_temperature.value)
+
+              }
+            });
+          }
+
         });
         
         return renderDevices(favoriteDevices);
@@ -367,8 +386,8 @@ window.addEventListener('load', function() {
       if ( device.capabilitiesObj && device.capabilitiesObj.button ) {
         $device.classList.toggle('on', true)
       }
-      if ( device.capabilitiesObj && device.capabilitiesObj.onoff || device.capabilitiesObj && device.capabilitiesObj.button ) {
-        console.log("eventListener aan "+ device.name + " gekoppeld")
+      //if ( device.capabilitiesObj && device.capabilitiesObj.onoff || device.capabilitiesObj && device.capabilitiesObj.button ) {
+      if ( device.capabilitiesObj && device.capabilitiesObj[device.ui.quickAction] ) {
         $device.addEventListener('touchstart', function() {
           $device.classList.add('push')
         });
@@ -385,9 +404,6 @@ window.addEventListener('load', function() {
             capabilityId: device.ui.quickAction,
             value: value,
           }).catch(console.error);
-          console.log("Click: ")
-          console.log(device.ui.quickAction)
-          console.log(value)
         });
       }
       $devicesInner.appendChild($device);
@@ -402,6 +418,7 @@ window.addEventListener('load', function() {
       $device.appendChild($icon);
     
       var $value = document.createElement('div');
+      $value.id = 'value-' + device.id;
       $value.classList.add('value');
       if ( device.capabilitiesObj.measure_temperature && device.capabilitiesObj.measure_temperature.value ) {
 
