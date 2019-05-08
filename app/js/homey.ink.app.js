@@ -10,7 +10,9 @@ window.addEventListener('load', function() {
   var tod = "";
   var dn = "";
   var batteryWarning =[];
-  
+  var nrMsg = 5;
+  var lang = "en";
+
   var $container = document.getElementById('container');
   var $header = document.getElementById('header');
   var $infopanel = document.getElementById('info-panel');
@@ -76,6 +78,12 @@ window.addEventListener('load', function() {
   $css.type = 'text/css';
   $css.href = './css/themes/' + theme + '.css';
   document.head.appendChild($css);
+
+  lang = getQueryVariable('lang');
+  var $script = document.createElement('script');
+  $script.type = 'text/javascript';
+  $script.src = './locales/' + lang + '.js';
+  document.head.appendChild($script);
   
   var token = getQueryVariable('token');
   token = atob(token);
@@ -93,7 +101,7 @@ window.addEventListener('load', function() {
     return homey.authenticate();
   }).then(function(homey_) {
     homey = homey_;
-    
+
     renderHomey();    
     later.setInterval(function(){
       renderHomey();
@@ -106,9 +114,9 @@ window.addEventListener('load', function() {
       me.properties = me.properties || {};
       me.properties.favoriteFlows = me.properties.favoriteFlows || [];
       me.properties.favoriteDevices = me.properties.favoriteDevices || [];
-      
+
       homey.i18n.getOptionLanguage().then(function(language) {
-        console.log(language)
+        console.log(language.value)
       }).catch(console.error);
 
       homey.flowToken.getFlowTokens().then(function(tokens) {
@@ -222,7 +230,6 @@ window.addEventListener('load', function() {
     switch(type) {
       case "t":
         $infopanel.innerHTML = '';
-        var nrMsg = 5;
         var $infoPanelNotifications = document.createElement('div');
         $infoPanelNotifications.id = "infopanel-notifications"
         $infopanel.appendChild($infoPanelNotifications);
@@ -376,18 +383,17 @@ window.addEventListener('load', function() {
         });
         $device.addEventListener('click', function(){
           var value = !$device.classList.contains('on');
-          var alarm = !$device.classList.contains('alarm');
           if ( device.capabilitiesObj && device.capabilitiesObj.onoff ) {
             $device.classList.toggle('on', value);
-          }
-          if ( device.capabilitiesObj && device.capabilitiesObj.alarm_generic ) {
-            $device.classList.toggle('alarm', alarm)
           }
           homey.devices.setCapabilityValue({
             deviceId: device.id,
             capabilityId: device.ui.quickAction,
             value: value,
           }).catch(console.error);
+          console.log("Click: ")
+          console.log(device.ui.quickAction)
+          console.log(value)
         });
       }
       $devicesInner.appendChild($device);
@@ -406,10 +412,10 @@ window.addEventListener('load', function() {
       if ( device.capabilitiesObj.measure_temperature && device.capabilitiesObj.measure_temperature.value ) {
 
         var integer = Math.floor(device.capabilitiesObj.measure_temperature.value)
-        n = Math.abs(device.capabilitiesObj.measure_temperature.value); // Change to positive
+        n = Math.abs(device.capabilitiesObj.measure_temperature.value)
         var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
         var decimal = decimal.substring(2,3)
-        $value.innerHTML  = integer + "<sup>"+decimal+"°</sup><br />"
+        $value.innerHTML  = integer + "<span id='decimal'>"+decimal+"°</span><br />"
 
         //$value.innerHTML  = Math.round(device.capabilitiesObj.measure_temperature.value*10)/10 + "°<br />"
       }

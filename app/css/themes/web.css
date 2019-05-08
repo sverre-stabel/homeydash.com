@@ -200,12 +200,15 @@
       right: 2vh;
       font-size: 4.2vh;
       font-weight: 300;
-      line-height: 3.5vh;
+      line-height: 4.2vh;
       width: auto;
       height: auto;
       max-height: 7vh;
     }
 
+    #decimal {
+      font-size: 3vh;
+    }
     .device .name {
       position: absolute;
       bottom: 2vh;

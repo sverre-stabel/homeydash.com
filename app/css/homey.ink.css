@@ -264,11 +264,15 @@ body {
           height: 64px;
           line-height: 32px;
           font-weight: 700;
+          vertical-align: text-top;
           overflow: hidden;
           white-space: normal;
           text-overflow: ellipsis;
         }
-
+        #decimal {
+          font-size: 14px;
+          vertical-align: text-top;
+        }
         .device .name {
           width: 100%;
           font-size: 28px;
