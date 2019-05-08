@@ -3,7 +3,7 @@
 Homey.ink is an open-source project for wall-mounted Homey dashboards.
 This fork is primairily aimed at usage on an iPad
 
-![Homey.ink on iPad](https://github.com/daneedk/homey.ink/tree/master/assets/devices/ipad/ipad.png)
+![Homey.ink on iPad](https://raw.githubusercontent.com/daneedk/homey.ink/master/assets/devices/ipad/ipad.png)
 
 ## Debugging
 
