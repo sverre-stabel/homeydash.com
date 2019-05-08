@@ -90,6 +90,9 @@ body {
   .device.alarm {
     background-color: orange;
   }
+  .device.push {
+    background-color: grey;
+  }
   .device .value {
     color: black;
     font-weight: 300;
