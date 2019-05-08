@@ -78,12 +78,6 @@ window.addEventListener('load', function() {
   $css.type = 'text/css';
   $css.href = './css/themes/' + theme + '.css';
   document.head.appendChild($css);
-
-  lang = getQueryVariable('lang');
-  var $script = document.createElement('script');
-  $script.type = 'text/javascript';
-  $script.src = './locales/' + lang + '.js';
-  document.head.appendChild($script);
   
   var token = getQueryVariable('token');
   token = atob(token);
@@ -178,7 +172,6 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
-          console.log(device)
           if ( device.ui.quickAction ) {
             device.makeCapabilityInstance(device.ui.quickAction, function(value){
               var $device = document.getElementById('device-' + device.id);
@@ -375,6 +368,7 @@ window.addEventListener('load', function() {
         $device.classList.toggle('on', true)
       }
       if ( device.capabilitiesObj && device.capabilitiesObj.onoff || device.capabilitiesObj && device.capabilitiesObj.button ) {
+        console.log("eventListener aan "+ device.name + " gekoppeld")
         $device.addEventListener('touchstart', function() {
           $device.classList.add('push')
         });
