@@ -170,6 +170,7 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
+          console.log(device)
           if ( device.ui.quickAction ) {
             device.makeCapabilityInstance(device.ui.quickAction, function(value){
               var $device = document.getElementById('device-' + device.id);
@@ -367,7 +368,6 @@ window.addEventListener('load', function() {
         $device.classList.toggle('on', true)
       }
       if ( device.capabilitiesObj && device.capabilitiesObj.onoff || device.capabilitiesObj && device.capabilitiesObj.button ) {
-        console.log("Added eventListener on: " + device.name)
         $device.addEventListener('touchstart', function() {
           $device.classList.add('push')
         });
@@ -388,7 +388,6 @@ window.addEventListener('load', function() {
             capabilityId: device.ui.quickAction,
             value: value,
           }).catch(console.error);
-          console.log("Click")
         });
       }
       $devicesInner.appendChild($device);
@@ -405,7 +404,14 @@ window.addEventListener('load', function() {
       var $value = document.createElement('div');
       $value.classList.add('value');
       if ( device.capabilitiesObj.measure_temperature && device.capabilitiesObj.measure_temperature.value ) {
-        $value.innerHTML  = Math.round(device.capabilitiesObj.measure_temperature.value*10)/10 + "°<br />"
+
+        var integer = Math.floor(device.capabilitiesObj.measure_temperature.value)
+        n = Math.abs(device.capabilitiesObj.measure_temperature.value); // Change to positive
+        var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
+        var decimal = decimal.substring(2,3)
+        $value.innerHTML  = integer + "<sup>"+decimal+"°</sup><br />"
+
+        //$value.innerHTML  = Math.round(device.capabilitiesObj.measure_temperature.value*10)/10 + "°<br />"
       }
       $device.appendChild($value);
 
