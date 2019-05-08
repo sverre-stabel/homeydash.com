@@ -253,8 +253,7 @@ window.addEventListener('load', function() {
         $wi = "<center><h1>Weather information for " + info.city + "</h1><br />"
         $wi = $wi + "<h2>The current temperature is " + Math.round(info.temperature*10)/10 + " degrees, "
         $wi = $wi + "the humidity is " + Math.round(info.humidity*100) + "% and the pressure is "
-        pressure = info.pressure + " "
-        $wi = $wi + pressure.replace('.','') + " mbar</h2></center>";
+        $wi = $wi + info.pressure*1000 + " mbar</h2></center>";
 
         $infoPanelWeather.innerHTML = $wi
 
@@ -360,7 +359,6 @@ window.addEventListener('load', function() {
   function renderDevices(devices) {
     $devicesInner.innerHTML = '';
     devices.forEach(function(device) {
-      console.log(device)
       var $device = document.createElement('div');
       $device.id = 'device-' + device.id;
       $device.classList.add('device');
@@ -369,6 +367,7 @@ window.addEventListener('load', function() {
         $device.classList.toggle('on', true)
       }
       if ( device.capabilitiesObj && device.capabilitiesObj.onoff || device.capabilitiesObj && device.capabilitiesObj.button ) {
+        console.log("Added eventListener on: " + device.name)
         $device.addEventListener('click', function(){
           var value = !$device.classList.contains('on');
           var alarm = !$device.classList.contains('alarm');
@@ -383,6 +382,7 @@ window.addEventListener('load', function() {
             capabilityId: device.ui.quickAction,
             value: value,
           }).catch(console.error);
+          console.log("Click")
         });
       }
       $devicesInner.appendChild($device);
@@ -437,7 +437,6 @@ window.addEventListener('load', function() {
     if(h == '0') {h = 24}
 
     var currentTime = h+"."+m;
-    console.log(currentTime)
     var time = sunrise.split(":");
     var hour = time[0];
     if(hour == '00') {hour = 24}
