@@ -368,10 +368,10 @@ window.addEventListener('load', function() {
       }
       if ( device.capabilitiesObj && device.capabilitiesObj.onoff || device.capabilitiesObj && device.capabilitiesObj.button ) {
         console.log("Added eventListener on: " + device.name)
-        $device.addEventListener('mousedown', function() {
+        $device.addEventListener('touchstart', function() {
           $device.classList.add('push')
         });
-        $device.addEventListener('mouseup', function() {
+        $device.addEventListener('touchend', function() {
           $device.classList.remove('push')
         });
         $device.addEventListener('click', function(){
