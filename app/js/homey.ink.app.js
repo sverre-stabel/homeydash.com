@@ -213,7 +213,7 @@ window.addEventListener('load', function() {
             });
           }
 
-          if ( device.capabilitiesObj.measure_temperature ) {        
+          if ( device.capabilitiesObj.measure_temperature && !device.capabilitiesObj.flora_measure_moisture ) {        
             device.makeCapabilityInstance('measure_temperature', function(value){
               var $device = document.getElementById('device-' + device.id);
               if( $device ) {
@@ -231,8 +231,23 @@ window.addEventListener('load', function() {
             });
           }
 
+          if ( device.capabilitiesObj.flora_measure_moisture ) {
+            console.log(device.name)
+            device.makeCapabilityInstance('flora_measure_moisture', function(moisture) {
+              var $device = document.getElementById('device-' + device.id);
+              if( $device) {
+                var $element = document.getElementById('value-' + device.id);
+                $element.innerHTML = Math.round(moisture) + "<span id='decimal'>%</span><br />"
+                if ( moisture < 15 || moisture > 65 ) {
+                  $device.classList.add('alarm')
+                } else {
+                  $device.classList.remove('alarm')
+                }
+              }
+            });
+          }
+
         });
-        
         return renderDevices(favoriteDevices);
       }).catch(console.error);
     }).catch(console.error);
@@ -379,6 +394,7 @@ window.addEventListener('load', function() {
   function renderDevices(devices) {
     $devicesInner.innerHTML = '';
     devices.forEach(function(device) {
+      console.log(device)
       var $device = document.createElement('div');
       $device.id = 'device-' + device.id;
       $device.classList.add('device');
@@ -421,15 +437,22 @@ window.addEventListener('load', function() {
       $value.id = 'value-' + device.id;
       $value.classList.add('value');
       if ( device.capabilitiesObj.measure_temperature && device.capabilitiesObj.measure_temperature.value ) {
-
         var integer = Math.floor(device.capabilitiesObj.measure_temperature.value)
         n = Math.abs(device.capabilitiesObj.measure_temperature.value)
         var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
         var decimal = decimal.substring(2,3)
         $value.innerHTML  = integer + "<span id='decimal'>"+decimal+"°</span><br />"
-
-        //$value.innerHTML  = Math.round(device.capabilitiesObj.measure_temperature.value*10)/10 + "°<br />"
       }
+      if ( device.capabilitiesObj.flora_measure_moisture && device.capabilitiesObj.flora_measure_moisture.value ) {
+        var moisture = Math.round(device.capabilitiesObj.flora_measure_moisture.value)
+        $value.innerHTML  = moisture + "<span id='decimal'>%</span><br />"
+        if ( moisture < 15 || moisture > 65 ) {
+          $device.classList.add('alarm')
+        } else {
+          $device.classList.remove('alarm')
+        }
+      }
+
       $device.appendChild($value);
 
       var $name = document.createElement('div');
