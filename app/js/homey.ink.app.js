@@ -48,7 +48,7 @@ window.addEventListener('load', function() {
       return renderInfoPanel('t',notifications);
     })
   });
-
+ 
   $weather.addEventListener('click', function() {
     homey.weather.getWeather().then(function(weather) {
       return renderInfoPanel("w", weather)
@@ -130,7 +130,7 @@ window.addEventListener('load', function() {
           }
           if ( tokens[token].id == "measure_battery" ) {
             var batteryLevel = tokens[token].value
-              if ( batteryLevel != null ) { 
+            if ( batteryLevel != null ) { 
               var element = {}
               element.name = tokens[token].uriObj.name
               element.zone = tokens[token].uriObj.meta.zoneName

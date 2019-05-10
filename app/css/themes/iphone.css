@@ -52,10 +52,10 @@ h2 {
     #weather-state {
       width: 14vw;
       height: 14vh;
-      padding-left: 30vw;
+      padding-left: 26vw;
       padding-right: 0vw;
       text-align: left;
-      top: -10vh;
+      top: -14vh;
     }
       #weather-state #weather-state-icon {
         width: 17vw;
@@ -70,7 +70,7 @@ h2 {
   top: 0;
   height: 20vh;
   margin-top: 4px;
-  margin-left: 50vw;
+  margin-left: 48vw;
 }      
   #sunrise-icon, #sunset-icon  {
     width: 6vh;
@@ -113,16 +113,22 @@ h2 {
   height: 10vh;
 }
  
-#battery-details {
-  position: absolute;
-  right: 0;
-  top: 10vh;
-  margin-top: 1vh;
-  margin-right: 1.6vw;
-  width: 4vw;
-  height: 8vh;
+#details {
+  right: 12vh;;
+  width: 10vh;
+  height: 10vh;
 }
-
+  #battery-details {
+    width: 6vh;
+    height: 6vh;
+    margin-top: 0.3vh;
+    margin-left: 3vh;
+  }
+  #sensor-details { 
+    width: 5.8vh;
+    height: 6vh;
+    margin-left: 3vh;
+  }
 
 .favorites {
   position: static;
