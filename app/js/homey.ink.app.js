@@ -78,7 +78,7 @@ window.addEventListener('load', function() {
   $css.type = 'text/css';
   $css.href = './css/themes/' + theme + '.css';
   document.head.appendChild($css);
-  
+
   var token = getQueryVariable('token');
   token = atob(token);
   token = JSON.parse(token);
@@ -476,6 +476,9 @@ window.addEventListener('load', function() {
     } else {
       tod = 'night';
     }
+
+    //To Do: localize moment() using locale files from https://cdnjs.com/libraries/moment.js
+    // and setting moment.locale(language)
     
     $textLarge.innerHTML = 'Good ' + tod + '!';
     $textSmall.innerHTML = 'Today is ' + moment(now).format('dddd[, the ]Do[ of ]MMMM YYYY[.]');

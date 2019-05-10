@@ -17,7 +17,8 @@ cd homey.ink
 serve -p 5000 app
 ```
 Then visit `http://localhost:5000/?token=<TOKEN>&theme=web` 
-or visit `http://localhost:5000/?token=<TOKEN>&theme=iphone`
+
+or `http://localhost:5000/?token=<TOKEN>&theme=iphone`
 
 Or host it on your own favorite webserver, doing so may need changes to the source you need to do yourself.
 

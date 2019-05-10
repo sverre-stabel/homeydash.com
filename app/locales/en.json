@@ -1,0 +1,20 @@
+{
+    "text" : {
+        "good": "Good",
+        "evening": "evening",
+        "afternoon": "afternoon",
+        "morning": "morning",
+        "night": "night",
+        "today": "Today is",
+        "the": "the",
+        "of": "of"
+    },
+    "weather": {
+        "weather": "Weather information for ",
+        "temperature": "The current temperature is ",
+        "degrees": " degrees, ", 
+        "humidity": "the humidity is ",
+        "pressure": "% and the pressure is ",
+        "mbar": " mbar"
+    }
+}
