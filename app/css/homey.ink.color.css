@@ -31,10 +31,20 @@ body {
   background-image: url(../img/logo-white.png);  
 }
 
-#battery-warning {
-  background: red;
+#battery-details {
+  background: white;
   -webkit-mask-image: url(../img/battery.png);
 }
+  #battery-details.alarm {
+    background-color: red;
+  }
+#sensor-details { 
+  background: white;
+  -webkit-mask-image: url(../img/warning.png);
+}
+  #sensor-details.alarm {
+    background-color: orange;
+  }
 
 #weather-state {
 

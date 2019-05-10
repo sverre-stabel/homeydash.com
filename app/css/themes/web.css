@@ -99,16 +99,20 @@
   height: 10vh;
 }
  
-#battery-warning {
-  position: absolute;
-  right: 0;
-  top: 10vh;
-  margin-top: 1vh;
-  margin-right: 1.6vw;
-  width: 4vw;
-  height: 8vh;
+#details {
+  right: 12vh;;
+  width: 10vh;
+  height: 10vh;
 }
-
+  #battery-details {
+    width: 8vh;
+    height: 8vh;
+    margin-top: -1.3vh;
+  }
+  #sensor-details { 
+    width: 7.6vh;
+    height: 8vh;
+  }
 
 .favorites {
   position: static;

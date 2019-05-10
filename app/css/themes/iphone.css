@@ -113,7 +113,7 @@ h2 {
   height: 10vh;
 }
  
-#battery-warning {
+#battery-details {
   position: absolute;
   right: 0;
   top: 10vh;

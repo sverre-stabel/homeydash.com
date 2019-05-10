@@ -9,9 +9,10 @@ window.addEventListener('load', function() {
   var sunset = "";
   var tod = "";
   var dn = "";
-  var batteryWarning =[];
-  var nrMsg = 5;
-  var lang = "en";
+  var batteryDetails =[];
+  var batteryAlarm = false;
+  var sensorDetails =[];
+  var nrMsg = 8;
 
   var $container = document.getElementById('container');
   var $header = document.getElementById('header');
@@ -20,7 +21,8 @@ window.addEventListener('load', function() {
   var $textLarge = document.getElementById('text-large');
   var $textSmall = document.getElementById('text-small');
   var $logo = document.getElementById('logo');
-  var $batterywarning = document.getElementById('battery-warning');
+  var $batterydetails = document.getElementById('battery-details');
+  var $sensordetails = document.getElementById('sensor-details');
   var $weather = document.getElementById('weather');
   var $weatherTemperature = document.getElementById('weather-temperature');
   var $weatherState = document.getElementById('weather-state');
@@ -58,8 +60,12 @@ window.addEventListener('load', function() {
     }).catch(console.error);
   })
 
-  $batterywarning.addEventListener('click', function() {
+  $batterydetails.addEventListener('click', function() {
     return renderInfoPanel("b")
+  })
+
+  $sensordetails.addEventListener('click', function() {
+    return renderInfoPanel("s")
   })
 
   renderText();
@@ -121,30 +127,31 @@ window.addEventListener('load', function() {
           if ( tokens[token].id == "sunset"  ) {
             sunset = tokens[token].value
           }
-          if ( tokens[token].id == "alarm_battery" && tokens[token].value == true ) {
-            var batteryLevel
-            for (let ttoken in tokens) {
-              if (tokens[ttoken].uriObj.id == tokens[token].uriObj.id && tokens[ttoken].id == "measure_battery" ) {
-                batteryLevel = tokens[ttoken].value
-              }
-            }
+          if ( tokens[token].id == "measure_battery" ) {
+            var batteryLevel = tokens[token].value
             var element = {}
             element.name = tokens[token].uriObj.name
             element.zone = tokens[token].uriObj.meta.zoneName
             element.level = batteryLevel
-            batteryWarning.push(element)
+            batteryDetails.push(element)
+            if ( batteryLevel < 20 ) {
+              batteryAlarm = true
+            }
           }
         }
         if (sunrise != "" || sunset != "") {
           calculateTOD();
           renderSunevents();
         }
-        if ( Object.keys(batteryWarning).length ) {
-          $batterywarning.style.visibility = "visible";
+        if ( batteryAlarm ) {
+          $batterydetails.classList.add('alarm')
         } else {
-          $batterywarning.style.visibility = "hidden";
+          $batterydetails.classList.remove('alarm')
         }
+
       }).catch(console.error);
+
+      checkSensorStates();
 
       homey.weather.getWeather().then(function(weather) {
         console.log(weather);
@@ -177,6 +184,7 @@ window.addEventListener('load', function() {
               var $device = document.getElementById('device-' + device.id);
               if( $device ) {
                 $device.classList.toggle('on', !!value);
+                checkSensorStates();
               }
             });
           }
@@ -185,6 +193,7 @@ window.addEventListener('load', function() {
               var $device = document.getElementById('device-' + device.id);
               if( $device ) {
                 $device.classList.toggle('alarm', !!value);
+                checkSensorStates();
               }
             });
           }
@@ -193,6 +202,7 @@ window.addEventListener('load', function() {
               var $device = document.getElementById('device-' + device.id);
               if( $device ) {
                 $device.classList.toggle('alarm', !!value);
+                checkSensorStates();
               }
             });
           }
@@ -201,6 +211,7 @@ window.addEventListener('load', function() {
               var $device = document.getElementById('device-' + device.id);
               if( $device ) {
                 $device.classList.toggle('alarm', !!value);
+                checkSensorStates();
               }
             });
           }
@@ -209,6 +220,7 @@ window.addEventListener('load', function() {
               var $device = document.getElementById('device-' + device.id);
               if( $device ) {
                 $device.classList.toggle('alarm', !!value);
+                checkSensorStates();
               }
             });
           }
@@ -225,14 +237,11 @@ window.addEventListener('load', function() {
                 var decimal = decimal.substring(2,3)
                 $value.innerHTML  = integer + "<span id='decimal'>"+decimal+"°</span><br />"
 
-                console.log(device.capabilitiesObj.measure_temperature.value)
-
               }
             });
           }
 
           if ( device.capabilitiesObj.flora_measure_moisture ) {
-            console.log(device.name)
             device.makeCapabilityInstance('flora_measure_moisture', function(moisture) {
               var $device = document.getElementById('device-' + device.id);
               if( $device) {
@@ -243,6 +252,7 @@ window.addEventListener('load', function() {
                 } else {
                   $device.classList.remove('alarm')
                 }
+                checkSensorStates();
               }
             });
           }
@@ -253,6 +263,31 @@ window.addEventListener('load', function() {
     }).catch(console.error);
   }
   
+  function checkSensorStates() {
+    homey.flowToken.getFlowTokens().then(function(tokens) {
+      var sensorAlarm = false
+      sensorDetails = [];
+      for (let token in tokens) {
+        if (tokens[token].id == "alarm_generic" && tokens[token].value == true ||
+            tokens[token].id == "alarm_motion" && tokens[token].value == true ||
+            tokens[token].id == "alarm_contact" && tokens[token].value == true ||
+            tokens[token].id == "alarm_vibration" && tokens[token].value == true 
+          ) {
+            var element = {}
+            element.name = tokens[token].uriObj.name
+            element.zone = tokens[token].uriObj.meta.zoneName
+            sensorDetails.push(element)  
+            sensorAlarm = true
+        }
+      }
+      if ( sensorAlarm ) {
+        $sensordetails.classList.add('alarm')
+      } else {
+        $sensordetails.classList.remove('alarm')
+      }
+    }).catch(console.error);
+  }
+
   function renderInfoPanel(type,info) {
     switch(type) {
       case "t":
@@ -331,16 +366,32 @@ window.addEventListener('load', function() {
         var $infoPanelBattery = document.createElement('div');
         $infoPanelBattery.id = "infopanel-battery"
         $infopanel.appendChild($infoPanelBattery);
-        $bi = "<center><h1>Battery information</h1><br />"
-        $bi = $bi + "These devices have reported a low battery<br /><br />"
-        for (let device in batteryWarning) {
-          console.log(batteryWarning[device])
-          $bi = $bi + "<h2>" + batteryWarning[device].name + " in " 
-          $bi = $bi + batteryWarning[device].zone + " has "
-          $bi = $bi + batteryWarning[device].level + "% left</h2>"
+        $bi = "<center><h1>Battery information</h1></center><br /><br />"
+        for (let device in batteryDetails) {
+          console.log(batteryDetails[device])
+          $bi = $bi + "<h2>" + batteryDetails[device].name + " in " 
+          $bi = $bi + batteryDetails[device].zone + " has "
+          $bi = $bi + batteryDetails[device].level + "% left</h2>"
         }
         $infopanel.innerHTML = $bi
 
+        break;
+      case "s":
+        $infopanel.innerHTML = '';
+        var $infoPanelSensors = document.createElement('div');
+        $infoPanelSensors.id = "infopanel-sensor"
+        $infopanel.appendChild($infoPanelSensors);
+        $si = "<center><h1>Sensor information</h1></center><br /><br />"
+        if ( Object.keys(sensorDetails).length ) {
+          for (let device in sensorDetails) {
+            console.log(sensorDetails[device])
+            $si = $si + "<h2>" + sensorDetails[device].name + " in " 
+            $si = $si + sensorDetails[device].zone + " is in alarm state.</h2>"
+          }
+        } else {
+          $si = $si + "<h2> There are no sensors in alarm state.</h2>"
+        }
+        $infopanel.innerHTML = $si
         break;
     }
     console.log("style")
@@ -394,7 +445,6 @@ window.addEventListener('load', function() {
   function renderDevices(devices) {
     $devicesInner.innerHTML = '';
     devices.forEach(function(device) {
-      console.log(device)
       var $device = document.createElement('div');
       $device.id = 'device-' + device.id;
       $device.classList.add('device');
@@ -402,7 +452,7 @@ window.addEventListener('load', function() {
       if ( device.capabilitiesObj && device.capabilitiesObj.button ) {
         $device.classList.toggle('on', true)
       }
-      //if ( device.capabilitiesObj && device.capabilitiesObj.onoff || device.capabilitiesObj && device.capabilitiesObj.button ) {
+
       if ( device.capabilitiesObj && device.capabilitiesObj[device.ui.quickAction] ) {
         $device.addEventListener('touchstart', function() {
           $device.classList.add('push')
@@ -424,7 +474,11 @@ window.addEventListener('load', function() {
       }
       $devicesInner.appendChild($device);
       
-      if ( device.capabilitiesObj && device.capabilitiesObj.alarm_generic && device.capabilitiesObj.alarm_generic.value ) {
+      if (device.capabilitiesObj && device.capabilitiesObj.alarm_generic && device.capabilitiesObj.alarm_generic.value ||
+          device.capabilitiesObj && device.capabilitiesObj.alarm_motion && device.capabilitiesObj.alarm_motion.value ||
+          device.capabilitiesObj && device.capabilitiesObj.alarm_contact && device.capabilitiesObj.alarm_contact.value ||
+          device.capabilitiesObj && device.capabilitiesObj.alarm_vibration && device.capabilitiesObj.alarm_vibration.value
+          ) {
         $device.classList.add('alarm')
       }
 

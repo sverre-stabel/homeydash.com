@@ -37,7 +37,7 @@ body {
     height: 60vh;
     left: 10vw;
     top: 10vh;
-    padding: 5vh 10vh;
+    padding: 5vh 5vh;
     background: white;
     background-attachment: fixed;
     border: 2px solid black;
@@ -62,20 +62,35 @@ body {
     background-size: contain;
   }
   
-  #battery-warning {
+  #details {
     position: absolute;
-    right: 0;
-    top: 120px;
-    margin-top: 60px;
-    -webkit-mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center center;
+    right: 110px;
+    top: 0;
     width: 110px;
-    height: 50px;
-    background: url(../img/battery.png) no-repeat center center;
-    background-size: contain;
-    visibility: hidden;
+    height: 110px;
   }
+    #battery-details {
+      display: inline-block;
+      position: relative;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center center;
+      width: 110px;
+      height: 50px;
+      background: url(../img/battery.png) no-repeat center center;
+      background-size: contain;
+    }
+    #sensor-details{
+      display: inline-block;
+      position: relative;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center center;
+      width: 108px;
+      height: 50px;
+      background: url(../img/warning.png) no-repeat center center;
+      background-size: contain;      
+    }
 
   #text {
     text-align: center;
