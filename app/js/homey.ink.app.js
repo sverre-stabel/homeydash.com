@@ -323,7 +323,7 @@ window.addEventListener('load', function() {
         $wi = "<center><h1>Weather information for " + info.city + "</h1><br />"
         $wi = $wi + "<h2>The current temperature is " + Math.round(info.temperature*10)/10 + " degrees, "
         $wi = $wi + "the humidity is " + Math.round(info.humidity*100) + "% and the pressure is "
-        $wi = $wi + info.pressure*1000 + " mbar</h2></center>";
+        $wi = $wi + Math.round(info.pressure*1000) + " mbar</h2></center>";
 
         $infoPanelWeather.innerHTML = $wi
 
