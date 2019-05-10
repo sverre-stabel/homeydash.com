@@ -30,6 +30,7 @@ window.addEventListener('load', function() {
   var $sunevents = document.getElementById('sun-events');
   var $sunrisetime = document.getElementById('sunrise-time');
   var $sunsettime = document.getElementById('sunset-time');
+  var $flows = document.getElementById('flows');
   var $flowsInner = document.getElementById('flows-inner');
   var $devicesInner = document.getElementById('devices-inner');
 
@@ -129,13 +130,15 @@ window.addEventListener('load', function() {
           }
           if ( tokens[token].id == "measure_battery" ) {
             var batteryLevel = tokens[token].value
-            var element = {}
-            element.name = tokens[token].uriObj.name
-            element.zone = tokens[token].uriObj.meta.zoneName
-            element.level = batteryLevel
-            batteryDetails.push(element)
-            if ( batteryLevel < 20 ) {
-              batteryAlarm = true
+              if ( batteryLevel != null ) { 
+              var element = {}
+              element.name = tokens[token].uriObj.name
+              element.zone = tokens[token].uriObj.meta.zoneName
+              element.level = batteryLevel
+              batteryDetails.push(element)
+              if ( batteryLevel < 20 ) {
+                batteryAlarm = true
+              }
             }
           }
         }
@@ -412,34 +415,39 @@ window.addEventListener('load', function() {
   }
   
   function renderFlows(flows) {
+    if ( flows != "" ) {
     $flowsInner.innerHTML = '';
-    flows.forEach(function(flow) {
-      var $flow = document.createElement('div');
-      $flow.id = 'flow-' + flow.id;
-      $flow.classList.add('flow');
-      $flow.addEventListener('click', function(){        
-        if( $flow.classList.contains('running') ) return;
-        homey.flow.triggerFlow({
-          id: flow.id,
-        }).then(function(){          
-          
-          $flow.classList.add('running');                
-          setTimeout(function(){
-            $flow.classList.remove('running');
-          }, 3000);
-        }).catch(console.error);
+      flows.forEach(function(flow) {
+        var $flow = document.createElement('div');
+        $flow.id = 'flow-' + flow.id;
+        $flow.classList.add('flow');
+        $flow.addEventListener('click', function(){        
+          if( $flow.classList.contains('running') ) return;
+          homey.flow.triggerFlow({
+            id: flow.id,
+          }).then(function(){          
+            
+            $flow.classList.add('running');                
+            setTimeout(function(){
+              $flow.classList.remove('running');
+            }, 3000);
+          }).catch(console.error);
+        });
+        $flowsInner.appendChild($flow);
+        
+        var $play = document.createElement('div');
+        $play.classList.add('play');
+        $flow.appendChild($play);
+        
+        var $name = document.createElement('div');
+        $name.classList.add('name');
+        $name.innerHTML = flow.name;
+        $flow.appendChild($name);
       });
-      $flowsInner.appendChild($flow);
-      
-      var $play = document.createElement('div');
-      $play.classList.add('play');
-      $flow.appendChild($play);
-      
-      var $name = document.createElement('div');
-      $name.classList.add('name');
-      $name.innerHTML = flow.name;
-      $flow.appendChild($name);
-    });
+    } else {
+      $flows.style.visibility = 'hidden';
+      $flows.style.height = '0';
+    }
   }
   
   function renderDevices(devices) {
