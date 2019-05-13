@@ -112,6 +112,12 @@
   #sensor-details { 
     width: 7.6vh;
     height: 8vh;
+    margin-top: -1vh;
+  }
+  #notification-details { 
+    width: 7.6vh;
+    height: 8vh;
+    margin-top: -0.6vh;
   }
 
 .favorites {
@@ -186,7 +192,7 @@
     width: 20vh;
     height: 20vh;
     padding: 2vh;
-    margin-right: 3vh;
+    margin-right: 1.36vw;
     margin-bottom: 3vh;
     border-radius: 3vh;
     cursor: pointer;

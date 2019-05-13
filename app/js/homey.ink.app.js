@@ -23,6 +23,7 @@ window.addEventListener('load', function() {
   var $logo = document.getElementById('logo');
   var $batterydetails = document.getElementById('battery-details');
   var $sensordetails = document.getElementById('sensor-details');
+  var $notificationdetails = document.getElementById('notification-details');
   var $weather = document.getElementById('weather');
   var $weatherTemperature = document.getElementById('weather-temperature');
   var $weatherState = document.getElementById('weather-state');
@@ -68,6 +69,12 @@ window.addEventListener('load', function() {
   $sensordetails.addEventListener('click', function() {
     return renderInfoPanel("s")
   })
+
+  $notificationdetails.addEventListener('click', function() {
+    homey.notifications.getNotifications().then(function(notifications) {
+      return renderInfoPanel('t',notifications);
+    })
+  });
 
   renderText();
   later.setInterval(function(){

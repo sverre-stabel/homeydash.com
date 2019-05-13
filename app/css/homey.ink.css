@@ -52,6 +52,23 @@ body {
       font-weight: 350; 
     }
 
+  #device-panel {
+    position: absolute;
+    vertical-align: middle;
+    width: 60vh;
+    height: 60vh;
+    left: 36vh;
+    top: 30vh;
+    border: 2px solid black;
+    border-radius: 32px;
+    box-sizing: border-box;
+    padding: 24px;
+    margin-right: 24px;
+    
+    z-index: 98;
+    visibility: hidden;
+  }
+
   #logo {
     position: absolute;
     right: 0;
@@ -89,6 +106,17 @@ body {
       width: 108px;
       height: 50px;
       background: url(../img/warning.png) no-repeat center center;
+      background-size: contain;      
+    }
+    #notification-details{
+      display: inline-block;
+      position: relative;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center center;
+      width: 104px;
+      height: 50px;
+      background: url(../img/notification.png) no-repeat center center;
       background-size: contain;      
     }
 

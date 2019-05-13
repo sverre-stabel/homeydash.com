@@ -27,6 +27,12 @@ body {
   opacity: 0.95;
 }
 
+#device-panel {
+  background-color: white;
+  border: none;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+}
+
 #logo {
   background-image: url(../img/logo-white.png);  
 }
@@ -43,6 +49,13 @@ body {
   -webkit-mask-image: url(../img/warning.png);
 }
   #sensor-details.alarm {
+    background-color: orange;
+  }
+#notification-details { 
+  background: white;
+  -webkit-mask-image: url(../img/notification.png);
+}
+  #notification-details.alarm {
     background-color: orange;
   }
 
