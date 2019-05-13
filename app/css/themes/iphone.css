@@ -119,15 +119,22 @@ h2 {
   height: 10vh;
 }
   #battery-details {
-    width: 6vh;
-    height: 6vh;
-    margin-top: 0.3vh;
-    margin-left: 3vh;
+    width: 5vh;
+    height: 5vh;
+    margin-top: -0.6vh;
+    margin-left: 4vh;
   }
   #sensor-details { 
-    width: 5.8vh;
-    height: 6vh;
-    margin-left: 3vh;
+    width: 4.9vh;
+    height: 5vh;
+    margin-top: -0.6vh;
+    margin-left: 4vh;
+  }
+  #notification-details { 
+    width: 4.9vh;
+    height: 5vh;
+    margin-top: -0.6vh;
+    margin-left: 4vh;
   }
 
 .favorites {
