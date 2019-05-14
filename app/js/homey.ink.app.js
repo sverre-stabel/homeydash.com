@@ -336,7 +336,7 @@ window.addEventListener('load', function() {
               $ni = $ni + "<div class='info-date'> " + formatedDate+ "</div>"
           }
         } else {
-          $ni = $ni + "There are no notifications"
+          $ni = $ni + texts.nonotification
         }
 
         $infoPanelNotifications.innerHTML = $ni
