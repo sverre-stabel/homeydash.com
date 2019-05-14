@@ -1,0 +1,44 @@
+{
+    "favoriteflows": "Favoriete flows",
+    "favoritedevices": "Favoriete apparaten",
+    "text" : {
+        "good": "Goede",
+        "evening": "navond",
+        "afternoon": "middag",
+        "morning": "morgen",
+        "night": "nacht",
+        "today": "Vandaag is ",
+        "the": "de",
+        "of": "van"
+    },
+    "notification": {
+        "title": "Recente notificaties",
+        "nonotification": "Er zijn geen notificaties"
+    },
+    "weather": {
+        "title": "Weer informatie voor ",
+        "temperature": "De huidige temperatuur is ",
+        "degrees": " graden, ", 
+        "humidity": "de luchtvochtigheid is ",
+        "pressure": "% en de druk is ",
+        "mbar": " mbar"
+    },
+    "sunevent": {
+        "presunrise": "De zon komt op om  ",
+        "postsunrise": "De zon kwam op om ",
+        "presunset": " en gaat onder om ",
+        "postsunset": " en ging onder om "
+    },
+    "battery": {
+        "title": "Batterij informatie", 
+        "in": " in ",
+        "has": " heeft ",
+        "left": "% over"
+    },
+    "sensor": {
+        "title": "Sensor informatie",
+        "in": " in ",
+        "alarm": " is in alarm staat.",
+        "noalarm": " Er zijn geen sensoren in alarm staat."
+    }
+}

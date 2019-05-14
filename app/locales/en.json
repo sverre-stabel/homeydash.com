@@ -1,20 +1,44 @@
 {
+    "favorite-flows": "Favorite Flows",
+    "favorite-devices": "Favorite devices",
     "text" : {
-        "good": "Good",
+        "good": "Good ",
         "evening": "evening",
         "afternoon": "afternoon",
         "morning": "morning",
         "night": "night",
-        "today": "Today is",
+        "today": "Today is ",
         "the": "the",
         "of": "of"
     },
+    "notification": {
+        "title": "Recent notifications",
+        "nonotification": "There are no notifications"
+    },
     "weather": {
-        "weather": "Weather information for ",
+        "title": "Weather information for ",
         "temperature": "The current temperature is ",
         "degrees": " degrees, ", 
         "humidity": "the humidity is ",
         "pressure": "% and the pressure is ",
         "mbar": " mbar"
+    },
+    "sunevent": {
+        "presunrise": "The sun will rise at ",
+        "postsunrise": "The sun rose at ",
+        "presunset": " and will set at ",
+        "postsunset": " and set at "
+    },
+    "battery": {
+        "title": "Battery information", 
+        "in": " in ",
+        "has": " has ",
+        "left": "% left"
+    },
+    "sensor": {
+        "title": "Sensor information",
+        "in": " in ",
+        "alarm": " is in alarm state.",
+        "noalarm": " There are no sensors in alarm state."
     }
 }

@@ -4,3 +4,6 @@ body {
   background: white;
   font-family: "Roboto Slab";
 }
+#weather-state #weather-state-icon {
+  background: black;
+}

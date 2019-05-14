@@ -1,6 +1,13 @@
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
 
+var locale = 'en'
+var lang = getQueryVariable('lang');
+if ( lang ) {
+  locale = lang;
+} 
+var texts = getTexts(locale);
+
 window.addEventListener('load', function() {
   
   var homey;
@@ -13,6 +20,9 @@ window.addEventListener('load', function() {
   var batteryAlarm = false;
   var sensorDetails =[];
   var nrMsg = 8;
+
+  var $favoriteflows = document.getElementById('favorite-flows');
+  var $favoritedevices = document.getElementById('favorite-devices');
 
   var $container = document.getElementById('container');
   var $header = document.getElementById('header');
@@ -34,6 +44,9 @@ window.addEventListener('load', function() {
   var $flows = document.getElementById('flows');
   var $flowsInner = document.getElementById('flows-inner');
   var $devicesInner = document.getElementById('devices-inner');
+
+  $favoriteflows.innerHTML = texts.favoriteflows
+  $favoritedevices.innerHTML = texts.favoritedevices
 
   $infopanel.addEventListener('click', function() {
     $container.classList.remove('container-dark');
@@ -124,7 +137,6 @@ window.addEventListener('load', function() {
       me.properties.favoriteDevices = me.properties.favoriteDevices || [];
 
       homey.i18n.getOptionLanguage().then(function(language) {
-        console.log(language.value)
       }).catch(console.error);
 
       homey.flowToken.getFlowTokens().then(function(tokens) {
@@ -164,7 +176,6 @@ window.addEventListener('load', function() {
       checkSensorStates();
 
       homey.weather.getWeather().then(function(weather) {
-        console.log(weather);
         return renderWeather(weather);
       }).catch(console.error);
       
@@ -305,35 +316,40 @@ window.addEventListener('load', function() {
         var $infoPanelNotifications = document.createElement('div');
         $infoPanelNotifications.id = "infopanel-notifications"
         $infopanel.appendChild($infoPanelNotifications);
-        $wi = "<center><h1>Recent notifications</h1></center><br />"
+        $ni = "<center><h1>" + texts.notification.title + "</h1></center><br />"
         var nots =[];
         for (let inf in info) {
             nots.push(info[inf]);
         }
         nots.sort(SortByName);
 
-        for (not = 0; not < nrMsg; not++) {
-            var formatedDate = new Date(nots[not].dateCreated);
-            today = new Date
-            if ( formatedDate.toLocaleDateString() != new Date().toLocaleDateString() ) {
-              formatedDate = formatedDate.toLocaleTimeString() + " (" +formatedDate.toLocaleDateString() + ")"
-            } else {
-              formatedDate = formatedDate.toLocaleTimeString()
-            }
-            $wi = $wi + "<div class='info-message'>" + nots[not].excerpt.replace("**","<b>").replace("**","</b>").replace("**","<b>").replace("**","</b>") + " </div> ";
-            $wi = $wi + "<div class='info-date'> " + formatedDate+ "</div>"
+        if ( nots.length > 0 ) {
+          for (not = 0; not < nrMsg; not++) {
+              var formatedDate = new Date(nots[not].dateCreated);
+              today = new Date
+              if ( formatedDate.toLocaleDateString() != new Date().toLocaleDateString() ) {
+                formatedDate = formatedDate.toLocaleTimeString() + " (" +formatedDate.toLocaleDateString() + ")"
+              } else {
+                formatedDate = formatedDate.toLocaleTimeString()
+              }
+              $ni = $ni + "<div class='info-message'>" + nots[not].excerpt.replace("**","<b>").replace("**","</b>").replace("**","<b>").replace("**","</b>") + " </div> ";
+              $ni = $ni + "<div class='info-date'> " + formatedDate+ "</div>"
+          }
+        } else {
+          $ni = $ni + "There are no notifications"
         }
-        $infoPanelNotifications.innerHTML = $wi
+
+        $infoPanelNotifications.innerHTML = $ni
         break;
       case "w": 
         $infopanel.innerHTML = '';
         var $infoPanelWeather = document.createElement('div');
         $infoPanelWeather.id = "infopanel-weather"
         $infopanel.appendChild($infoPanelWeather);
-        $wi = "<center><h1>Weather information for " + info.city + "</h1><br />"
-        $wi = $wi + "<h2>The current temperature is " + Math.round(info.temperature*10)/10 + " degrees, "
-        $wi = $wi + "the humidity is " + Math.round(info.humidity*100) + "% and the pressure is "
-        $wi = $wi + Math.round(info.pressure*1000) + " mbar</h2></center>";
+        $wi = "<center><h1>" + texts.weather.title + info.city + "</h1><br />"
+        $wi = $wi + "<h2>" + texts.weather.temperature + Math.round(info.temperature*10)/10 + texts.weather.degrees
+        $wi = $wi + texts.weather.humidity + Math.round(info.humidity*100) + texts.weather.pressure
+        $wi = $wi + Math.round(info.pressure*1000) + texts.weather.mbar + "</h2></center>";
 
         $infoPanelWeather.innerHTML = $wi
 
@@ -356,16 +372,16 @@ window.addEventListener('load', function() {
 
         switch(tod) {
           case 1:
-            $se = "<center><h2>The sun will rise at " + sunrise + " and will set at " + sunset + "</h2></center>"
+            $se = "<center><h2>" + texts.sunevent.presunrise + sunrise + texts.sunevent.presunset + sunset + "</h2></center>"
             break;
           case 2:
-            $se = "<center><h2>The sun rose at " + sunrise + " and will set at " + sunset + "</h2></center>"
+            $se = "<center><h2>" + texts.sunevent.postsunrise  + sunrise + texts.sunevent.presunset + sunset + "</h2></center>"
             break;
           case 3:
-            $se = "<center><h2>The sun rose at " + sunrise + " and set at " + sunset + "</h2></center>"
+            $se = "<center><h2>" + texts.sunevent.postsunrise  + sunrise + texts.sunevent.postsunset + sunset + "</h2></center>"
             break;
           default:
-            $se = "<center><h2>The sun rises at " + sunrise + " and set at " + sunset + "</h2></center>"
+            $se = "<center><h2>" + texts.sunevent.postsunrise  + sunrise + texts.sunevent.postsunset + sunset + "</h2></center>"
             break;
         }
         $infoPanelSunevents.innerHTML = $se
@@ -376,12 +392,11 @@ window.addEventListener('load', function() {
         var $infoPanelBattery = document.createElement('div');
         $infoPanelBattery.id = "infopanel-battery"
         $infopanel.appendChild($infoPanelBattery);
-        $bi = "<center><h1>Battery information</h1></center><br /><br />"
+        $bi = "<center><h1>" + texts.battery.title + "</h1></center><br /><br />"
         for (let device in batteryDetails) {
-          console.log(batteryDetails[device])
-          $bi = $bi + "<h2>" + batteryDetails[device].name + " in " 
-          $bi = $bi + batteryDetails[device].zone + " has "
-          $bi = $bi + batteryDetails[device].level + "% left</h2>"
+          $bi = $bi + "<h2>" + batteryDetails[device].name + texts.battery.in
+          $bi = $bi + batteryDetails[device].zone + texts.battery.has
+          $bi = $bi + batteryDetails[device].level + texts.battery.left + "</h2>"
         }
         $infopanel.innerHTML = $bi
 
@@ -391,20 +406,18 @@ window.addEventListener('load', function() {
         var $infoPanelSensors = document.createElement('div');
         $infoPanelSensors.id = "infopanel-sensor"
         $infopanel.appendChild($infoPanelSensors);
-        $si = "<center><h1>Sensor information</h1></center><br /><br />"
+        $si = "<center><h1>" + texts.sensor.title + "</h1></center><br /><br />"
         if ( Object.keys(sensorDetails).length ) {
           for (let device in sensorDetails) {
-            console.log(sensorDetails[device])
-            $si = $si + "<h2>" + sensorDetails[device].name + " in " 
-            $si = $si + sensorDetails[device].zone + " is in alarm state.</h2>"
+            $si = $si + "<h2>" + sensorDetails[device].name + texts.sensor.in 
+            $si = $si + sensorDetails[device].zone + texts.sensor.alarm + "</h2>"
           }
         } else {
-          $si = $si + "<h2> There are no sensors in alarm state.</h2>"
+          $si = $si + "<h2>" + texts.sensor.noalarm + "</h2>"
         }
         $infopanel.innerHTML = $si
         break;
     }
-    console.log("style")
     $infopanel.style.visibility = "visible";
     $container.classList.add('container-dark');
   }
@@ -501,7 +514,7 @@ window.addEventListener('load', function() {
       $icon.classList.add('icon');
       $icon.style.webkitMaskImage = 'url(https://icons-cdn.athom.com/' + device.iconObj.id + '-128.png)';
       $device.appendChild($icon);
-    
+
       var $value = document.createElement('div');
       $value.id = 'value-' + device.id;
       $value.classList.add('value');
@@ -537,20 +550,20 @@ window.addEventListener('load', function() {
     
     var tod;
     if( hours >= 18 ) {
-      tod = 'evening';
+      tod = texts.text.evening;
     } else if( hours >= 12 ) {
-      tod = 'afternoon';
+      tod = texts.text.afternoon;
     } else if( hours >= 6 ) {
-      tod = 'morning';
+      tod = texts.text.morning;
     } else {
-      tod = 'night';
+      tod = texts.text.night;
     }
 
     //To Do: localize moment() using locale files from https://cdnjs.com/libraries/moment.js
     // and setting moment.locale(language)
     
-    $textLarge.innerHTML = 'Good ' + tod + '!';
-    $textSmall.innerHTML = 'Today is ' + moment(now).format('dddd[, the ]Do[ of ]MMMM YYYY[.]');
+    $textLarge.innerHTML = texts.text.good + tod + '!';
+    $textSmall.innerHTML = texts.text.today + moment(now).format('dddd[, the ]Do[ of ]MMMM YYYY[.]');
   }
   
   function calculateTOD() {
