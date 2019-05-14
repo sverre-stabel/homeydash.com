@@ -312,6 +312,7 @@ window.addEventListener('load', function() {
   function renderInfoPanel(type,info) {
     switch(type) {
       case "t":
+      console.log(info)
         $infopanel.innerHTML = '';
         var $infoPanelNotifications = document.createElement('div');
         $infoPanelNotifications.id = "infopanel-notifications"
@@ -323,8 +324,14 @@ window.addEventListener('load', function() {
         }
         nots.sort(SortByName);
 
+        if ( nots.length < nrMsg) {
+          nrNot = nots.length
+        } else {
+          nrNot = nrMsg
+        }
+
         if ( nots.length > 0 ) {
-          for (not = 0; not < nrMsg; not++) {
+          for (not = 0; not < nrNot; not++) {
               var formatedDate = new Date(nots[not].dateCreated);
               today = new Date
               if ( formatedDate.toLocaleDateString() != new Date().toLocaleDateString() ) {
