@@ -17,8 +17,8 @@ serve -p 5000 app
 
 (Or host it on your own favorite webserver, doing so may need changes to the source you need to do yourself.)
 
-Then visit `http://localhost:5000/?token=<TOKEN>&theme=web` 
+Then visit `http://localhost:5000/?theme=web&lang=en&token=<TOKEN>`
 
-or `http://localhost:5000/?token=<TOKEN>&theme=iphone`
+or `http://localhost:5000/?theme=iphone&lang=en&token=<TOKEN>`
 
 > Your token can be acquired by visiting https://homey.ink and looking in the console after logging in.
