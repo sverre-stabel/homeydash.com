@@ -7,6 +7,8 @@ if ( lang ) {
   locale = lang;
 } 
 var texts = getTexts(locale);
+loadScript(locale, setLocale)
+
 
 window.addEventListener('load', function() {
   
@@ -567,10 +569,11 @@ window.addEventListener('load', function() {
     }
 
     //To Do: localize moment() using locale files from https://cdnjs.com/libraries/moment.js
-    // and setting moment.locale(language)
+    // and setting 
+    moment.locale(locale)
     
     $textLarge.innerHTML = texts.text.good + tod + '!';
-    $textSmall.innerHTML = texts.text.today + moment(now).format('dddd[, the ]Do[ of ]MMMM YYYY[.]');
+    $textSmall.innerHTML = texts.text.today + moment(now).format('dddd[, ' + texts.text.the + ' ]Do[ ' + texts.text.of + ' ]MMMM YYYY[.]');
   }
   
   function calculateTOD() {
