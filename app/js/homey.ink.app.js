@@ -339,7 +339,7 @@ window.addEventListener('load', function() {
               } else {
                 formatedDate = formatedDate.toLocaleTimeString()
               }
-              $ni = $ni + "<div class='info-message'>" + nots[not].excerpt.replace("**","<b>").replace("**","</b>").replace("**","<b>").replace("**","</b>") + " </div> ";
+              $ni = $ni + "<div><h2>" + nots[not].excerpt.replace("**","").replace("**","").replace("**","").replace("**","") + "</h2></div> ";
               $ni = $ni + "<div class='info-date'> " + formatedDate+ "</div>"
           }
         } else {

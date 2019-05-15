@@ -1,0 +1,44 @@
+{
+    "favorite-flows": "Favoritt flows",
+    "favorite-devices": "Favoritt enheter",
+    "text" : {
+        "good": "God ",
+        "evening": "ettermiddag",
+        "afternoon": "formiddag",
+        "morning": "morgen",
+        "night": "kveld",
+        "today": "I dag er det ",
+        "the": "den",
+        "of": " "
+    },
+    "notification": {
+        "title": "Nylige hendelser",
+        "nonotification": "Det er ingen hendelser"
+    },
+    "weather": {
+        "title": "V&aelig;r informasjon for ",
+        "temperature": "Temperaturen er ",
+        "degrees": " grader, ", 
+        "humidity": "luftfuktigheten er ",
+        "pressure": "% og trykket er ",
+        "mbar": " mbar"
+    },
+    "sunevent": {
+        "presunrise": "Solen vil g&aring; opp klokken ",
+        "postsunrise": "Solen gikk opp klokken ",
+        "presunset": " og vil g&aring; ned klokken ",
+        "postsunset": " og g&aring; ned klokken "
+    },
+    "battery": {
+        "title": "Batteri informasjon", 
+        "in": ": ",
+        "has": " har ",
+        "left": "% igjen"
+    },
+    "sensor": {
+        "title": "Sensor informasjon",
+        "in": " i ",
+        "alarm": " er aktivert av alarm.",
+        "noalarm": " Det er ingen sensorer som er aktiverte av alarm." 
+    }
+}
