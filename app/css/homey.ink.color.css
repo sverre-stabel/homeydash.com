@@ -51,6 +51,9 @@ body {
   #sensor-details.alarm {
     background-color: orange;
   }
+  #sensor-details.fault {
+    background-color: red;
+  }
 #notification-details { 
   background: white;
   -webkit-mask-image: url(../img/notification.png);

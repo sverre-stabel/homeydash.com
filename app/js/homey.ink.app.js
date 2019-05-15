@@ -9,7 +9,6 @@ if ( lang ) {
 var texts = getTexts(locale);
 loadScript(locale, setLocale)
 
-
 window.addEventListener('load', function() {
   
   var homey;
@@ -22,6 +21,7 @@ window.addEventListener('load', function() {
   var batteryAlarm = false;
   var sensorDetails =[];
   var nrMsg = 8;
+  var faultyDevice = false;
 
   var $favoriteflows = document.getElementById('favorite-flows');
   var $favoritedevices = document.getElementById('favorite-devices');
@@ -202,6 +202,10 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
+          if (!device.ready) {
+            faultyDevice=true; 
+            $sensordetails.classList.add('fault')  
+            return}
           if ( device.ui.quickAction ) {
             device.makeCapabilityInstance(device.ui.quickAction, function(value){
               var $device = document.getElementById('device-' + device.id);
@@ -424,6 +428,9 @@ window.addEventListener('load', function() {
         } else {
           $si = $si + "<h2>" + texts.sensor.noalarm + "</h2>"
         }
+        if ( faultyDevice ) {
+          $si = $si +"<br /><h2>" + texts.sensor.fault + "</h2>"
+        }
         $infopanel.innerHTML = $si
         break;
     }
@@ -482,6 +489,7 @@ window.addEventListener('load', function() {
   function renderDevices(devices) {
     $devicesInner.innerHTML = '';
     devices.forEach(function(device) {
+      if (!device.ready) {return}
       var $device = document.createElement('div');
       $device.id = 'device-' + device.id;
       $device.classList.add('device');
@@ -568,10 +576,7 @@ window.addEventListener('load', function() {
       tod = texts.text.night;
     }
 
-    //To Do: localize moment() using locale files from https://cdnjs.com/libraries/moment.js
-    // and setting 
-    moment.locale(locale)
-    
+    //moment.locale(locale)
     $textLarge.innerHTML = texts.text.good + tod + '!';
     $textSmall.innerHTML = texts.text.today + moment(now).format('dddd[, ' + texts.text.the + ' ]Do[ ' + texts.text.of + ' ]MMMM YYYY[.]');
   }

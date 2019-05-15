@@ -39,6 +39,7 @@
         "title": "Sensorinformation",
         "in": " in ",
         "alarm": " ist im Alarmzustand.",
-        "noalarm": " Es gibt keine Sensoren in Alarmzustand."
+        "noalarm": " Es gibt keine Sensoren in Alarmzustand.",
+        "fault": "There is a problem loading your devices, please check your devices and apps in the Homey app"
     }
 }

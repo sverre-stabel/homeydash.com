@@ -39,6 +39,7 @@
         "title": "Sensor informatie",
         "in": " in ",
         "alarm": " is in alarm staat.",
-        "noalarm": " Er zijn geen sensoren in alarm staat."
+        "noalarm": " Er zijn geen sensoren in alarm staat.",
+        "fault": "Er is een probleem met laden van apparaten, controleer de apparaten en je apps in de Homey app"
     }
 }

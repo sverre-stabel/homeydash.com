@@ -39,6 +39,7 @@
         "title": "Sensor informasjon",
         "in": " i ",
         "alarm": " er aktivert av alarm.",
-        "noalarm": " Det er ingen sensorer som er aktiverte av alarm." 
+        "noalarm": " Det er ingen sensorer som er aktiverte av alarm.",
+        "fault": "There is a problem loading your devices, please check your devices and apps in the Homey app"
     }
 }

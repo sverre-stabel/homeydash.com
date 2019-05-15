@@ -39,6 +39,7 @@
         "title": "Informations capteurs",
         "in": " dans la zone ",
         "alarm": " est en état d'alarme.",
-        "noalarm": " Il n'y a pas de capteur en état d'alarme."
+        "noalarm": " Il n'y a pas de capteur en état d'alarme.",
+        "fault": "There is a problem loading your devices, please check your devices and apps in the Homey app"
     }
 }
