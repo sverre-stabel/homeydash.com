@@ -1,6 +1,6 @@
 {
-    "favorite-flows": "Favorit flöden",
-    "favorite-devices": "Favorit enheter",
+    "favorite-flows": "Favoritflöden",
+    "favorite-devices": "Favoritenheter",
     "text" : {
         "good": "God ",
         "evening": "eftermiddag",
@@ -16,7 +16,7 @@
         "nonotification": "Det finns inga händelser"
     },
     "weather": {
-        "title": "Väder informatio",
+        "title": "Väderinformatio",
         "temperature": "Temperaturen är ",
         "degrees": " grader, ",
         "humidity": "luftfuktigheten är ",
@@ -30,16 +30,16 @@
         "postsunset": " och gick ner "
     },
     "battery": {
-        "title": "Batteri information",
+        "title": "Batteriinformation",
         "in": ": ",
         "has": " har ",
         "left": "% kvar"
     },
     "sensor": {
-        "title": "Sensor information",
+        "title": "Sensorinformation",
         "in": " i ",
         "alarm": " har aktiverat alarm.",
         "noalarm": " Det är inga sensorer med alarm.",
-        "fault": "There is a problem loading your devices, please check your devices and apps in the Homey app"
+        "fault": "Det gick inte att ladda dina enheter. Kontrollera dina enheter och appar i Homeyappen"
     }
 }
