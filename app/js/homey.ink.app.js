@@ -22,6 +22,7 @@ window.addEventListener('load', function() {
   var sensorDetails =[];
   var nrMsg = 8;
   var faultyDevice = false;
+  var nameChange = false;
 
   var $favoriteflows = document.getElementById('favorite-flows');
   var $favoritedevices = document.getElementById('favorite-devices');
@@ -537,11 +538,9 @@ window.addEventListener('load', function() {
             capability = device.capabilitiesObj[item]
             if ( capability.type == "number" && capability.id != 'measure_battery' ) {
               var $value = document.createElement('div');
-              //$value.id = 'value:' + itemNr + ":" + device.id;
               $value.id = 'value:' + device.id + ':' + capability.id;
               $value.title = capability.title
               $value.classList.add('value');
-              //$value.classList.add(capability.id)
               if ( itemNr == 0 ) {$value.classList.add('visible')} else {$value.classList.add('hidden')}
               renderValue($value, capability.id, capability.value, capability.units)
               $device.appendChild($value)
@@ -549,36 +548,37 @@ window.addEventListener('load', function() {
             }
           }
           if ( itemNr > 0 ) {
+
             $device.addEventListener('click', function(){
               console.log(" ")
-              var itemNrVisible = 0
-              var itemMax = 0
-              var itemNr = 0
-              var showElement = 0
-              for ( item in device.capabilitiesObj ) {
-                capability = device.capabilitiesObj[item]
-                if ( capability.type == "number") {
-                  itemMax = itemMax + 1
-                }
-              }
-              for ( item in device.capabilitiesObj ) {
-                capability = device.capabilitiesObj[item]
-                if ( capability.type == "number" && capability.id != 'measure_battery' ) {
-                  searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
-                  if (itemNr == showElement ) {
-                    elementToShow = searchElement
+                var itemNrVisible = 0
+                var itemMax = 0
+                var itemNr = 0
+                var showElement = 0
+                for ( item in device.capabilitiesObj ) {
+                  capability = device.capabilitiesObj[item]
+                  if ( capability.type == "number") {
+                    itemMax = itemMax + 1
                   }
-                  if ( searchElement.classList.contains('visible') ) {
-                    searchElement.classList.remove('visible')
-                    searchElement.classList.add('hidden')
-                    showElement = itemNr + 1
-                  }
-                  itemNr =itemNr + 1
                 }
-              }
-              elementToShow.classList.remove('hidden')
-              elementToShow.classList.add('visible')
-              renderName(device,elementToShow)
+                for ( item in device.capabilitiesObj ) {
+                  capability = device.capabilitiesObj[item]
+                  if ( capability.type == "number" && capability.id != 'measure_battery' ) {
+                    searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
+                    if (itemNr == showElement ) {
+                      elementToShow = searchElement
+                    }
+                    if ( searchElement.classList.contains('visible') ) {
+                      searchElement.classList.remove('visible')
+                      searchElement.classList.add('hidden')
+                      showElement = itemNr + 1
+                    }
+                    itemNr =itemNr + 1
+                  }
+                }
+                elementToShow.classList.remove('hidden')
+                elementToShow.classList.add('visible')
+                renderName(device,elementToShow)
             });
           }
         }
@@ -655,11 +655,14 @@ window.addEventListener('load', function() {
 
   function renderName(device, elementToShow) {
     searchElement = document.getElementById('name:' + device.id)
-    console.log(searchElement)
-    currentName = searchElement.innerHTML;
+    if ( !nameChange ) {
+      currentName = searchElement.innerHTML;
+    }
+    nameChange=true;
     searchElement.classList.add('highlight')
     searchElement.innerHTML = elementToShow.title
     setTimeout( function(){ 
+      nameChange = false;
       searchElement.innerHTML = currentName
       searchElement.classList.remove('highlight')
     }, 1000);
