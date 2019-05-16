@@ -315,6 +315,9 @@ body {
           font-size: 14px;
           vertical-align: text-top;
         }
+        .device .value.hidden {
+          visibility: hidden;
+        }
         .device .name {
           width: 100%;
           font-size: 28px;
@@ -324,4 +327,7 @@ body {
           overflow: hidden;
           white-space: normal;
           text-overflow: ellipsis;
+        }
+        .device .name.highlight {
+          font-weight: 1000;
         }

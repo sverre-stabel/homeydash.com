@@ -40,6 +40,6 @@
         "in": " in ",
         "alarm": " ist im Alarmzustand.",
         "noalarm": " Es gibt keine Sensoren in Alarmzustand.",
-        "fault": "There is a problem loading your devices, please check your devices and apps in the Homey app"
+        "fault": "Es gibt ein Problem beim laden der Geräte, bitte überprüfe die Geräte und Apps in der Homey App"
     }
 }

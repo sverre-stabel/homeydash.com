@@ -211,7 +211,8 @@
       line-height: 4.2vh;
       width: auto;
       height: auto;
-      max-height: 7vh;
+      max-height: 8vh;
+      text-align: right;
     }
 
     #decimal {
@@ -228,4 +229,7 @@
       width: auto;
       height: auto;
       max-height: 7vh;
+    }
+    .device .name.highlight {
+      font-weight: 500;
     }
