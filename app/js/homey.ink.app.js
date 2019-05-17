@@ -635,6 +635,7 @@ window.addEventListener('load', function() {
   }
 
   function renderValue ($value, capabilityId, capabilityValue, capabilityUnits) {
+    if ( capabilityUnits == null) { capabilityUnits = "" }
     if (capabilityId == "measure_temperature" || 
         capabilityId == "target_temperature" || 
         capabilityId == "measure_humidity" 
