@@ -538,7 +538,7 @@ window.addEventListener('load', function() {
           for ( item in device.capabilitiesObj ) {
             
             capability = device.capabilitiesObj[item]
-            if ( capability.type == "number" && capability.id != 'measure_battery' ) {
+            if ( capability.type == "number"  ) {
               var $value = document.createElement('div');
               $value.id = 'value:' + device.id + ':' + capability.id;
               $value.title = capability.title
@@ -557,6 +557,7 @@ window.addEventListener('load', function() {
           if ( itemNr > 0 ) {
             $device.addEventListener('click', function(){
               console.log(" ")
+              if ( nameChange ) { return }
                 var currentElement = 0
                 var itemMax = 0
                 var itemNr = 0
@@ -569,7 +570,7 @@ window.addEventListener('load', function() {
                 }
                 for ( item in device.capabilitiesObj ) {
                   capability = device.capabilitiesObj[item]
-                  if ( capability.type == "number" && capability.id != 'measure_battery' ) {
+                  if ( capability.type == "number"  ) {
                     searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
                     if (itemNr == showElement ) {
                       elementToShow = searchElement
