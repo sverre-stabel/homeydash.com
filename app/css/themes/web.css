@@ -1,8 +1,13 @@
 @import url(../homey.ink.color.css);
 
 /*
- * Theme by: Emile Nijssen
+ * Original theme by: Emile Nijssen
+ * Enriched by Danee de Kruyff
  */
+
+body {
+  zoom: .8;
+}
 
 #container {
   /*width: 100%;*/

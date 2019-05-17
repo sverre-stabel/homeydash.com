@@ -51,6 +51,8 @@ window.addEventListener('load', function() {
   $favoriteflows.innerHTML = texts.favoriteflows
   $favoritedevices.innerHTML = texts.favoritedevices
 
+  document.cookie = "; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
   $infopanel.addEventListener('click', function() {
     $container.classList.remove('container-dark');
     $infopanel.style.visibility = "hidden";
@@ -541,17 +543,21 @@ window.addEventListener('load', function() {
               $value.id = 'value:' + device.id + ':' + capability.id;
               $value.title = capability.title
               $value.classList.add('value');
-              if ( itemNr == 0 ) {$value.classList.add('visible')} else {$value.classList.add('hidden')}
+              //if ( itemNr == 0 ) {
+              if ( $value.id == getCookie(device.id) ) {
+                $value.classList.add('visible')
+              } else {
+                $value.classList.add('hidden')
+              }
               renderValue($value, capability.id, capability.value, capability.units)
               $device.appendChild($value)
               itemNr =itemNr + 1
             }
           }
           if ( itemNr > 0 ) {
-
             $device.addEventListener('click', function(){
               console.log(" ")
-                var itemNrVisible = 0
+                var currentElement = 0
                 var itemMax = 0
                 var itemNr = 0
                 var showElement = 0
@@ -567,18 +573,25 @@ window.addEventListener('load', function() {
                     searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
                     if (itemNr == showElement ) {
                       elementToShow = searchElement
+                      itemNrVisible = itemNr
                     }
                     if ( searchElement.classList.contains('visible') ) {
                       searchElement.classList.remove('visible')
                       searchElement.classList.add('hidden')
+                      currentElement = itemNr
                       showElement = itemNr + 1
                     }
                     itemNr =itemNr + 1
                   }
                 }
-                elementToShow.classList.remove('hidden')
-                elementToShow.classList.add('visible')
-                renderName(device,elementToShow)
+                if ( showElement != itemNr ) { 
+                  elementToShow.classList.remove('hidden')
+                  elementToShow.classList.add('visible')
+                  renderName(device,elementToShow)
+                  setCookie(device.id,elementToShow.id,1)
+                } else {
+                  setCookie(device.id,"-",1)
+                }
             });
           }
         }
