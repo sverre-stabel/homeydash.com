@@ -219,6 +219,13 @@ h2 {
       width: 6.4vh;
       height: 6.4vh;
     }
+    .device .icon-capability {
+      position: absolute;
+      top: 4vh;
+      left: 1.8vh;
+      width: 4.4vh;
+      height: 4.4vh;
+    }
     .device .value {
       position: absolute;
       top: 2.4vh;
@@ -228,7 +235,8 @@ h2 {
       line-height: 3.4vh;
       width: auto;
       height: auto;
-      max-height: 5.6vh;
+      max-height: 6vh;
+      text-align: right;
     }
 
     #decimal {

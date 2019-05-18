@@ -207,6 +207,13 @@ body {
       width: 7vh;
       height: 7vh;
     }
+    .device .icon-capability {
+      position: absolute;
+      top: 6vh;
+      left: 2.5vh;
+      width: 5vh;
+      height: 5vh;
+    }
     .device .value {
       position: absolute;
       top: 3vh;

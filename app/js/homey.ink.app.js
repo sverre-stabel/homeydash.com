@@ -1,4 +1,4 @@
-var version = "1.0.0"
+var version = "1.0.0.1"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -274,12 +274,12 @@ window.addEventListener('load', function() {
             device.makeCapabilityInstance('measure_temperature', function(value){
               var $device = document.getElementById('device-' + device.id);
               if( $device ) {
-                var $value = document.getElementById('value:' + device.id + ":measure_temperature");
+                var $element = document.getElementById('value:' + device.id + ":measure_temperature");
                 var integer = Math.floor(device.capabilitiesObj.measure_temperature.value)
                 n = Math.abs(device.capabilitiesObj.measure_temperature.value)
                 var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
                 var decimal = decimal.substring(2,3)
-                $value.innerHTML  = integer + "<span id='decimal'>"+decimal+"°</span><br />"
+                $element.innerHTML  = integer + "<span id='decimal'>"+decimal+"°</span><br />"
               }
             });
           }
@@ -292,6 +292,7 @@ window.addEventListener('load', function() {
                 $element.innerHTML = Math.round(moisture) + "<span id='decimal'>%</span><br />"
                 if ( moisture < 15 || moisture > 65 ) {
                   $device.classList.add('alarm')
+                  selectValue(device,$element)
                 } else {
                   $device.classList.remove('alarm')
                 }
@@ -544,9 +545,16 @@ window.addEventListener('load', function() {
       }
 
       var $icon = document.createElement('div');
+      $icon.id = 'icon:' + device.id
       $icon.classList.add('icon');
       $icon.style.webkitMaskImage = 'url(https://icons-cdn.athom.com/' + device.iconObj.id + '-128.png)';
       $device.appendChild($icon);
+
+      var $iconCapability = document.createElement('div');
+      $iconCapability.id = 'icon-capability:' + device.id
+      $iconCapability.classList.add('icon-capability');
+      $iconCapability.style.webkitMaskImage ='url(img/capabilities/blank.png)';
+      $device.appendChild($iconCapability);
 
         if (device.capabilitiesObj && !device.capabilitiesObj[device.ui.quickAction]) {
           itemNr = 0
@@ -554,13 +562,22 @@ window.addEventListener('load', function() {
             
             capability = device.capabilitiesObj[item]
             if ( capability.type == "number"  ) {
+              if ( capability.iconObj ) {
+                iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
+              } else {
+                iconToShow = 'img/capabilities/' + capability.id + '.png'
+              }
+              $icon = document.getElementById('icon:'+device.id);
+              $iconcapability = document.getElementById('icon-capability:'+device.id);
               var $value = document.createElement('div');
               $value.id = 'value:' + device.id + ':' + capability.id;
               $value.title = capability.title
               $value.classList.add('value');
-              //if ( itemNr == 0 ) {
               if ( $value.id == getCookie(device.id) ) {
                 $value.classList.add('visible')
+                $icon.style.opacity = 0.4
+                $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
+                $iconcapability.style.visibility = 'visible';
               } else {
                 $value.classList.add('hidden')
               }
@@ -571,43 +588,53 @@ window.addEventListener('load', function() {
           }
           if ( itemNr > 0 ) {
             $device.addEventListener('click', function(){
-              console.log(" ")
               if ( nameChange ) { return }
-                var currentElement = 0
-                var itemMax = 0
-                var itemNr = 0
-                var showElement = 0
-                for ( item in device.capabilitiesObj ) {
-                  capability = device.capabilitiesObj[item]
-                  if ( capability.type == "number") {
-                    itemMax = itemMax + 1
-                  }
+              var itemMax = 0
+              var itemNr = 0
+              var showElement = 0
+              for ( item in device.capabilitiesObj ) {
+                capability = device.capabilitiesObj[item]
+                if ( capability.type == "number") {
+                  itemMax = itemMax + 1
                 }
-                for ( item in device.capabilitiesObj ) {
-                  capability = device.capabilitiesObj[item]
-                  if ( capability.type == "number"  ) {
-                    searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
-                    if (itemNr == showElement ) {
-                      elementToShow = searchElement
-                      itemNrVisible = itemNr
+              }
+              for ( item in device.capabilitiesObj ) {
+                capability = device.capabilitiesObj[item]
+                if ( capability.type == "number"  ) {
+                  searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
+                  if (itemNr == showElement ) {
+                    elementToShow = searchElement
+                    if ( capability.iconObj ) {
+                      iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
+                    } else {
+                      iconToShow = 'img/capabilities/' + capability.id + '.png'
                     }
-                    if ( searchElement.classList.contains('visible') ) {
-                      searchElement.classList.remove('visible')
-                      searchElement.classList.add('hidden')
-                      currentElement = itemNr
-                      showElement = itemNr + 1
-                    }
-                    itemNr =itemNr + 1
+                    itemNrVisible = itemNr
                   }
+                  if ( searchElement.classList.contains('visible') ) {
+                    searchElement.classList.remove('visible')
+                    searchElement.classList.add('hidden')
+                    currentElement = itemNr
+                    showElement = itemNr + 1
+                  }
+                  itemNr =itemNr + 1
                 }
-                if ( showElement != itemNr ) { 
-                  elementToShow.classList.remove('hidden')
-                  elementToShow.classList.add('visible')
-                  renderName(device,elementToShow)
-                  setCookie(device.id,elementToShow.id,1)
-                } else {
-                  setCookie(device.id,"-",1)
-                }
+              }
+              $icon = document.getElementById('icon:'+device.id);
+              $iconcapability = document.getElementById('icon-capability:'+device.id);
+              if ( showElement != itemNr ) { 
+                elementToShow.classList.remove('hidden')
+                elementToShow.classList.add('visible')
+                renderName(device,elementToShow)
+                setCookie(device.id,elementToShow.id,1)
+                $icon.style.opacity = 0.4
+                $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
+                $iconcapability.style.visibility = 'visible';
+              } else {
+                setCookie(device.id,"-",1)
+                $icon.style.opacity = 1
+                $iconcapability.style.visibility = 'hidden';
+              }
             });
           }
         }
@@ -675,6 +702,23 @@ window.addEventListener('load', function() {
     }, 1000);
   }
   
+  function selectValue(device, elementToShow) {
+    for ( item in device.capabilitiesObj ) {
+      capability = device.capabilitiesObj[item]
+      if ( capability.type == "number"  ) {
+        searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
+        if ( searchElement.classList.contains('visible') ) {
+          searchElement.classList.remove('visible')
+          searchElement.classList.add('hidden')
+        }
+      }
+    }
+    elementToShow.classList.remove('hidden')
+    elementToShow.classList.add('visible')
+    renderName(device,elementToShow)
+  }
+
+
   function calculateTOD() {
 
     var d = new Date();
