@@ -612,29 +612,6 @@ window.addEventListener('load', function() {
           }
         }
 
-      /*
-      var $value = document.createElement('div');
-      $value.id = 'value-' + device.id;
-      $value.classList.add('value');
-      if ( device.capabilitiesObj.measure_temperature && device.capabilitiesObj.measure_temperature.value ) {
-        var integer = Math.floor(device.capabilitiesObj.measure_temperature.value)
-        n = Math.abs(device.capabilitiesObj.measure_temperature.value)
-        var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
-        var decimal = decimal.substring(2,3)
-        $value.innerHTML  = integer + "<span id='decimal'>"+decimal+"°</span><br />"
-      }
-      if ( device.capabilitiesObj.flora_measure_moisture && device.capabilitiesObj.flora_measure_moisture.value ) {
-        var moisture = Math.round(device.capabilitiesObj.flora_measure_moisture.value)
-        $value.innerHTML  = moisture + "<span id='decimal'>%</span><br />"
-        if ( moisture < 15 || moisture > 65 ) {
-          $device.classList.add('alarm')
-        } else {
-          $device.classList.remove('alarm')
-        }
-      }
-      $device.appendChild($value);
-      */
-
       var $name = document.createElement('div');
       $name.id = 'name:' + device.id
       $name.classList.add('name');
