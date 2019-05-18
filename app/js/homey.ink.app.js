@@ -117,7 +117,6 @@ window.addEventListener('load', function() {
   document.head.appendChild($css);
 
   var token = getQueryVariable('token');
-  console.log(token)
   if ( token == undefined || token == "undefined" || token == "") {
     $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Please log-in<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
     return
