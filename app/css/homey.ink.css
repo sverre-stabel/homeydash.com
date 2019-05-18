@@ -18,6 +18,10 @@ body {
   font-family: Helvetica, sans-serif;
 }
 
+a {
+  color: white;
+}
+
 .container {
   box-sizing: border-box;
 }

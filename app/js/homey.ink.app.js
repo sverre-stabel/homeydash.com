@@ -1,3 +1,5 @@
+
+
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
 
@@ -105,6 +107,9 @@ window.addEventListener('load', function() {
   });
   
   var theme = getQueryVariable('theme');
+  if ( theme == undefined) {
+    theme = "web";
+  }
   var $css = document.createElement('link');
   $css.rel = 'stylesheet';
   $css.type = 'text/css';
@@ -112,13 +117,24 @@ window.addEventListener('load', function() {
   document.head.appendChild($css);
 
   var token = getQueryVariable('token');
-  token = atob(token);
+  console.log(token)
+  if ( token == undefined || token == "undefined" || token == "") {
+    $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Please log-in<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
+    return
+  }
+  try { token = atob(token) }
+  catch(err) {
+    $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Token invalid. Please log-in again.<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
+    return
+  }
   token = JSON.parse(token);
   api.setToken(token);
   
   api.isLoggedIn().then(function(loggedIn) {
     if(!loggedIn)
-      throw new Error('Token Expired. Please log-in again.');
+      $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Token Expired. Please log-in again.<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
+      return
+      //throw new Error('Token Expired. Please log-in again.');
   }).then(function(){
     return api.getAuthenticatedUser();
   }).then(function(user) {
