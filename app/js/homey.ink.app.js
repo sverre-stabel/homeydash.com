@@ -1,4 +1,4 @@
-var version = "1.0.0.1"
+var version = "1.0.0.2"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -25,6 +25,7 @@ window.addEventListener('load', function() {
   var nrMsg = 8;
   var faultyDevice = false;
   var nameChange = false;
+  var longtouch = false;
 
   var $favoriteflows = document.getElementById('favorite-flows');
   var $favoritedevices = document.getElementById('favorite-devices');
@@ -226,45 +227,45 @@ window.addEventListener('load', function() {
             return}
           if ( device.ui.quickAction ) {
             device.makeCapabilityInstance(device.ui.quickAction, function(value){
-              var $device = document.getElementById('device-' + device.id);
-              if( $device ) {
-                $device.classList.toggle('on', !!value);
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                $deviceElement.classList.toggle('on', !!value);
                 checkSensorStates();
               }
             });
           }
           if ( device.capabilitiesObj.alarm_generic ) {        
             device.makeCapabilityInstance('alarm_generic', function(value){
-              var $device = document.getElementById('device-' + device.id);
-              if( $device ) {
-                $device.classList.toggle('alarm', !!value);
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                $deviceElement.classList.toggle('alarm', !!value);
                 checkSensorStates();
               }
             });
           }
           if ( device.capabilitiesObj.alarm_motion ) {        
             device.makeCapabilityInstance('alarm_motion', function(value){
-              var $device = document.getElementById('device-' + device.id);
-              if( $device ) {
-                $device.classList.toggle('alarm', !!value);
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                $deviceElement.classList.toggle('alarm', !!value);
                 checkSensorStates();
               }
             });
           }
           if ( device.capabilitiesObj.alarm_contact ) {        
             device.makeCapabilityInstance('alarm_contact', function(value){
-              var $device = document.getElementById('device-' + device.id);
-              if( $device ) {
-                $device.classList.toggle('alarm', !!value);
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                $deviceElement.classList.toggle('alarm', !!value);
                 checkSensorStates();
               }
             });
           }
           if ( device.capabilitiesObj.alarm_vibration ) {        
             device.makeCapabilityInstance('alarm_vibration', function(value){
-              var $device = document.getElementById('device-' + device.id);
-              if( $device ) {
-                $device.classList.toggle('alarm', !!value);
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                $deviceElement.classList.toggle('alarm', !!value);
                 checkSensorStates();
               }
             });
@@ -272,8 +273,8 @@ window.addEventListener('load', function() {
 
           if ( device.capabilitiesObj.measure_temperature ) {        
             device.makeCapabilityInstance('measure_temperature', function(value){
-              var $device = document.getElementById('device-' + device.id);
-              if( $device ) {
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
                 var $element = document.getElementById('value:' + device.id + ":measure_temperature");
                 var integer = Math.floor(device.capabilitiesObj.measure_temperature.value)
                 n = Math.abs(device.capabilitiesObj.measure_temperature.value)
@@ -286,16 +287,16 @@ window.addEventListener('load', function() {
 
           if ( device.capabilitiesObj.flora_measure_moisture ) {
             device.makeCapabilityInstance('flora_measure_moisture', function(moisture) {
-              var $device = document.getElementById('device-' + device.id);
-              if( $device) {
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement) {
                 var $element = document.getElementById('value:' + device.id +":flora_measure_moisture");
                 $element.innerHTML = Math.round(moisture) + "<span id='decimal'>%</span><br />"
                 if ( moisture < 15 || moisture > 65 ) {
-                  $device.classList.add('alarm')
+                  $deviceElement.classList.add('alarm')
                   selectValue(device, $element)
                   selectIcon($element, $element.id, device, device.capabilitiesObj['flora_measure_moisture'])
                 } else {
-                  $device.classList.remove('alarm')
+                  $deviceElement.classList.remove('alarm')
                 }
                 checkSensorStates();
               }
@@ -508,130 +509,123 @@ window.addEventListener('load', function() {
     $devicesInner.innerHTML = '';
     devices.forEach(function(device) {
       if (!device.ready) {return}
-      var $device = document.createElement('div');
-      $device.id = 'device-' + device.id;
-      $device.classList.add('device');
-      $device.classList.toggle('on', device.capabilitiesObj && device.capabilitiesObj[device.ui.quickAction] && device.capabilitiesObj[device.ui.quickAction].value === true);
+      var $deviceElement = document.createElement('div');
+      $deviceElement.id = 'device:' + device.id;
+      $deviceElement.classList.add('device');
+      $deviceElement.classList.toggle('on', device.capabilitiesObj && device.capabilitiesObj[device.ui.quickAction] && device.capabilitiesObj[device.ui.quickAction].value === true);
       if ( device.capabilitiesObj && device.capabilitiesObj.button ) {
-        $device.classList.toggle('on', true)
+        $deviceElement.classList.toggle('on', true)
       }
-
-      if ( device.capabilitiesObj && device.capabilitiesObj[device.ui.quickAction] ) {
-        $device.addEventListener('touchstart', function() {
-          $device.classList.add('push')
-        });
-        $device.addEventListener('touchend', function() {
-          $device.classList.remove('push')
-        });
-        $device.addEventListener('click', function(){
-          var value = !$device.classList.contains('on');
-          if ( device.capabilitiesObj && device.capabilitiesObj.onoff ) {
-            $device.classList.toggle('on', value);
-          }
-          homey.devices.setCapabilityValue({
-            deviceId: device.id,
-            capabilityId: device.ui.quickAction,
-            value: value,
-          }).catch(console.error);
-        });
-      }
-      $devicesInner.appendChild($device);
+      $devicesInner.appendChild($deviceElement);
       
       if (device.capabilitiesObj && device.capabilitiesObj.alarm_generic && device.capabilitiesObj.alarm_generic.value ||
           device.capabilitiesObj && device.capabilitiesObj.alarm_motion && device.capabilitiesObj.alarm_motion.value ||
           device.capabilitiesObj && device.capabilitiesObj.alarm_contact && device.capabilitiesObj.alarm_contact.value ||
           device.capabilitiesObj && device.capabilitiesObj.alarm_vibration && device.capabilitiesObj.alarm_vibration.value
           ) {
-        $device.classList.add('alarm')
+            $deviceElement.classList.add('alarm')
       }
 
       var $icon = document.createElement('div');
       $icon.id = 'icon:' + device.id
       $icon.classList.add('icon');
       $icon.style.webkitMaskImage = 'url(https://icons-cdn.athom.com/' + device.iconObj.id + '-128.png)';
-      $device.appendChild($icon);
+      $deviceElement.appendChild($icon);
 
       var $iconCapability = document.createElement('div');
       $iconCapability.id = 'icon-capability:' + device.id
       $iconCapability.classList.add('icon-capability');
       $iconCapability.style.webkitMaskImage ='url(img/capabilities/blank.png)';
-      $device.appendChild($iconCapability);
+      $deviceElement.appendChild($iconCapability);
 
-        if (device.capabilitiesObj && !device.capabilitiesObj[device.ui.quickAction]) {
-          itemNr = 0
-          for ( item in device.capabilitiesObj ) {
-            
-            capability = device.capabilitiesObj[item]
-            if ( capability.type == "number"  ) {
-              var $value = document.createElement('div');
-              $value.id = 'value:' + device.id + ':' + capability.id;
-              $value.title = capability.title
-              $value.classList.add('value');
-
-              selectIcon($value, getCookie(device.id), device, capability)
-              renderValue($value, capability.id, capability.value, capability.units)
-              $device.appendChild($value)
-              itemNr =itemNr + 1
-            }
-          }
-          if ( itemNr > 0 ) {
-            $device.addEventListener('click', function(){
-              if ( nameChange ) { return }
-              var itemMax = 0
-              var itemNr = 0
-              var showElement = 0
-              for ( item in device.capabilitiesObj ) {
-                capability = device.capabilitiesObj[item]
-                if ( capability.type == "number") {
-                  itemMax = itemMax + 1
-                }
-              }
-              for ( item in device.capabilitiesObj ) {
-                capability = device.capabilitiesObj[item]
-                if ( capability.type == "number"  ) {
-                  searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
-                  if (itemNr == showElement ) {
-                    elementToShow = searchElement
-                    if ( capability.iconObj ) {
-                      iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
-                    } else {
-                      iconToShow = 'img/capabilities/' + capability.id + '.png'
-                    }
-                    itemNrVisible = itemNr
-                  }
-                  if ( searchElement.classList.contains('visible') ) {
-                    searchElement.classList.remove('visible')
-                    searchElement.classList.add('hidden')
-                    currentElement = itemNr
-                    showElement = itemNr + 1
-                  }
-                  itemNr =itemNr + 1
-                }
-              }
-              $icon = document.getElementById('icon:'+device.id);
-              $iconcapability = document.getElementById('icon-capability:'+device.id);
-              if ( showElement != itemNr ) { 
-                elementToShow.classList.remove('hidden')
-                elementToShow.classList.add('visible')
-                renderName(device,elementToShow)
-                setCookie(device.id,elementToShow.id,1)
-                $icon.style.opacity = 0.2
-                $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
-                $iconcapability.style.visibility = 'visible';
-              } else {
-                setCookie(device.id,"-",1)
-                $icon.style.opacity = 1
-                $iconcapability.style.visibility = 'hidden';
-              }
-            });
+      if ( device.capabilitiesObj ) {
+        itemNr = 0
+        for ( item in device.capabilitiesObj ) {
+          capability = device.capabilitiesObj[item]
+          if ( capability.type == "number"  ) {
+            var $value = document.createElement('div');
+            $value.id = 'value:' + device.id + ':' + capability.id;
+            $value.title = capability.title
+            $value.classList.add('value');
+            selectIcon($value, getCookie(device.id), device, capability)
+            renderValue($value, capability.id, capability.value, capability.units)
+            $deviceElement.appendChild($value)
+            itemNr =itemNr + 1
           }
         }
+        if ( itemNr > 0 ) { 
+          // Touch functions
+          $deviceElement.addEventListener('touchstart', function() {
+            longtouch = false;
+            if ( nameChange ) { return }
+            $deviceElement.classList.add('startTouch')
+            timeout = setTimeout(function() {
+              longtouch = true;
+              if ( $deviceElement.classList.contains('startTouch') ) {
+                $deviceElement.classList.add('push-long')
+                valueCycle(device);
+              }
+            }, 300)
+          });
+          $deviceElement.addEventListener('touchend', function() {
+            longtouch = false;
+            $deviceElement.classList.remove('startTouch')
+          });
+          // Mouse functions
+          $deviceElement.addEventListener('mousedown', function() {
+            longtouch = false;
+            if ( nameChange ) { return }
+            $deviceElement.classList.add('startTouch')
+            timeout = setTimeout(function() {
+              longtouch = true;
+              if ( $deviceElement.classList.contains('startTouch') ) {
+                $deviceElement.classList.add('push-long')
+                valueCycle(device);
+              }
+            }, 300)
+          });
+          $deviceElement.addEventListener('mouseup', function() {
+            longtouch = false;
+            $deviceElement.classList.remove('startTouch')
+          });
+        }
 
-      var $name = document.createElement('div');
-      $name.id = 'name:' + device.id
-      $name.classList.add('name');
-      $name.innerHTML = device.name;
-      $device.appendChild($name);
+        if ( device.capabilitiesObj[device.ui.quickAction] ) {
+          $deviceElement.addEventListener('touchstart', function() {
+            $deviceElement.classList.add('push')
+          });
+          $deviceElement.addEventListener('touchend', function() {
+            $deviceElement.classList.remove('push')
+          });
+  
+          $deviceElement.addEventListener('mousedown', function() {
+            $deviceElement.classList.add('push')
+          });
+          $deviceElement.addEventListener('mouseup', function() {
+            $deviceElement.classList.remove('push')
+          });
+  
+          $deviceElement.addEventListener('click', function() {
+            if ( nameChange ) { return } // No click when shown capability just changed
+            if ( longtouch ) {return} // No click when longtouch was performed
+            var value = !$deviceElement.classList.contains('on');
+            if ( device.capabilitiesObj && device.capabilitiesObj.onoff ) {
+              $deviceElement.classList.toggle('on', value);
+            }
+            homey.devices.setCapabilityValue({
+              deviceId: device.id,
+              capabilityId: device.ui.quickAction,
+              value: value,
+            }).catch(console.error);
+          });
+        }
+      }
+
+      var $nameElement = document.createElement('div');
+      $nameElement.id = 'name:' + device.id
+      $nameElement.classList.add('name');
+      $nameElement.innerHTML = device.name;
+      $deviceElement.appendChild($nameElement);
     });
   }
   
@@ -676,17 +670,19 @@ window.addEventListener('load', function() {
   }
 
   function renderName(device, elementToShow) {
-    searchElement = document.getElementById('name:' + device.id)
+    nameElement = document.getElementById('name:' + device.id)
+    deviceElement = document.getElementById('device:' + device.id)
     if ( !nameChange ) {
-      currentName = searchElement.innerHTML;
+      currentName = nameElement.innerHTML;
     }
     nameChange=true;
-    searchElement.classList.add('highlight')
-    searchElement.innerHTML = elementToShow.title
+    nameElement.classList.add('highlight')
+    nameElement.innerHTML = elementToShow.title
     setTimeout( function(){ 
       nameChange = false;
-      searchElement.innerHTML = currentName
-      searchElement.classList.remove('highlight')
+      nameElement.innerHTML = currentName
+      nameElement.classList.remove('highlight')
+      deviceElement.classList.remove('push-long')
     }, 1000);
   }
   
@@ -707,7 +703,6 @@ window.addEventListener('load', function() {
   }
 
   function selectIcon($value, searchFor, device, capability) {
-    console.log($value, searchFor, device, capability)
     if ( capability.iconObj ) {
       iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
     } else {
@@ -722,6 +717,57 @@ window.addEventListener('load', function() {
       $iconcapability.style.visibility = 'visible';
     } else {
       $value.classList.add('hidden')
+    }
+  }
+
+  function valueCycle(device) {
+    var itemMax = 0
+    var itemNr = 0
+    var showElement = 0
+    for ( item in device.capabilitiesObj ) {
+      capability = device.capabilitiesObj[item]
+      if ( capability.type == "number") {
+        itemMax = itemMax + 1
+      }
+    }
+    for ( item in device.capabilitiesObj ) {
+      capability = device.capabilitiesObj[item]
+      if ( capability.type == "number"  ) {
+        searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
+        if (itemNr == showElement ) {
+          elementToShow = searchElement
+          if ( capability.iconObj ) {
+            iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
+          } else {
+            iconToShow = 'img/capabilities/' + capability.id + '.png'
+          }
+          itemNrVisible = itemNr
+        }
+        if ( searchElement.classList.contains('visible') ) {
+          searchElement.classList.remove('visible')
+          searchElement.classList.add('hidden')
+          currentElement = itemNr
+          showElement = itemNr + 1
+        }
+        itemNr =itemNr + 1
+      }
+    }
+    $icon = document.getElementById('icon:'+device.id);
+    $iconcapability = document.getElementById('icon-capability:'+device.id);
+    if ( showElement != itemNr ) { 
+      elementToShow.classList.remove('hidden')
+      elementToShow.classList.add('visible')
+      renderName(device,elementToShow)
+      setCookie(device.id,elementToShow.id,1)
+      $icon.style.opacity = 0.2
+      $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
+      $iconcapability.style.visibility = 'visible';
+    } else {
+      setCookie(device.id,"-",1)
+      $icon.style.opacity = 1
+      $iconcapability.style.visibility = 'hidden';
+      deviceElement = document.getElementById('device:' + device.id)
+      deviceElement.classList.remove('push-long')
     }
   }
 

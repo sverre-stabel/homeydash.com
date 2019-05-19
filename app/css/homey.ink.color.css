@@ -118,6 +118,9 @@ body {
   .device.push {
     background-color: grey;
   }
+  .device.push-long {
+    background-color: darkgrey;
+  }
   .device .value {
     color: black;
     font-weight: 300;

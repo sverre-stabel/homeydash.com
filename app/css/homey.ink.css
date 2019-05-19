@@ -289,8 +289,8 @@ a {
         box-sizing: border-box;
         padding: 24px;
         margin-right: 24px;
-        
         opacity: 0.5;
+        -webkit-user-select: none;
       }
       .device.on {
         opacity: 1;
@@ -303,6 +303,7 @@ a {
           -webkit-mask-size: contain;
           -webkit-mask-repeat: no-repeat;
           -webkit-mask-position: center center;
+          -webkit-user-select: none;
         }
         .device .icon-capability {
           width: 90px;
@@ -312,6 +313,7 @@ a {
           -webkit-mask-size: contain;
           -webkit-mask-repeat: no-repeat;
           -webkit-mask-position: center center;
+          -webkit-user-select: none;
         }
         .device .value {
           width: 100%;
@@ -323,10 +325,12 @@ a {
           overflow: hidden;
           white-space: normal;
           text-overflow: ellipsis;
+          -webkit-user-select: none;
         }
         #decimal {
           font-size: 14px;
           vertical-align: text-top;
+          -webkit-user-select: none;
         }
         .device .value.hidden {
           visibility: hidden;
@@ -340,6 +344,7 @@ a {
           overflow: hidden;
           white-space: normal;
           text-overflow: ellipsis;
+          -webkit-user-select: none;
         }
         .device .name.highlight {
           font-weight: 1000;
