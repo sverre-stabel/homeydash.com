@@ -292,7 +292,8 @@ window.addEventListener('load', function() {
                 $element.innerHTML = Math.round(moisture) + "<span id='decimal'>%</span><br />"
                 if ( moisture < 15 || moisture > 65 ) {
                   $device.classList.add('alarm')
-                  selectValue(device,$element)
+                  selectValue(device, $element)
+                  selectIcon($element, $element.id, device, device.capabilitiesObj['flora_measure_moisture'])
                 } else {
                   $device.classList.remove('alarm')
                 }
@@ -562,25 +563,12 @@ window.addEventListener('load', function() {
             
             capability = device.capabilitiesObj[item]
             if ( capability.type == "number"  ) {
-              if ( capability.iconObj ) {
-                iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
-              } else {
-                iconToShow = 'img/capabilities/' + capability.id + '.png'
-              }
-              $icon = document.getElementById('icon:'+device.id);
-              $iconcapability = document.getElementById('icon-capability:'+device.id);
               var $value = document.createElement('div');
               $value.id = 'value:' + device.id + ':' + capability.id;
               $value.title = capability.title
               $value.classList.add('value');
-              if ( $value.id == getCookie(device.id) ) {
-                $value.classList.add('visible')
-                $icon.style.opacity = 0.4
-                $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
-                $iconcapability.style.visibility = 'visible';
-              } else {
-                $value.classList.add('hidden')
-              }
+
+              selectIcon($value, getCookie(device.id), device, capability)
               renderValue($value, capability.id, capability.value, capability.units)
               $device.appendChild($value)
               itemNr =itemNr + 1
@@ -627,7 +615,7 @@ window.addEventListener('load', function() {
                 elementToShow.classList.add('visible')
                 renderName(device,elementToShow)
                 setCookie(device.id,elementToShow.id,1)
-                $icon.style.opacity = 0.4
+                $icon.style.opacity = 0.2
                 $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
                 $iconcapability.style.visibility = 'visible';
               } else {
@@ -716,6 +704,25 @@ window.addEventListener('load', function() {
     elementToShow.classList.remove('hidden')
     elementToShow.classList.add('visible')
     renderName(device,elementToShow)
+  }
+
+  function selectIcon($value, searchFor, device, capability) {
+    console.log($value, searchFor, device, capability)
+    if ( capability.iconObj ) {
+      iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
+    } else {
+      iconToShow = 'img/capabilities/' + capability.id + '.png'
+    }
+    $icon = document.getElementById('icon:'+device.id);
+    $iconcapability = document.getElementById('icon-capability:'+device.id);
+    if ( $value.id == searchFor ) {
+      $value.classList.add('visible')
+      $icon.style.opacity = 0.2
+      $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
+      $iconcapability.style.visibility = 'visible';
+    } else {
+      $value.classList.add('hidden')
+    }
   }
 
 

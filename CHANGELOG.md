@@ -1,5 +1,6 @@
 ## Version 1.0.0.1
 * When a capability value causes an alarm the value will be shown on the tile
+* When a capability value causes an alarm the icon will be shown on the tile
 * Capability icons will be shown for the selected value
 * Added CHANGELOG.md
 
