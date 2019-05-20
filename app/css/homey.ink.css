@@ -82,6 +82,26 @@ a {
     background: url(../img/logo.png) no-repeat center center;
     background-size: contain;
   }
+
+  #version {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 110px;
+    height: 110px;
+  }
+    #version-icon {
+      display: inline-block;
+      position: relative;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center center;
+      width: 108px;
+      height: 50px;
+      background: url(../img/new.svg) no-repeat center center;
+      background-size: contain;  
+      visibility: hidden;    
+    }
   
   #details {
     position: absolute;

@@ -103,6 +103,12 @@ body {
   width: 10vh;
   height: 10vh;
 }
+
+#version-icon { 
+  width: 7.6vh;
+  height: 8vh;
+  margin-top: -1vh;
+}
  
 #details {
   right: 12vh;;

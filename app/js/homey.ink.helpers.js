@@ -42,9 +42,7 @@ var setLocale = function () {
 
 function setCookie(cname, cvalue, exweeks) {
   var d = new Date();
-  //d.setTime(d.getTime() + (exweeks*7*24*60*60*1000));
-  //temporary to test function:
-  d.setTime(d.getTime() + (exweeks*60*60*1000));
+  d.setTime(d.getTime() + (exweeks*7*24*60*60*1000));
   var expires = "expires="+ d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
@@ -64,4 +62,3 @@ function getCookie(cname) {
   }
   return "";
 }
-

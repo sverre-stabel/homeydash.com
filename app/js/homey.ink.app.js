@@ -37,6 +37,7 @@ window.addEventListener('load', function() {
   var $textLarge = document.getElementById('text-large');
   var $textSmall = document.getElementById('text-small');
   var $logo = document.getElementById('logo');
+  var $version = document.getElementById('version');
   var $batterydetails = document.getElementById('battery-details');
   var $sensordetails = document.getElementById('sensor-details');
   var $notificationdetails = document.getElementById('notification-details');
@@ -196,6 +197,8 @@ window.addEventListener('load', function() {
 
       checkSensorStates();
 
+      renderVersion();
+
       homey.weather.getWeather().then(function(weather) {
         return renderWeather(weather);
       }).catch(console.error);
@@ -306,9 +309,28 @@ window.addEventListener('load', function() {
         });
         return renderDevices(favoriteDevices);
       }).catch(console.error);
+      
+
     }).catch(console.error);
   }
   
+  function renderVersion() {
+    var newVersion = false;
+    var savedVersion = getCookie('version')
+    var $iconElement = document.createElement('div');
+    $iconElement.id = "version-icon"
+    $version.appendChild($iconElement);
+
+    if ( savedVersion != version) {
+      newVersion = true;
+      $iconElement.style.visibility = 'visible';
+      $iconElement.addEventListener('click', function() {
+        setCookie('version', version ,12)
+        return renderInfoPanel("u")
+      })
+    }
+  }
+
   function checkSensorStates() {
     homey.flowToken.getFlowTokens().then(function(tokens) {
       var sensorAlarm = false
@@ -452,6 +474,17 @@ window.addEventListener('load', function() {
         }
         $infopanel.innerHTML = $si
         break;
+      case "u":
+          $infopanel.innerHTML = '';
+          var $infoPanelUpdate = document.createElement('div');
+          $infoPanelUpdate.id = "infopanel-update"
+          $infopanel.appendChild($infoPanelUpdate);
+          $ui = "<center><h1>New version</h1></center><br /><br />"
+          $ui = $ui + "<h2>"
+          $ui = $ui + "* Changed clicking to touch and hold to cycle through tile values"
+          $ui = $ui + "</h2>"
+          $infopanel.innerHTML = $ui
+        break
     }
     $infopanel.style.visibility = "visible";
     $container.classList.add('container-dark');
@@ -758,12 +791,12 @@ window.addEventListener('load', function() {
       elementToShow.classList.remove('hidden')
       elementToShow.classList.add('visible')
       renderName(device,elementToShow)
-      setCookie(device.id,elementToShow.id,1)
+      setCookie(device.id,elementToShow.id,12)
       $icon.style.opacity = 0.2
       $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
       $iconcapability.style.visibility = 'visible';
     } else {
-      setCookie(device.id,"-",1)
+      setCookie(device.id,"-",12)
       $icon.style.opacity = 1
       $iconcapability.style.visibility = 'hidden';
       deviceElement = document.getElementById('device:' + device.id)
