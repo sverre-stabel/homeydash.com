@@ -93,27 +93,36 @@
 
 #logo {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 10vh;
-  height: 10vh;
+  top: -1vh;
+  right: 1.4vh;
+  width: 7vh;
+  height: 8vh;
+}
+
+#settings-icon { 
+  position: absolute;
+  top: 8vh;
+  right: 1.4vh;
+  width: 7vh;
+  height: 8vh;
 }
 
 #version {
   position: absolute;
-  top: 12vh;
+  top: 15.5vh;
   right: 0;
   width: 10vh;
   height: 10vh;
 }
   #version-icon { 
-    top: 0;
+    top: 0.5vh;
     left: 1.2vh;
     width: 7.6vh;
     height: 8vh;
   }
 
 #details {
+  top: -1vh;
   right: 12vh;;
   width: 10vh;
   height: 10vh;
@@ -121,17 +130,16 @@
   #battery-details {
     width: 8vh;
     height: 8vh;
-    margin-top: -1.3vh;
+    /*margin-top: -1.3vh;*/
   }
   #sensor-details { 
     width: 7.6vh;
     height: 8vh;
-    margin-top: -1vh;
   }
   #notification-details { 
+    top: 0vh;
     width: 7.6vh;
     height: 8vh;
-    margin-top: -0.6vh;
   }
 
 .favorites {

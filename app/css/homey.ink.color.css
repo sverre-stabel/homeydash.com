@@ -37,6 +37,11 @@ body {
   background-image: url(../img/logo-white.png);  
 }
 
+#settings-icon { 
+  background: white;
+  -webkit-mask-image: url(../img/settings.png);
+}
+
 #version-icon { 
   background: white;
   -webkit-mask-image: url(../img/new.svg);

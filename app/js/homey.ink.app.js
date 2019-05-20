@@ -37,6 +37,7 @@ window.addEventListener('load', function() {
   var $textLarge = document.getElementById('text-large');
   var $textSmall = document.getElementById('text-small');
   var $logo = document.getElementById('logo');
+  var $settingsIcon = document.getElementById('settings-icon');
   var $version = document.getElementById('version');
   var $batterydetails = document.getElementById('battery-details');
   var $sensordetails = document.getElementById('sensor-details');
@@ -65,6 +66,10 @@ window.addEventListener('load', function() {
   $logo.addEventListener('click', function(){
     window.location.reload();
   });
+
+  $settingsIcon.addEventListener('click', function() {
+    alert("No function yet")
+  })
 
   $text.addEventListener('click', function() {
     homey.notifications.getNotifications().then(function(notifications) {
@@ -317,16 +322,19 @@ window.addEventListener('load', function() {
   function renderVersion() {
     var newVersion = false;
     var savedVersion = getCookie('version')
-    var $iconElement = document.createElement('div');
-    $iconElement.id = "version-icon"
-    $version.appendChild($iconElement);
-
+    var $iconElement = document.getElementById('version-icon');
+    console.log($iconElement)
+    if ( $iconElement == null ) {
+      var $iconElement = document.createElement('div');
+      $iconElement.id = "version-icon"
+      $version.appendChild($iconElement);
+    }
     if ( savedVersion != version) {
       newVersion = true;
       $iconElement.style.visibility = 'visible';
       $iconElement.addEventListener('click', function() {
         setCookie('version', version ,12)
-        return renderInfoPanel("u")
+        alert("NEW VERSION \n\n * Changed clicking to touch-and-hold to cycle through tile values\n * Added Danish laguage file (da)")
       })
     }
   }
@@ -474,17 +482,6 @@ window.addEventListener('load', function() {
         }
         $infopanel.innerHTML = $si
         break;
-      case "u":
-          $infopanel.innerHTML = '';
-          var $infoPanelUpdate = document.createElement('div');
-          $infoPanelUpdate.id = "infopanel-update"
-          $infopanel.appendChild($infoPanelUpdate);
-          $ui = "<center><h1>New version</h1></center><br /><br />"
-          $ui = $ui + "<h2>"
-          $ui = $ui + "* Changed clicking to touch and hold to cycle through tile values"
-          $ui = $ui + "</h2>"
-          $infopanel.innerHTML = $ui
-        break
     }
     $infopanel.style.visibility = "visible";
     $container.classList.add('container-dark');
@@ -745,7 +742,7 @@ window.addEventListener('load', function() {
     $iconcapability = document.getElementById('icon-capability:'+device.id);
     if ( $value.id == searchFor ) {
       $value.classList.add('visible')
-      $icon.style.opacity = 0.2
+      $icon.style.opacity = 0.1
       $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
       $iconcapability.style.visibility = 'visible';
     } else {
@@ -792,7 +789,7 @@ window.addEventListener('load', function() {
       elementToShow.classList.add('visible')
       renderName(device,elementToShow)
       setCookie(device.id,elementToShow.id,12)
-      $icon.style.opacity = 0.2
+      $icon.style.opacity = 0.1
       $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
       $iconcapability.style.visibility = 'visible';
     } else {
