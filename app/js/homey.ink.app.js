@@ -29,7 +29,6 @@ window.addEventListener('load', function() {
 
   var $favoriteflows = document.getElementById('favorite-flows');
   var $favoritedevices = document.getElementById('favorite-devices');
-
   var $container = document.getElementById('container');
   var $header = document.getElementById('header');
   var $infopanel = document.getElementById('info-panel');
