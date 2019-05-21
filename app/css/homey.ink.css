@@ -94,7 +94,7 @@ a {
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center center;
     background: url(../img/settings.png) no-repeat center center;
-    background-size: contain; 
+    background-size: contain;
     }
 
   #version {
