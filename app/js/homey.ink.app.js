@@ -238,6 +238,8 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
+          console.log(device.name)
+          console.log(device.capabilitiesObj)
           if (!device.ready) {
             faultyDevice=true; 
             $sensordetails.classList.add('fault')  
@@ -348,6 +350,28 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":meter_power");
                 capability = device.capabilitiesObj['meter_power']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+              }
+            });
+          }
+          if ( device.capabilitiesObj.measure_current ) {        
+            device.makeCapabilityInstance('measure_current', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_current");
+                capability = device.capabilitiesObj['measure_current']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+              }
+            });
+          }
+          if ( device.capabilitiesObj.measure_voltage ) {        
+            device.makeCapabilityInstance('measure_voltage', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_voltage");
+                capability = device.capabilitiesObj['measure_voltage']
                 renderValue($valueElement, capability.id, capability.value, capability.units)
                 console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
               }
