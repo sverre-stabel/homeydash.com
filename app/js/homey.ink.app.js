@@ -381,7 +381,15 @@ window.addEventListener('load', function() {
               }
             });
           }
-
+          if ( device.capabilitiesObj.flora_measure_fertility ) {
+            device.makeCapabilityInstance('flora_measure_fertility', function(fertility) {
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement) {
+                var $element = document.getElementById('value:' + device.id +":flora_measure_fertility");
+                $element.innerHTML = Math.round(fertility) + "<span id='decimal'>%</span><br />"
+              }
+            });
+          }
         });
         return renderDevices(favoriteDevices);
       }).catch(console.error);
