@@ -1,4 +1,4 @@
-var version = "1.0.0.3"
+var version = "1.0.1"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -159,11 +159,13 @@ window.addEventListener('load', function() {
 
     homey.users.getUsers().then(function(users) {
       for (let user in users) {
+        /*
         console.log("avatar:   " + users[user].avatar)
         console.log("asleep:   " + users[user].asleep)
         console.log("present:  " + users[user].present)
         console.log("enabled:  " + users[user].enabled)
         console.log("verifeid: " + users[user].verified)
+        */
       }
     }).catch(console.error);
 
@@ -238,8 +240,8 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
-          console.log(device.name)
-          console.log(device.capabilitiesObj)
+          //console.log(device.name)
+          //console.log(device.capabilitiesObj)
           if (!device.ready) {
             faultyDevice=true; 
             $sensordetails.classList.add('fault')  
@@ -295,8 +297,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_temperature");
                 capability = device.capabilitiesObj['measure_temperature']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)              
               }
             });
           }
@@ -306,8 +307,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_humidity");
                 capability = device.capabilitiesObj['measure_humidity']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)              
               }
             });
           }
@@ -317,8 +317,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_pressure");
                 capability = device.capabilitiesObj['measure_pressure']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)              
               }
             });
           }
@@ -328,8 +327,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_luminance");
                 capability = device.capabilitiesObj['measure_luminance']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)                
               }
             });
           }
@@ -339,8 +337,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_power");
                 capability = device.capabilitiesObj['measure_power']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)               
               }
             });
           }
@@ -350,8 +347,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":meter_power");
                 capability = device.capabilitiesObj['meter_power']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)             
               }
             });
           }
@@ -361,8 +357,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_current");
                 capability = device.capabilitiesObj['measure_current']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)         
               }
             });
           }
@@ -372,8 +367,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_voltage");
                 capability = device.capabilitiesObj['measure_voltage']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)               
               }
             });
           }
@@ -383,8 +377,17 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":meter_gas");
                 capability = device.capabilitiesObj['meter_gas']
-                renderValue($valueElement, capability.id, capability.value, capability.units)
-                console.log("value changed: " + $valueElement.innerHTML + " -> " + capability.value )                
+                renderValue($valueElement, capability.id, capability.value, capability.units)               
+              }
+            });
+          }
+          if ( device.capabilitiesObj.measure_water ) {
+            device.makeCapabilityInstance('measure_water', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_water");
+                capability = device.capabilitiesObj['measure_water']
+                renderValue($valueElement, capability.id, capability.value, capability.units)                
               }
             });
           }
@@ -436,7 +439,9 @@ window.addEventListener('load', function() {
         setCookie('version', version ,12)
         changeLog = ""
         changeLog = changeLog + "* Changed clicking to touch-and-hold to cycle through tile values<br />"
+        changeLog = changeLog + "* Added support for devices with numeric values and quick action<br />"
         changeLog = changeLog + "* Added Danish laguage file (da)<br />"
+        changeLog = changeLog + "* Added Spanish language file (se)<br />"
         changeLog = changeLog + "* When a capability value causes an alarm the value will be shown on the tile<br />"
         changeLog = changeLog + "* Capability icons will be shown for the selected value<br />"
         changeLog = changeLog + "* The following values now update in realtime:<br />"
@@ -708,8 +713,8 @@ window.addEventListener('load', function() {
         if ( itemNr > 0 ) { 
           // Touch functions
           $deviceElement.addEventListener('touchstart', function() {
-            longtouch = false;
             if ( nameChange ) { return }
+            longtouch = false;
             $deviceElement.classList.add('startTouch')
             timeout = setTimeout(function() {
               longtouch = true;
@@ -725,8 +730,8 @@ window.addEventListener('load', function() {
           });
           // Mouse functions
           $deviceElement.addEventListener('mousedown', function() {
-            longtouch = false;
             if ( nameChange ) { return }
+            longtouch = false;
             $deviceElement.classList.add('startTouch')
             timeout = setTimeout(function() {
               longtouch = true;
@@ -919,7 +924,11 @@ window.addEventListener('load', function() {
       $icon.style.opacity = 1
       $iconcapability.style.visibility = 'hidden';
       deviceElement = document.getElementById('device:' + device.id)
-      deviceElement.classList.remove('push-long')
+      nameChange=true;
+      setTimeout( function(){ 
+        nameChange = false;
+        deviceElement.classList.remove('push-long')
+      }, 1000);
     }
   }
 

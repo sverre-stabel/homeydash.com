@@ -1,3 +1,7 @@
+## Version 1.0.1 - published on homeydash.com
+* Added support for devices with numeric values and quick action
+* Added Spanish language file (se)
+
 ## Version 1.0.0.3
 * The following values now update in realtime:
  - Humidity
