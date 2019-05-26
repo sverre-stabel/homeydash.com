@@ -12,7 +12,7 @@ h2 {
 #container {
   /*width: 100%;*/
   height: 100%;
-  padding: 2vw;
+  padding: 0vw 2vw;
 }
 
 #info-panel {
@@ -20,8 +20,8 @@ h2 {
 }
 
 #header {
-  height: 12vh;
-  margin-bottom: 2vh;
+  height: 6vh;
+  margin-bottom: 1vw;
 }
 
 .info-message {
@@ -33,52 +33,44 @@ h2 {
   margin-bottom: 1%;
 }
 
-#weather {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 20vw;
-  height: 20vh;
+#zoom {
+  visibility: hidden;
 }
-    #weather-temperature {
-      font-size: 10vh;
-      line-height: 10vh;
-    }
-    #weather-temperature:after {
-      content: "°";
-    }
-    #weather-state {
-      width: 14vw;
-      height: 14vh;
-      padding-left: 26vw;
-      padding-right: 0vw;
-      text-align: left;
-      top: -14vh;
-    }
-      #weather-state #weather-state-icon {
-        width: 17vw;
-        height: 17vh;
-        left: 0vw;
-        background-size: 17vw 17vh;;
-      }
 
-#sun-events {
-  position: absolute;
-  left: 0;
+#weather {
+  width: 42vw;
   top: 0;
-  height: 20vh;
-  margin-top: 4px;
-  margin-left: 48vw;
-}      
-  #sunrise-icon, #sunset-icon  {
-    width: 6vh;
-    height: 3vh;
-    margin-bottom: 0.7vh;
+}
+  #weather-temperature {
+    display: inline-block;
+    top: -1vh;
+    font-size: 6vw;
+    line-height: 1vw;
+    vertical-align: text-top;
   }
-
+  #weather-temperature:after {
+    content: "°";
+  }
+  #weather-state-icon {
+    display: inline-block;
+    top: 0;
+    width: 6vw;
+    height: 6vh;
+    background-size: 6vw 6vh;
+  }
+  #sunrise, #sunset {
+    position: relative;
+    top: -1vh;
+    display: inline-block;
+  }      
+  #sunrise-icon, #sunset-icon  {
+    width: 6vw;
+    height: 4vh;
+    margin-right: 0vw;
+  }
   #sunrise-time, #sunset-time {
-    font-size: 2.4vh;
-    line-height: 2.4vh;
+    font-size: 2.2vw;
+    line-height: 0vh;
   }
 
 #text {
@@ -103,57 +95,41 @@ h2 {
     font-size: 1.5vh;
   }
 
-#logo {
-  position: absolute;
-  top: 0;
-  right: 1vh;
-  width: 4vh;
-  height: 5vh;
-}
- 
-#settings-icon { 
-  position: absolute;
-  top: 5.5vh;
-  right: 1vh;
-  width: 4vh;
-  height: 5vh;
-}
-
-#version {
-  position: absolute;
-  top: 10vh;
-  right: 0;
-  width: 4vh;
-  height: 5vh;
-}
-  #version-icon { 
+  #details {
     top: 1vh;
-    right: 1.5vh;
-    width: 5vh;
-    height: 4vh;
+    right: 0;
+    width: 36vw;
   }
-
-#details {
-  right: 8vh;;
-  width: 10vh;
-  height: 10vh;
-}
-  #battery-details {
-    width: 5vh;
-    height: 5vh;
-    margin-left: 4vh;
-  }
-  #sensor-details { 
-    width: 4.9vh;
-    height: 5vh;
-    margin-left: 4vh;
-  }
-  #notification-details { 
-    width: 4.9vh;
-    height: 5vh;
-    margin-top: -0.6vh;
-    margin-left: 4vh;
-  }
+    #version-icon {
+      display: inline-block; 
+      width: 5vw;
+      height: 5vw;
+    }
+    #battery-details {
+      display: inline-block;
+      width: 5vw;
+      height: 5vw;
+    }
+    #notification-details {
+      display: inline-block; 
+      width: 5vw;
+      height: 5vw;
+    }
+    #sensor-details {
+      display: inline-block; 
+      width: 5vw;
+      height: 5vw;
+    }
+    #settings-icon {
+      display: inline-block; 
+      width: 5vw;
+      height: 5vw;
+    }
+    #logo {
+      display: inline-block;
+      width: 5vw;
+      height: 5vw;
+    }
 
 .favorites {
   position: static;

@@ -20,6 +20,10 @@ body {
   color: white;
 }
 
+.tablecell {
+  display: table-cell;
+}
+
 a {
   color: white;
 }
@@ -40,7 +44,7 @@ a {
   
   #info-panel {
     position: absolute;
-    width: 75vw;
+    width: 80vw;
     height: 60vh;
     left: 10vw;
     top: 10vh;
@@ -60,83 +64,148 @@ a {
       font-weight: 350; 
     }
 
-  #logo {
+  #settings-panel {
     position: absolute;
-    right: 0;
-    top: 0;
-    width: 110px;
-    height: 110px;
-    background:  no-repeat center center;
-    background-image: url(../img/logo-white.png);
-    background-size: contain;
+    width: 80vw;
+    height: 60vh;
+    left: 10vw;
+    top: 10vh;
+    padding: 5vh 5vh;
+    background: white;
+    border: 1px solid #009785;
+    border-radius: 6px;
+    box-sizing: border-box; 
+    z-index: 99;
+    visibility: hidden;
+    overflow: auto;
   }
 
-  #settings-icon {
+  #weather {
     position: absolute;
-    right: 0;
-    top: 0;
-    width: 110px;
-    height: 110px;
-    display: inline-block;
-    background: white;
-    -webkit-mask-size: contain;
-    -webkit-mask-repeat: no-repeat;
-    -webkit-mask-position: center center;
-    -webkit-mask-image: url(../img/settings.png);
+    left: 0;
+    width: 128px
+  }
+    #weather-temperature {
+      position: relative;
+      font-size: 100px;
+      font-weight: 500;
+      line-height: 96px;
+    }
+    #weather-temperature:after {
+      content: "°";
+    }
+    #weather-state-icon {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      margin-left: 0;
+      margin-right: auto;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center center;
+      background-size: 100px;
     }
 
-  #version {
+  #sun-events {
     position: absolute;
-    right: 0;
-    top: 0;
-    width: 110px;
-    height: 110px;
+    left: 128px;
+    width: 128px
   }
-    #version-icon {
-      display: inline-block;
+    #sunrise-icon, #sunset-icon {
       position: relative;
+      width: 128px;
+      height: 128px;
+      margin-left: 0;
+      margin-right: auto;
+      background: no-repeat center center;
+      background-size: contain;
+    }
+    #sunrise-icon {
+      background-image: url(../img/sunrise.png);
+    }
+    #sunset-icon {
+      background-image: url(../img/sunset.png);
+    }
+    #sunrise-time, #sunset-time {
+      position: relative;
+      margin-left: 0;
+      margin-right: auto;
+      font-size: 10px;
+      line-height: 10px;
+    }
+
+  #nav {
+    position: absolute;
+    right:0;
+    width: 128px;
+  }
+    #logo {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      margin-left: auto;
+      margin-right: 0;
+      background:  no-repeat center center;
+      background-image: url(../img/logo-white.png);
+      background-size: contain;
+    }
+    #settings-icon {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      margin-left: auto;
+      margin-right: 0;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
       -webkit-mask-position: center center;
-      -webkit-mask-image: url(../img/new.svg);
-      width: 108px;
-      height: 50px; 
+      -webkit-mask-image: url(../img/settings.png);
+      }
+    #version-icon {
+      position: relative;
+      width: 128px;
+      height: 128px;
+      margin-left: auto;
+      margin-right: 0;
+      background: white;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center center;
+      -webkit-mask-image: url(../img/new.png);
       visibility: hidden;    
     }
   
   #details {
     position: absolute;
-    right: 110px;
-    top: 0;
-    width: 110px;
-    height: 110px;
+    right: 128px;
+    width: 128px;
   }
     #battery-details {
-      display: inline-block;
       position: relative;
+      width: 110px;
+      height: 50px;
+      margin-left: auto;
+      margin-right: 0;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
       -webkit-mask-position: center center;
       -webkit-mask-image: url(../img/battery.png);
-      width: 110px;
-      height: 50px;
     }
       #battery-details.alarm {
         background-color: red;
       }
-
     #sensor-details{
-      display: inline-block;
       position: relative;
+      width: 108px;
+      height: 50px;
+      margin-left: auto;
+      margin-right: 0;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
       -webkit-mask-position: center center;
       -webkit-mask-image: url(../img/warning.png);
-      width: 108px;
-      height: 50px;
     }
       #sensor-details.alarm {
         background-color: orange;
@@ -146,15 +215,16 @@ a {
       }
 
     #notification-details{
-      display: inline-block;
       position: relative;
+      width: 104px;
+      height: 50px;
+      margin-left: auto;
+      margin-right: 0;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
       -webkit-mask-position: center center;
       -webkit-mask-image: url(../img/notification.png);
-      width: 104px;
-      height: 50px;
     }
       #notification-details.alarm {
         background-color: orange;
@@ -180,53 +250,6 @@ a {
     #text-small {
       font-size: 34px;
       font-weight: 500;
-    }
-
-  #weather {
-    
-  }
-    #weather-temperature {
-      font-size: 100px;
-      font-weight: 500;
-      line-height: 96px;
-    }
-    #weather-temperature:after {
-      content: "°";
-    }
-    #weather-state {
-      display: inline-block;
-      position: relative;
-      width: 100px;
-      height: 100px;
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    #weather-state #weather-state-icon {
-      margin-bottom: 6px;
-      -webkit-mask-size: contain;
-      -webkit-mask-repeat: no-repeat;
-      -webkit-mask-position: center center;
-      background-size: 100px;
-      height: inherit;
-    }
-  
-  #sun-events {
-
-  }
-    #sunrise-icon, #sunset-icon {
-      -webkit-mask-size: contain;
-      -webkit-mask-repeat: no-repeat;
-      -webkit-mask-position: center center;
-      width: 40px;
-      height: 20px;
-    }
-    #sunrise-icon {
-      background: url(../img/sunrise-color.png) no-repeat center center;
-      background-size: 100%;       
-    }
-    #sunset-icon {
-      background: url(../img/sunset-color.png) no-repeat center center;
-      background-size: 100%;
     }
 
   .favorites {
@@ -341,6 +364,9 @@ a {
           opacity: 1;
         }
         .device.alarm {
+          background-color: orange;
+        }
+        .device.away {
           background-color: orange;
         }
         .device.push {

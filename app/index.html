@@ -12,56 +12,59 @@
     
     <link rel="shortcut icon" href="./img/favicon.png" type="image/png" />
     <link rel="apple-touch-icon" href="./img/favicon.png">
-    <link rel="stylesheet" type="text/css" href="./css/homey.ink.css">
+    <link rel="stylesheet" type="text/css" href="./css/homeydash.css">
     
     <script type="text/javascript" src="//cdn.athom.com/athom-api/2.1.186/athom-api.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script type="text/javascript" src="./js/polyfill.js"></script>
     <script type="text/javascript" src="./js/later.js"></script>
-    <script type="text/javascript" src="./js/homey.ink.helpers.js"></script>
-    <script type="text/javascript" src="./js/homey.ink.app.js"></script>
+    <script type="text/javascript" src="./js/homeydash.helpers.js"></script>
+    <script type="text/javascript" src="./js/homeydash.app.js"></script>
     
   </head>
-  <body>
+  <body id="body">
     <div id="info-panel"></div>
+    
+    <div id="settings-panel">
+      <iframe src="/settings.html"></iframe>
+    </div>
+
     <div id="container">
       
       <div id="container-inner">
         
         <div id="header">
 
-          <div id="logo"></div>
-          
-          <div id="settings-icon"></div>
+          <div id="weather">
+            <div id="weather-temperature"></div>
+            <div id="weather-state-icon"></div>
 
-          <div id="version"></div>
-          
-          <div id="details">
-            <div id="battery-details"></div>
-            <div id="sensor-details"></div>
-            <div id="notification-details"></div>
+            <div id="sunrise">
+              <div id="sunrise-icon"></div>
+              <div id="sunrise-time"></div>
+            </div>
+            <div id="sunset">
+              <div id="sunset-icon"></div>
+              <div id="sunset-time"></div>
+            </div>
           </div>
 
           <div id="text">
             <div id="text-large"></div>
             <div id="text-small"></div>
           </div>
-          
-          <div id="weather">
-            <div id="weather-temperature"></div>
-            <div id="weather-state">
-              <div id="weather-state-icon"></div>
-            </div>
+
+          <div id="details">
+            <div id="version-icon"></div>
+            <div id="battery-details"></div>
+            <div id="notification-details"></div>
+            <div id="sensor-details"></div>            
+            <div id="settings-icon"></div>
+            <div id="logo"></div>
           </div>
 
-          <div id="sun-events">
-            <div id="sunrise-icon"></div>
-            <div id="sunrise-time"></div>
-            <div id="sunset-icon"></div>
-            <div id="sunset-time"></div>
-          </div>
         </div>
-        
+
         <div id="content">
           <div id="flows" class="favorites">
             <h2><span id="favorite-flows"></span></h2>
@@ -73,7 +76,6 @@
             <div id="devices-inner" class="devices favorites-inner"></div>
           </div>
         </div>
-      
       </div>
     </div>
     

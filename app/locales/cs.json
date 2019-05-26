@@ -1,0 +1,45 @@
+{
+    "favoriteflows": "Oblíbená Flows",
+    "favoritedevices": "Oblíbená zařízení",
+    "text" : {
+        "good": "",
+        "evening": "Dobrý večer",
+        "afternoon": "Dobré odpoledne",
+        "morning": "Dobré ráno",
+        "night": "Dobrou noc",
+        "today": "Dnes je ",
+        "the": "",
+        "of": ""
+    },
+    "notification": {
+        "title": "Poslední upozornění",
+        "nonotification": "Nejsou žádná upozornění"
+    },
+    "weather": {
+        "title": "Předpověď počasí pro ",
+        "temperature": "Aktuální teplota je ",
+        "degrees": "°C ",
+        "humidity": "vlhkost vzduchu je ",
+        "pressure": "% a atmosferický tlak je ",
+        "mbar": " mbar"
+    },
+    "sunevent": {
+        "presunrise": "Slunce vyjde v ",
+        "postsunrise": "Slunce vyšlo v ",
+        "presunset": " a zapadne v ",
+        "postsunset": " a zapadlo v "
+    },
+    "battery": {
+        "title": "Informace o bateriích",
+        "in": " v ",
+        "has": " zbývá ",
+        "left": "%"
+    },
+    "sensor": {
+        "title": "Informace o čidlech",
+        "in": " v ",
+        "alarm": " zaznamenána aktivita.",
+        "noalarm": " Žádná aktivita nezaznamenána.",
+        "fault": "Chyba při načítání tvých zařízení, prosím prověř svá zařízení a aplikaci v Homey App"
+    }
+    }

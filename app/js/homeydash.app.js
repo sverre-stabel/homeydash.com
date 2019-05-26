@@ -1,4 +1,4 @@
-var version = "1.0.1"
+var version = "1.0.2.1"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -26,26 +26,32 @@ window.addEventListener('load', function() {
   var faultyDevice = false;
   var nameChange = false;
   var longtouch = false;
+  var scale= 8;
 
+  var $body = document.getElementById('body');
+  var $plus = document.getElementById('+');
+  var $min = document.getElementById('-');
+  
   var $favoriteflows = document.getElementById('favorite-flows');
   var $favoritedevices = document.getElementById('favorite-devices');
   var $container = document.getElementById('container');
   var $header = document.getElementById('header');
   var $infopanel = document.getElementById('info-panel');
+  var $settingspanel = document.getElementById('settings-panel');
   var $text = document.getElementById('text');
   var $textLarge = document.getElementById('text-large');
   var $textSmall = document.getElementById('text-small');
   var $logo = document.getElementById('logo');
   var $settingsIcon = document.getElementById('settings-icon');
-  var $version = document.getElementById('version');
+  var $versionIcon = document.getElementById('version-icon');
   var $batterydetails = document.getElementById('battery-details');
   var $sensordetails = document.getElementById('sensor-details');
   var $notificationdetails = document.getElementById('notification-details');
   var $weather = document.getElementById('weather');
   var $weatherTemperature = document.getElementById('weather-temperature');
-  var $weatherState = document.getElementById('weather-state');
   var $weatherStateIcon = document.getElementById('weather-state-icon');
   var $sunevents = document.getElementById('sun-events');
+  var $sunriseicon = document.getElementById('sunrise-icon');
   var $sunrisetime = document.getElementById('sunrise-time');
   var $sunsettime = document.getElementById('sunset-time');
   var $flows = document.getElementById('flows');
@@ -54,8 +60,6 @@ window.addEventListener('load', function() {
 
   $favoriteflows.innerHTML = texts.favoriteflows
   $favoritedevices.innerHTML = texts.favoritedevices
-
-  document.cookie = "; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
   $infopanel.addEventListener('click', function() {
     $container.classList.remove('container-dark');
@@ -67,8 +71,19 @@ window.addEventListener('load', function() {
   });
 
   $settingsIcon.addEventListener('click', function() {
-    alert("No function yet")
+    //$settingspanel.style.visibility = "visible"
   })
+
+  /*$plus.addEventListener('click', function() {
+    scale = scale + 0.5    
+    setScale(scale)
+  })
+
+  $min.addEventListener('click', function() {
+    scale = scale - 0.5
+    setScale(scale)
+  })
+  */
 
   $text.addEventListener('click', function() {
     homey.notifications.getNotifications().then(function(notifications) {
@@ -77,12 +92,6 @@ window.addEventListener('load', function() {
   });
  
   $weather.addEventListener('click', function() {
-    homey.weather.getWeather().then(function(weather) {
-      return renderInfoPanel("w", weather)
-    }).catch(console.error);
-  })
-
-  $sunevents.addEventListener('click', function() {
     homey.weather.getWeather().then(function(weather) {
       return renderInfoPanel("w", weather)
     }).catch(console.error);
@@ -200,6 +209,7 @@ window.addEventListener('load', function() {
             }
           }
         }
+        batteryDetails.sort(dynamicSort("level"))
         if (sunrise != "" || sunset != "") {
           calculateTOD();
           renderSunevents();
@@ -214,6 +224,8 @@ window.addEventListener('load', function() {
       checkSensorStates();
 
       renderVersion();
+
+      renderSettingsPanel();
 
       homey.weather.getWeather().then(function(weather) {
         return renderWeather(weather);
@@ -240,8 +252,8 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
-          //console.log(device.name)
-          //console.log(device.capabilitiesObj)
+          console.log(device.name)
+          console.log(device.capabilitiesObj)
           if (!device.ready) {
             faultyDevice=true; 
             $sensordetails.classList.add('fault')  
@@ -282,6 +294,15 @@ window.addEventListener('load', function() {
               }
             });
           }
+          if ( device.capabilitiesObj.alarm_connected ) {        
+            device.makeCapabilityInstance('alarm_connected', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                $deviceElement.classList.toggle('away', !value);
+                checkSensorStates();
+              }
+            });
+          }
           if ( device.capabilitiesObj.alarm_vibration ) {        
             device.makeCapabilityInstance('alarm_vibration', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
@@ -301,6 +322,17 @@ window.addEventListener('load', function() {
               }
             });
           }
+          if ( device.capabilitiesObj.target_temperature ) {        
+            device.makeCapabilityInstance('target_temperature', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":target_temperature");
+                capability = device.capabilitiesObj['target_temperature']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+                if (device.name=="Bier") {renderValue($valueElement, capability.id, capability.value, "")}
+              }
+            });
+          }          
           if ( device.capabilitiesObj.measure_humidity ) {        
             device.makeCapabilityInstance('measure_humidity', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
@@ -391,6 +423,16 @@ window.addEventListener('load', function() {
               }
             });
           }
+          if ( device.capabilitiesObj.dim ) {
+            device.makeCapabilityInstance('dim', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":dim");
+                capability = device.capabilitiesObj['dim']
+                renderValue($valueElement, capability.id, capability.value, capability.units)                
+              }
+            });
+          }
           if ( device.capabilitiesObj.flora_measure_moisture ) {
             device.makeCapabilityInstance('flora_measure_moisture', function(moisture) {
               var $deviceElement = document.getElementById('device:' + device.id);
@@ -426,31 +468,17 @@ window.addEventListener('load', function() {
   function renderVersion() {
     var newVersion = false;
     var savedVersion = getCookie('version')
-    var $iconElement = document.getElementById('version-icon');
-    if ( $iconElement == null ) {
-      var $iconElement = document.createElement('div');
-      $iconElement.id = "version-icon"
-      $version.appendChild($iconElement);
-    }
     if ( savedVersion != version) {
       newVersion = true;
-      $iconElement.style.visibility = 'visible';
-      $iconElement.addEventListener('click', function() {
+      $versionIcon.style.visibility = 'visible';
+      $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* Changed clicking to touch-and-hold to cycle through tile values<br />"
-        changeLog = changeLog + "* Added support for devices with numeric values and quick action<br />"
-        changeLog = changeLog + "* Added Danish laguage file (da)<br />"
-        changeLog = changeLog + "* Added Spanish language file (se)<br />"
-        changeLog = changeLog + "* When a capability value causes an alarm the value will be shown on the tile<br />"
-        changeLog = changeLog + "* Capability icons will be shown for the selected value<br />"
-        changeLog = changeLog + "* The following values now update in realtime:<br />"
-        changeLog = changeLog + "&nbsp;- Humidity<br />"
-        changeLog = changeLog + "&nbsp;- Pressure<br />"
-        changeLog = changeLog + "&nbsp;- Luminance<br />"
-        changeLog = changeLog + "&nbsp;- Current Power usage<br />"
-        changeLog = changeLog + "&nbsp;- Power used<br />"
-        changeLog = changeLog + "&nbsp;- Gas used<br />"
+        changeLog = changeLog + "* Sort items in battery info panel empty to full<br />"
+        changeLog = changeLog + "* Redesigned top bar<br />"
+        changeLog = changeLog + "* Formatted dim values<br />"
+        changeLog = changeLog + "* Dim capability updates in realtime<br />"
+        changeLog = changeLog + "* Added Czech language file (cs)<br />"
         renderInfoPanel("u",changeLog)
       })
     }
@@ -493,7 +521,7 @@ window.addEventListener('load', function() {
         for (let inf in info) {
             nots.push(info[inf]);
         }
-        nots.sort(SortByName);
+        nots.sort(dynamicSort("-dateCreated"));
 
         if ( nots.length < nrMsg) {
           nrNot = nots.length
@@ -659,6 +687,7 @@ window.addEventListener('load', function() {
     } else {
       $flows.style.visibility = 'hidden';
       $flows.style.height = '0';
+      $flows.style.marginBottom = '0';
     }
   }
   
@@ -683,10 +712,24 @@ window.addEventListener('load', function() {
             $deviceElement.classList.add('alarm')
       }
 
+      if ( device.capabilitiesObj && device.capabilitiesObj.alarm_connected ) {
+        if ( device.capabilitiesObj.alarm_connected.value ) {
+          $deviceElement.classList.remove('away')
+        } else {
+          $deviceElement.classList.add('away')
+        }
+      }
+
       var $icon = document.createElement('div');
       $icon.id = 'icon:' + device.id
       $icon.classList.add('icon');
       $icon.style.webkitMaskImage = 'url(https://icons-cdn.athom.com/' + device.iconObj.id + '-128.png)';
+      if ( device.name == "Bier" || device.name == "Bier temperatuur" ) { 
+        $icon.style.webkitMaskImage = 'url(img/capabilities/beer.png)'; 
+        $icon.style.backgroundImage = 'url(img/capabilities/beer.png)'; 
+        $icon.style.backgroundSize = 'contain'
+      }
+
       $deviceElement.appendChild($icon);
 
       var $iconCapability = document.createElement('div');
@@ -706,6 +749,7 @@ window.addEventListener('load', function() {
             $value.classList.add('value');
             selectIcon($value, getCookie(device.id), device, capability)
             renderValue($value, capability.id, capability.value, capability.units)
+            if (device.name=="Bier") {renderValue($value, capability.id, capability.value, "")}
             $deviceElement.appendChild($value)
             itemNr =itemNr + 1
           }
@@ -725,7 +769,9 @@ window.addEventListener('load', function() {
             }, 300)
           });
           $deviceElement.addEventListener('touchend', function() {
-            longtouch = false;
+            timeout = setTimeout(function() {
+              longtouch = false;
+            },100)
             $deviceElement.classList.remove('startTouch')
           });
           // Mouse functions
@@ -742,25 +788,30 @@ window.addEventListener('load', function() {
             }, 300)
           });
           $deviceElement.addEventListener('mouseup', function() {
-            longtouch = false;
+            timeout = setTimeout(function() {
+              longtouch = false;
+            },100)
             $deviceElement.classList.remove('startTouch')
           });
         }
 
         if ( device.capabilitiesObj[device.ui.quickAction] ) {
-          $deviceElement.addEventListener('touchstart', function() {
-            $deviceElement.classList.add('push')
-          });
-          $deviceElement.addEventListener('touchend', function() {
-            $deviceElement.classList.remove('push')
-          });
-  
-          $deviceElement.addEventListener('mousedown', function() {
-            $deviceElement.classList.add('push')
-          });
-          $deviceElement.addEventListener('mouseup', function() {
-            $deviceElement.classList.remove('push')
-          });
+          if( itemNr == 0 ) {
+            // Touch functions
+            $deviceElement.addEventListener('touchstart', function() {
+              $deviceElement.classList.add('push')
+            });
+            $deviceElement.addEventListener('touchend', function() {
+              $deviceElement.classList.remove('push')
+            });
+            // Mouse functions
+            $deviceElement.addEventListener('mousedown', function() {
+              $deviceElement.classList.add('push')
+            });
+            $deviceElement.addEventListener('mouseup', function() {
+              $deviceElement.classList.remove('push')
+            });
+          }
   
           $deviceElement.addEventListener('click', function() {
             if ( nameChange ) { return } // No click when shown capability just changed
@@ -818,9 +869,10 @@ window.addEventListener('load', function() {
       var decimal = decimal.substring(2,3)
       
       $value.innerHTML = integer + "<span id='decimal'>" + decimal + capabilityUnits.substring(0,1) + "</span>"
-
     } else if ( capabilityId == "measure_pressure" ) {
       $value.innerHTML = Math.round(capabilityValue) + "<br /><sup>" + capabilityUnits + "</sup>"
+    } else if ( capabilityId == "dim" ) {
+      $value.innerHTML = Math.round(capabilityValue*100) + "<br /><sup>" + capabilityUnits + "</sup>"
     } else {
       $value.innerHTML = capabilityValue + "<br /><sup>" + capabilityUnits + "</sup>"
     }
@@ -865,16 +917,34 @@ window.addEventListener('load', function() {
     } else {
       iconToShow = 'img/capabilities/' + capability.id + '.png'
     }
+    if (device.name == "Bier") {iconToShow = 'img/capabilities/tap.png'}
     $icon = document.getElementById('icon:'+device.id);
     $iconcapability = document.getElementById('icon-capability:'+device.id);
     if ( $value.id == searchFor ) {
       $value.classList.add('visible')
       $icon.style.opacity = 0.1
+      if (device.name == "Bier" || device.name == "Bier temperatuur") { $icon.style.opacity = 0.5}
       $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
       $iconcapability.style.visibility = 'visible';
     } else {
       $value.classList.add('hidden')
     }
+  }
+
+  function renderSettingsPanel() {
+    var $zoom = document.createElement('div');
+    $zoom.id = "zoom"
+    $settingspanel.appendChild($zoom)
+    $zoom.innerHTML = ""
+
+    var $closeButton = document.createElement('div');
+    $closeButton.id = "settings-panel-close"
+    $settingspanel.appendChild($closeButton)
+    $closeButton.innerHTML = "Close"
+
+    $closeButton.addEventListener('click', function() {
+      $settingspanel.style.visibility = "hidden"
+    })
   }
 
   function valueCycle(device) {
@@ -889,15 +959,24 @@ window.addEventListener('load', function() {
     }
     for ( item in device.capabilitiesObj ) {
       capability = device.capabilitiesObj[item]
-      if ( capability.type == "number"  ) {
+      if ( capability.type == "number" ) {
+        if (
+            capability.id == "light_temperature" ||
+            capability.id == "light_saturation" ||
+            capability.id == "light_hue"
+            ) { 
+          continue; 
+        }
         searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
         if (itemNr == showElement ) {
           elementToShow = searchElement
+          capabilityToShow = capability.id
           if ( capability.iconObj ) {
             iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
           } else {
             iconToShow = 'img/capabilities/' + capability.id + '.png'
           }
+          if (device.name == "Bier") {iconToShow = 'img/capabilities/tap.png'}
           itemNrVisible = itemNr
         }
         if ( searchElement.classList.contains('visible') ) {
@@ -906,7 +985,7 @@ window.addEventListener('load', function() {
           currentElement = itemNr
           showElement = itemNr + 1
         }
-        itemNr =itemNr + 1
+        itemNr = itemNr + 1
       }
     }
     $icon = document.getElementById('icon:'+device.id);
@@ -917,6 +996,7 @@ window.addEventListener('load', function() {
       renderName(device,elementToShow)
       setCookie(device.id,elementToShow.id,12)
       $icon.style.opacity = 0.1
+      if (device.name == "Bier" || device.name == "Bier temperatuur") {$icon.style.opacity = .5}
       $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
       $iconcapability.style.visibility = 'visible';
     } else {
@@ -965,11 +1045,5 @@ window.addEventListener('load', function() {
       dn = "n";
     }
   }
-
-  function SortByName(a, b){
-    var aName = a.dateCreated;
-    var bName = b.dateCreated;
-    return ((aName > bName) ? -1 : ((aName < bName) ? 1 : 0));
-    }
 
 });

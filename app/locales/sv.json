@@ -1,12 +1,12 @@
 {
-    "favorite-flows": "Favoritflöden",
-    "favorite-devices": "Favoritenheter",
+    "favoriteflows": "Favoritflöden",
+    "favoritedevices": "Favoritenheter",
     "text" : {
         "good": "God ",
-        "evening": "eftermiddag",
-        "afternoon": "förmiddag",
-        "morning": "morgon",
-        "night": "kväll",
+        "evening": "kväll",
+        "afternoon": "eftermiddag",
+        "morning": "förmiddag",
+        "night": "natt",
         "today": "I dag är det ",
         "the": "den",
         "of": " "
@@ -16,7 +16,7 @@
         "nonotification": "Det finns inga händelser"
     },
     "weather": {
-        "title": "Väderinformatio",
+        "title": "Väderinformation för ",
         "temperature": "Temperaturen är ",
         "degrees": " grader, ",
         "humidity": "luftfuktigheten är ",
