@@ -1,0 +1,18 @@
+<html>
+    <head>
+        
+        <script type="text/javascript" src="./../js/homeydash.helpers.js"></script>
+        <script language="javascript">
+            window.addEventListener('load', function() {
+                var $version = document.getElementById('version');
+
+                $version.innerHTML = getCookie('version')
+            });
+        </script>
+
+    </head>
+    <body>
+        <div id="version"></div>
+        
+    </body>
+</html>

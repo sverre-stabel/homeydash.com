@@ -1,18 +1,21 @@
-var version = "1.0.2.1"
+var version = "1.0.3"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
+
 
 var locale = 'en'
 var lang = getQueryVariable('lang');
 if ( lang ) {
   locale = lang;
-} 
-var texts = getTexts(locale);
+}
+var texts = getTexts(locale)
 loadScript(locale, setLocale)
 
+
 window.addEventListener('load', function() {
-  
+  var $log = document.getElementById('log');
+
   var homey;
   var me;
   var sunrise = "";
@@ -73,17 +76,6 @@ window.addEventListener('load', function() {
   $settingsIcon.addEventListener('click', function() {
     //$settingspanel.style.visibility = "visible"
   })
-
-  /*$plus.addEventListener('click', function() {
-    scale = scale + 0.5    
-    setScale(scale)
-  })
-
-  $min.addEventListener('click', function() {
-    scale = scale - 0.5
-    setScale(scale)
-  })
-  */
 
   $text.addEventListener('click', function() {
     homey.notifications.getNotifications().then(function(notifications) {
@@ -252,8 +244,8 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
-          console.log(device.name)
-          console.log(device.capabilitiesObj)
+          //console.log(device.name)
+          //console.log(device.capabilitiesObj)
           if (!device.ready) {
             faultyDevice=true; 
             $sensordetails.classList.add('fault')  
@@ -474,11 +466,8 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* Sort items in battery info panel empty to full<br />"
-        changeLog = changeLog + "* Redesigned top bar<br />"
-        changeLog = changeLog + "* Formatted dim values<br />"
-        changeLog = changeLog + "* Dim capability updates in realtime<br />"
-        changeLog = changeLog + "* Added Czech language file (cs)<br />"
+        changeLog = changeLog + "* Web theme is loaded when theme= is omitted<br />"
+        changeLog = changeLog + "* Added presence indication for UniFi devices<br />"
         renderInfoPanel("u",changeLog)
       })
     }
@@ -932,19 +921,7 @@ window.addEventListener('load', function() {
   }
 
   function renderSettingsPanel() {
-    var $zoom = document.createElement('div');
-    $zoom.id = "zoom"
-    $settingspanel.appendChild($zoom)
-    $zoom.innerHTML = ""
 
-    var $closeButton = document.createElement('div');
-    $closeButton.id = "settings-panel-close"
-    $settingspanel.appendChild($closeButton)
-    $closeButton.innerHTML = "Close"
-
-    $closeButton.addEventListener('click', function() {
-      $settingspanel.style.visibility = "hidden"
-    })
   }
 
   function valueCycle(device) {
