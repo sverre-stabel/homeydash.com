@@ -1,4 +1,4 @@
-var version = "1.0.3"
+var version = "1.0.4"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -74,7 +74,7 @@ window.addEventListener('load', function() {
   });
 
   $settingsIcon.addEventListener('click', function() {
-    //$settingspanel.style.visibility = "visible"
+    //renderSettingsPanel();
   })
 
   $text.addEventListener('click', function() {
@@ -159,7 +159,7 @@ window.addEventListener('load', function() {
   function renderHomey() {
 
     homey.users.getUsers().then(function(users) {
-      for (let user in users) {
+      for ( user in users) {
         /*
         console.log("avatar:   " + users[user].avatar)
         console.log("asleep:   " + users[user].asleep)
@@ -180,7 +180,7 @@ window.addEventListener('load', function() {
       }).catch(console.error);
 
       homey.flowToken.getFlowTokens().then(function(tokens) {
-        for (let token in tokens) {
+        for ( token in tokens) {
           if ( tokens[token].id == "sunrise" ) {
             sunrise = tokens[token].value
           }
@@ -217,8 +217,6 @@ window.addEventListener('load', function() {
 
       renderVersion();
 
-      renderSettingsPanel();
-
       homey.weather.getWeather().then(function(weather) {
         return renderWeather(weather);
       }).catch(console.error);
@@ -244,8 +242,8 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
-          //console.log(device.name)
-          //console.log(device.capabilitiesObj)
+          console.log(device.name)
+          console.log(device.capabilitiesObj)
           if (!device.ready) {
             faultyDevice=true; 
             $sensordetails.classList.add('fault')  
@@ -466,6 +464,7 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
+        changeLog = changeLog + "* iOS 9 support<br />"
         changeLog = changeLog + "* Web theme is loaded when theme= is omitted<br />"
         changeLog = changeLog + "* Added presence indication for UniFi devices<br />"
         renderInfoPanel("u",changeLog)
@@ -477,7 +476,7 @@ window.addEventListener('load', function() {
     homey.flowToken.getFlowTokens().then(function(tokens) {
       var sensorAlarm = false
       sensorDetails = [];
-      for (let token in tokens) {
+      for ( token in tokens) {
         if (tokens[token].id == "alarm_generic" && tokens[token].value == true ||
             tokens[token].id == "alarm_motion" && tokens[token].value == true ||
             tokens[token].id == "alarm_contact" && tokens[token].value == true ||
@@ -507,7 +506,7 @@ window.addEventListener('load', function() {
         $infopanel.appendChild($infoPanelNotifications);
         $ni = "<center><h1>" + texts.notification.title + "</h1></center><br />"
         var nots =[];
-        for (let inf in info) {
+        for ( inf in info) {
             nots.push(info[inf]);
         }
         nots.sort(dynamicSort("-dateCreated"));
@@ -588,7 +587,7 @@ window.addEventListener('load', function() {
         $infoPanelBattery.id = "infopanel-battery"
         $infopanel.appendChild($infoPanelBattery);
         $bi = "<center><h1>" + texts.battery.title + "</h1></center><br /><br />"
-        for (let device in batteryDetails) {
+        for ( device in batteryDetails) {
           $bi = $bi + "<h2>" + batteryDetails[device].name + texts.battery.in
           $bi = $bi + batteryDetails[device].zone + texts.battery.has
           $bi = $bi + batteryDetails[device].level + texts.battery.left + "</h2>"
@@ -603,7 +602,7 @@ window.addEventListener('load', function() {
         $infopanel.appendChild($infoPanelSensors);
         $si = "<center><h1>" + texts.sensor.title + "</h1></center><br /><br />"
         if ( Object.keys(sensorDetails).length ) {
-          for (let device in sensorDetails) {
+          for ( device in sensorDetails) {
             $si = $si + "<h2>" + sensorDetails[device].name + texts.sensor.in 
             $si = $si + sensorDetails[device].zone + texts.sensor.alarm + "</h2>"
           }
@@ -921,7 +920,37 @@ window.addEventListener('load', function() {
   }
 
   function renderSettingsPanel() {
+    if ( !$settingsiframe ) {
+      var $settingsiframe = document.createElement('iframe')
+      $settingsiframe.id = "settings-iframe"
+      $settingsiframe.src = "./settings.html"
+      $settingspanel.appendChild($settingsiframe)
+    }
 
+    var $buttonssettings = document.createElement('div')
+    $buttonssettings.id = "buttons-settings"
+    $settingspanel.appendChild($buttonssettings)
+
+    var $savesettings = document.createElement('a')
+    $savesettings.id = "save-settings"
+    $savesettings.classList.add("btn")
+    $buttonssettings.appendChild($savesettings)
+    $savesettings.innerHTML = "save"
+
+    var $cancelsettings = document.createElement('a')
+    $cancelsettings.id = "save-settings"
+    $cancelsettings.classList.add("btn")
+    $buttonssettings.appendChild($cancelsettings)
+    $cancelsettings.innerHTML = "cancel"
+
+    $cancelsettings.addEventListener('click', function() {
+      console.log("cancel")
+      $settingspanel.style.visibility = "hidden"
+      $settingspanel.removeChild($settingsiframe)
+      $settingsiframe = null
+    })
+
+    $settingspanel.style.visibility = "visible"
   }
 
   function valueCycle(device) {

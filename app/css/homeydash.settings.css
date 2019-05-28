@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700');
+
+body {
+    font-family: Roboto, Helvetica, sans-serif;
+}
+
+fieldset {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 4px;
+}
+
+.desc {
+    display: inline-block;
+}
+
+.setting {
+    display: inline-block;
+}
+
+.language {
+    display: inline-block;
+    width: 17vw;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 4px;
+    padding: 4px;
+    margin-bottom: 8px;
+}
+    .language.selected {
+        background: #447AC5;
+    }
+    .language.push {
+        background-color: grey;
+    }
+
+#version {
+    font-size: 1vw;
+    color: darkgray;
+}

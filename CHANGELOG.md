@@ -1,3 +1,6 @@
+## Version 1.0.4
+* iOS 9 support
+
 ## Version 1.0.3
 * web theme is loaded when theme= is omitted
 

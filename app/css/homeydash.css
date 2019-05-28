@@ -70,7 +70,7 @@ a {
     height: 60vh;
     left: 10vw;
     top: 10vh;
-    padding: 5vh 5vh;
+    padding: 3vh 2vw;
     background: white;
     border: 1px solid #009785;
     border-radius: 6px;
@@ -79,6 +79,36 @@ a {
     visibility: hidden;
     overflow: auto;
   }
+    #settings-iframe {
+      position: absolute;
+      right: 2vw;
+      width: 76vw;
+      height: 80%;
+      background: white;
+      margin-bottom: 2vh;
+    }
+    #buttons-settings {
+      position: absolute;
+      right: 2vw;
+      bottom: 2vh;
+    }
+    .btn {
+      display: inline-block;
+      margin-bottom: 0px;
+      margin-left: 1vw;
+      width: 5vw;
+      font-size: 12px;
+      line-height: 3vh;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      border-width: 1px;
+      border-style: solid;
+      border-color: black;
+      border-image: initial;
+      border-radius: 4px;
+      color: black;
+    }
 
   #weather {
     position: absolute;

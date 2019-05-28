@@ -16,7 +16,7 @@
         "nonotification": "Pas de nouvelles notifications"
     },
     "weather": {
-        "title": " Information météo pour ",
+        "title": " Informations météo pour ",
         "temperature": "La température actuelle est ",
         "degrees": " degrés, ", 
         "humidity": "le taux d'humidité est de ",
@@ -40,6 +40,6 @@
         "in": " dans la zone ",
         "alarm": " est en état d'alarme.",
         "noalarm": " Il n'y a pas de capteur en état d'alarme.",
-        "fault": "There is a problem loading your devices, please check your devices and apps in the Homey app"
+        "fault": "Un problème est survenu lors du chargement de vos appareils. Veuillez vérifier vos appareils et vos applications dans l’application Homey."
     }
 }
