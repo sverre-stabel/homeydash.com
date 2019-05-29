@@ -7,7 +7,7 @@ body {
 fieldset {
     border-width: 1px;
     border-style: solid;
-    border-color: black;
+    border-color: #fafafa;
     border-radius: 4px;
 }
 
@@ -24,15 +24,34 @@ fieldset {
     width: 17vw;
     border-width: 1px;
     border-style: solid;
-    border-color: black;
+    border-color: darkgrey;
     border-radius: 4px;
     padding: 4px;
     margin-bottom: 8px;
+    line-height: 18px;
 }
     .language.selected {
-        background: #447AC5;
+        background: #4BD762;
     }
     .language.push {
+        background-color: grey;
+    }
+
+.theme {
+    display: inline-block;
+    width: 29vw;
+    border-width: 1px;
+    border-style: solid;
+    border-color: darkgray;
+    border-radius: 4px;
+    padding: 4px;
+    margin-bottom: 8px;
+    line-height: 18px;
+}
+    .theme.selected {
+        background: #4BD762;
+    }
+    .theme.push {
         background-color: grey;
     }
 

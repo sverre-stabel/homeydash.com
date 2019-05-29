@@ -96,15 +96,15 @@ a {
       display: inline-block;
       margin-bottom: 0px;
       margin-left: 1vw;
-      width: 5vw;
-      font-size: 12px;
-      line-height: 3vh;
+      width: 6vw;
+      font-size: 15px;
+      line-height: 4vh;
       text-align: center;
       white-space: nowrap;
       vertical-align: middle;
       border-width: 1px;
       border-style: solid;
-      border-color: black;
+      border-color: darkgrey;
       border-image: initial;
       border-radius: 4px;
       color: black;
@@ -400,7 +400,7 @@ a {
           background-color: orange;
         }
         .device.away {
-          background-color: orange;
+          opacity: 0.5;
         }
         .device.push {
           background-color: grey;

@@ -1,17 +1,18 @@
-var version = "1.0.4"
+var version = "1.0.5"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
 
-
 var locale = 'en'
+var theme;
+var urltoken;
+var iframesettings;
 var lang = getQueryVariable('lang');
 if ( lang ) {
   locale = lang;
 }
 var texts = getTexts(locale)
 loadScript(locale, setLocale)
-
 
 window.addEventListener('load', function() {
   var $log = document.getElementById('log');
@@ -74,7 +75,7 @@ window.addEventListener('load', function() {
   });
 
   $settingsIcon.addEventListener('click', function() {
-    //renderSettingsPanel();
+    renderSettingsPanel();
   })
 
   $text.addEventListener('click', function() {
@@ -113,7 +114,8 @@ window.addEventListener('load', function() {
     clientSecret: CLIENT_SECRET,
   });
   
-  var theme = getQueryVariable('theme');
+  theme = getQueryVariable('theme');
+  console.log("::"+theme)
   if ( theme == undefined) {
     theme = "web";
   }
@@ -124,6 +126,8 @@ window.addEventListener('load', function() {
   document.head.appendChild($css);
 
   var token = getQueryVariable('token');
+  urltoken = token;
+
   if ( token == undefined || token == "undefined" || token == "") {
     $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Please log-in<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
     return
@@ -133,6 +137,7 @@ window.addEventListener('load', function() {
     $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Token invalid. Please log-in again.<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
     return
   }
+  
   token = JSON.parse(token);
   api.setToken(token);
   
@@ -464,9 +469,8 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* iOS 9 support<br />"
-        changeLog = changeLog + "* Web theme is loaded when theme= is omitted<br />"
-        changeLog = changeLog + "* Added presence indication for UniFi devices<br />"
+        changeLog = changeLog + "* Added language selection in settings<br />"
+        changeLog = changeLog + "* Added theme selection in settings<br />"
         renderInfoPanel("u",changeLog)
       })
     }
@@ -925,6 +929,7 @@ window.addEventListener('load', function() {
       $settingsiframe.id = "settings-iframe"
       $settingsiframe.src = "./settings.html"
       $settingspanel.appendChild($settingsiframe)
+      
     }
 
     var $buttonssettings = document.createElement('div')
@@ -943,14 +948,21 @@ window.addEventListener('load', function() {
     $buttonssettings.appendChild($cancelsettings)
     $cancelsettings.innerHTML = "cancel"
 
+    $savesettings.addEventListener('click', function() {
+      saveSettings();
+    })
+
     $cancelsettings.addEventListener('click', function() {
-      console.log("cancel")
       $settingspanel.style.visibility = "hidden"
       $settingspanel.removeChild($settingsiframe)
       $settingsiframe = null
     })
 
     $settingspanel.style.visibility = "visible"
+  }
+
+  function saveSettings() {
+    location.assign(location.protocol + "//" + location.host + location.pathname + "?theme="+iframesettings.newtheme+"&lang="+iframesettings.newlanguage+"&token="+iframesettings.token)
   }
 
   function valueCycle(device) {
