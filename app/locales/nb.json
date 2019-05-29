@@ -3,10 +3,10 @@
     "favoritedevices": "Favoritt enheter",
     "text" : {
         "good": "God ",
-        "evening": "ettermiddag",
-        "afternoon": "formiddag",
         "morning": "morgen",
-        "night": "kveld",
+        "afternoon": "ettermiddag",
+        "evening": "kveld",
+        "night": "natt",
         "today": "I dag er det ",
         "the": "den",
         "of": " "
@@ -27,7 +27,7 @@
         "presunrise": "Solen vil g&aring; opp klokken ",
         "postsunrise": "Solen gikk opp klokken ",
         "presunset": " og vil g&aring; ned klokken ",
-        "postsunset": " og g&aring; ned klokken "
+        "postsunset": " og gikk ned klokken "
     },
     "battery": {
         "title": "Batteri informasjon", 
