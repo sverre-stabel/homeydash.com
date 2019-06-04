@@ -41,5 +41,20 @@
         "alarm": " is yn alarmstatus.",
         "noalarm": " Der binne gjin sensor yn alarmstatus.",
         "fault": "Der is in probleem mei it apparaat laden, kontrolearje de apparaten en jo apps yn de Homey app"
+    },
+    "settings": {
+        "title": {
+            "language": "Selektearje jo taal",
+            "theme": "Selektearje jo tema",
+            "appearance": "Uterlik"
+        },
+        "appearance": {
+            "logo": "Logo (url)",
+            "background": "Eftergrûn (url)"
+        },
+        "errors": {
+            "logo": "Please fix logo url",
+            "background": "Please fix background url"
+        }
     }
 }

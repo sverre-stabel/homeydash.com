@@ -17,8 +17,22 @@ body {
   font-family: Roboto, Helvetica, sans-serif;
   background: -webkit-linear-gradient(55deg, #009785 0%, #245AA5 50%, #B800E9 100%);
   background-attachment: fixed;
+  background: black;
   color: white;
 }
+
+/*body::after {     http://jsfiddle.net/sjFML/
+  content: "";
+  background: url('https://ak3.picdn.net/shutterstock/videos/31090903/thumb/1.jpg');
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+  background-size:cover;
+}*/
 
 .tablecell {
   display: table-cell;
@@ -400,6 +414,9 @@ a {
           background-color: orange;
         }
         .device.away {
+          opacity: 0.5;
+        }
+        .device.day {
           opacity: 0.5;
         }
         .device.push {

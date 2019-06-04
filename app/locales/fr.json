@@ -41,5 +41,20 @@
         "alarm": " est en état d'alarme.",
         "noalarm": " Il n'y a pas de capteur en état d'alarme.",
         "fault": "Un problème est survenu lors du chargement de vos appareils. Veuillez vérifier vos appareils et vos applications dans l’application Homey."
+    },
+    "settings": {
+        "title": {
+            "language": "Choisissez votre langue",
+            "theme": "Choisissez votre thème",
+            "appearance": "Apparence"
+        },
+        "appearance": {
+            "logo": "Logo (url)",
+            "background": "Fond (url)"
+        },
+        "errors": {
+            "logo": "S'il vous plaît corriger l'URL du logo",
+            "background": "S'il vous plaît corriger l'URL de fond"
+        }
     }
 }

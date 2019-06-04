@@ -41,5 +41,20 @@
         "alarm": " ist im Alarmzustand.",
         "noalarm": " Es gibt keine Sensoren in Alarmzustand.",
         "fault": "Es gibt ein Problem beim laden der Geräte, bitte überprüfe die Geräte und Apps in der Homey App"
+    },
+    "settings": {
+        "title": {
+            "language": "Wählen Sie Ihre Sprache",
+            "theme": "Wählen Sie Ihr Thema",
+            "appearance": "aussehen"
+        },
+        "appearance": {
+            "logo": "Logo (url)",
+            "background": "Hintergrund (url)"
+        },
+        "errors": {
+            "logo": "Bitte korrigieren Sie die Logo-URL",
+            "background": "Bitte korrigieren Sie die Hintergrund-URL"
+        }
     }
 }

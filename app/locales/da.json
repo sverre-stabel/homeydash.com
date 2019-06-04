@@ -40,5 +40,20 @@
         "in": " i ",
         "alarm": " er aktiveret af alarm.",
         "noalarm": " Der er ingen sensorer som er aktiveret af alarm."
+    },
+    "settings": {
+        "title": {
+            "language": "Vælg dit sprog",
+            "theme": "Vælg dit tema",
+            "appearance": "Udseende"
+        },
+        "appearance": {
+            "logo": "Logo (url)",
+            "background": "Baggrund (url)"
+        },
+        "errors": {
+            "logo": "Ret venligst logoadressen",
+            "background": "Ret venligst baggrundsadressen"
+        }
     }
 }

@@ -41,5 +41,20 @@
         "alarm": " er aktivert av alarm.",
         "noalarm": " Det er ingen sensorer som er aktiverte av alarm.",
         "fault": "Det er et problem ved lasting av enheter, vennligst kontroller dine enheter og applikasjoner i Homey appen"
+    },
+    "settings": {
+        "title": {
+            "language": "Velg språk",
+            "theme": "Velg ditt tema",
+            "appearance": "Utseende"
+        },
+        "appearance": {
+            "logo": "Logo (url)",
+            "background": "Bakgrunn (url)"
+        },
+        "errors": {
+            "logo": "Vennligst lagre logoadresse",
+            "background": "Vennligst lagre bakgrunnsadresse"
+        }
     }
 }

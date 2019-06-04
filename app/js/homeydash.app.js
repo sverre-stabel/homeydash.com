@@ -1,4 +1,4 @@
-var version = "1.0.5"
+var version = "1.0.6"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -33,9 +33,6 @@ window.addEventListener('load', function() {
   var scale= 8;
 
   var $body = document.getElementById('body');
-  var $plus = document.getElementById('+');
-  var $min = document.getElementById('-');
-  
   var $favoriteflows = document.getElementById('favorite-flows');
   var $favoritedevices = document.getElementById('favorite-devices');
   var $container = document.getElementById('container');
@@ -62,8 +59,10 @@ window.addEventListener('load', function() {
   var $flowsInner = document.getElementById('flows-inner');
   var $devicesInner = document.getElementById('devices-inner');
 
-  $favoriteflows.innerHTML = texts.favoriteflows
-  $favoritedevices.innerHTML = texts.favoritedevices
+  try {
+    $favoriteflows.innerHTML = texts.favoriteflows
+    $favoritedevices.innerHTML = texts.favoritedevices
+  } catch(err) {}
 
   $infopanel.addEventListener('click', function() {
     $container.classList.remove('container-dark');
@@ -115,7 +114,6 @@ window.addEventListener('load', function() {
   });
   
   theme = getQueryVariable('theme');
-  console.log("::"+theme)
   if ( theme == undefined) {
     theme = "web";
   }
@@ -186,10 +184,10 @@ window.addEventListener('load', function() {
 
       homey.flowToken.getFlowTokens().then(function(tokens) {
         for ( token in tokens) {
-          if ( tokens[token].id == "sunrise" ) {
+          if ( tokens[token].id == "sunrise" && tokens[token].uri == "homey:manager:cron" ) {
             sunrise = tokens[token].value
           }
-          if ( tokens[token].id == "sunset"  ) {
+          if ( tokens[token].id == "sunset" && tokens[token].uri == "homey:manager:cron" ) {
             sunset = tokens[token].value
           }
           if ( tokens[token].id == "measure_battery" ) {
@@ -222,6 +220,8 @@ window.addEventListener('load', function() {
 
       renderVersion();
 
+      renderImages();
+
       homey.weather.getWeather().then(function(weather) {
         return renderWeather(weather);
       }).catch(console.error);
@@ -247,8 +247,8 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
-          console.log(device.name)
-          console.log(device.capabilitiesObj)
+          //console.log(device.name)
+          //console.log(device.capabilitiesObj)
           if (!device.ready) {
             faultyDevice=true; 
             $sensordetails.classList.add('fault')  
@@ -294,6 +294,15 @@ window.addEventListener('load', function() {
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 $deviceElement.classList.toggle('away', !value);
+                checkSensorStates();
+              }
+            });
+          }
+          if ( device.capabilitiesObj.alarm_night ) {        
+            device.makeCapabilityInstance('alarm_night', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                $deviceElement.classList.toggle('day', !value);
                 checkSensorStates();
               }
             });
@@ -418,6 +427,26 @@ window.addEventListener('load', function() {
               }
             });
           }
+          if ( device.capabilitiesObj.daily_production ) {
+            device.makeCapabilityInstance('daily_production', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":daily_production");
+                capability = device.capabilitiesObj['daily_production']
+                renderValue($valueElement, capability.id, capability.value, capability.units)                
+              }
+            });
+          }
+          if ( device.capabilitiesObj.production ) {
+            device.makeCapabilityInstance('production', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":production");
+                capability = device.capabilitiesObj['production']
+                renderValue($valueElement, capability.id, capability.value, capability.units)                
+              }
+            });
+          }          
           if ( device.capabilitiesObj.dim ) {
             device.makeCapabilityInstance('dim', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
@@ -469,10 +498,27 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* Added language selection in settings<br />"
-        changeLog = changeLog + "* Added theme selection in settings<br />"
+        changeLog = changeLog + "* Added ability to select your own logo<br />"
+        changeLog = changeLog + "* Added ability to select your own background image<br />"
+        changeLog = changeLog + "* Daily production and production from solar panels update in realtime<br />"
+        changeLog = changeLog + "* Changed color presence indication on UniFi devices<br />"
         renderInfoPanel("u",changeLog)
       })
+    }
+  }
+
+  function renderImages() {
+    var background = getCookie('background')
+    var logo = getCookie('logo')
+    if ( background != "" ) {
+      document.body.style.background = "no-repeat center center fixed"
+      document.body.style.backgroundImage = "url('" + background + "')";
+      document.body.style.backgroundSize = "cover";
+    }
+    if ( logo != "" ) {
+      $logo.style.background = "no-repeat center center";
+      $logo.style.backgroundImage = "url('" + logo + "')";
+      $logo.style.backgroundSize = "contain";
     }
   }
 
@@ -709,6 +755,14 @@ window.addEventListener('load', function() {
           $deviceElement.classList.remove('away')
         } else {
           $deviceElement.classList.add('away')
+        }
+      }
+
+      if ( device.capabilitiesObj && device.capabilitiesObj.alarm_night ) {
+        if ( device.capabilitiesObj.alarm_night.value ) {
+          $deviceElement.classList.remove('day')
+        } else {
+          $deviceElement.classList.add('day')
         }
       }
 
@@ -962,6 +1016,24 @@ window.addEventListener('load', function() {
   }
 
   function saveSettings() {
+    if ( iframesettings.urllogoerror ) {
+      alert(texts.settings.errors.logo)
+      return
+    }
+    if ( iframesettings.urlbackgrounderror ) {
+      alert(texts.settings.errors.background)
+      return
+    }
+    if ( iframesettings.urlbackground != undefined ) {
+      setCookie("background",iframesettings.urlbackground,12)  
+    } else {
+      setCookie("background","",12)
+    }
+    if ( iframesettings.urllogo != undefined ) {
+      setCookie("logo",iframesettings.urllogo,12)  
+    } else {
+      setCookie("logo","",12)
+    }
     location.assign(location.protocol + "//" + location.host + location.pathname + "?theme="+iframesettings.newtheme+"&lang="+iframesettings.newlanguage+"&token="+iframesettings.token)
   }
 

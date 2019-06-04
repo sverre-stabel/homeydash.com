@@ -11,7 +11,7 @@
     </head>
     <body>
         <fieldset >
-            <legend>Select your language</legend>
+            <legend id="settings-title-language">Select your language</legend>
             <div id="languages">
                 <div id="lang-cs" class="language">🇨🇿 Český</div>
                 <div id="lang-da" class="language">🇩🇰 Dansk</div>
@@ -21,12 +21,13 @@
                 <div id="lang-fr" class="language">🇫🇷 Français</div>
                 <div id="lang-nl" class="language">🇳🇱 Nederlands</div>
                 <div id="lang-nb" class="language">🇳🇴 Norsk</div>
+                <div id="lang-ro" class="language">🇷🇴 Română</div>
                 <div id="lang-sv" class="language">🇸🇪 Svenska</div>
             </div>
         </fieldset>
 
         <fieldset >
-            <legend>Select your theme</legend>
+            <legend id="settings-title-theme">Select your theme</legend>
             <div id="themes">
                 <div id="theme-ipad" class="theme">iPad</div>
                 <div id="theme-iphone" class="theme">iPhone</div>
@@ -34,23 +35,37 @@
             </div>
         </fieldset>
 
-        <!--fieldset >
-            <legend>Appearance</legend>
+        <fieldset >
+            <legend id="settings-title-appearance">Appearance</legend>
             <div id="appearance">
-
-                <div id="appearance-logo">
-                    Logo
+                <div>
+                    <div id="appearance-logo" class="appearance-description">
+                        Logo (url) 
+                    </div>
+                    <div class="appearance-input">
+                        <input id="url-logo">
+                    </div>
+                    <div class="appearance-buttons">
+                        <div id="btn-delete-logo"></div>
+                        <div id="btn-preview-logo"></div>
+                    </div>
                 </div>
 
-                <div id="appearance-background">
-                    Background
-                </div>
-                
-                <div id="appearance-zoom">
-                    Zoom
-                </div>
+                <div>
+                    <div id="appearance-background" class="appearance-description">
+                        Background (url) 
+                    </div>
+                    <div class="appearance-input">
+                        <input id="url-background">
+                    </div>
+                    <div class="appearance-buttons">
+                        <div id="btn-delete-background"></div>
+                        <div id="btn-preview-background"></div>
+                    </div>
+                </div>  
+                <div id="preview"></div>
             </div>
-        </fieldset-->
+        </fieldset>
 
         <div id="version"></div>
     </body>

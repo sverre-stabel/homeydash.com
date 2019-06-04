@@ -41,5 +41,20 @@
         "alarm": " zaznamenána aktivita.",
         "noalarm": " Žádná aktivita nezaznamenána.",
         "fault": "Chyba při načítání tvých zařízení, prosím prověř svá zařízení a aplikaci v Homey App"
+    },
+    "settings": {
+        "title": {
+            "language": "Vyberte jazyk",
+            "theme": "Vyberte motiv",
+            "appearance": "Vzhled"
+        },
+        "appearance": {
+            "logo": "Logo (url)",
+            "background": "Pozadí (url)"
+        },
+        "errors": {
+            "logo": "Opravte adresu URL loga",
+            "background": "Opravte adresu URL pozadí"
+        }
     }
-    }
+}

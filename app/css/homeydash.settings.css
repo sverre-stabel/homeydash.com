@@ -2,6 +2,7 @@
 
 body {
     font-family: Roboto, Helvetica, sans-serif;
+    -webkit-user-select: none;
 }
 
 fieldset {
@@ -54,6 +55,48 @@ fieldset {
     .theme.push {
         background-color: grey;
     }
+.appearance-description, .appearance-input, .appearance-buttons {
+    display: inline-block;
+    line-height: 32px;
+}
+
+.appearance-description {
+    width: 16vw;
+}
+
+.appearance-input {
+    width: 69vw;
+}
+
+.appearance-buttons {
+    width: 6vw;
+}
+    #btn-delete-logo, #btn-delete-background, #btn-preview-logo, #btn-preview-background {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        margin-left: 0;
+        margin-right: auto;
+        background: no-repeat center center;
+        background-size: contain;
+    }
+    #btn-delete-logo, #btn-delete-background {
+        background-image: url(../img/delete.png);
+    }
+    #btn-preview-logo, #btn-preview-background {
+        background-image: url(../img/preview.png);
+    }
+
+input {
+    width: 69vw;
+    margin-right: 5px;
+    border: 0;
+    border-radius: 0;
+    font-size: 16px;
+    text-align: right;
+    border-bottom: 1px solid rgb(75, 215, 98);
+    padding: 3px 0 3px 0;
+}
 
 #version {
     font-size: 1vw;

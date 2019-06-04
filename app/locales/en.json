@@ -41,5 +41,20 @@
         "alarm": " is in alarm state.",
         "noalarm": " There are no sensors in alarm state.",
         "fault": "There is a problem loading your devices, please check your devices and apps in the Homey app"
+    },
+    "settings": {
+        "title": {
+            "language": "Select your language",
+            "theme": "Select your theme",
+            "appearance": "Appearance"
+        },
+        "appearance": {
+            "logo": "Logo (url)",
+            "background": "Background (url)"
+        },
+        "errors": {
+            "logo": "Please fix logo url",
+            "background": "Please fix background url"
+        }
     }
 }

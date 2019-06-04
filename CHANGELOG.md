@@ -1,11 +1,19 @@
-## Version 1.0.5
+## Version 1.0.6
+* Added ability to select your own logo
+* Added ability to select your own background image
+
+## Version 1.0.5.1
+* Daily production and production from solar panels update in realtime
+* Changed color presence indication on UniFi devices
+
+## Version 1.0.5 - published on homeydash.com
 * Added language selection in settings
 * Added theme selection in settings
 
-## Version 1.0.4
+## Version 1.0.4 - published on homeydash.com
 * iOS 9 support
 
-## Version 1.0.3
+## Version 1.0.3 - published on homeydash.com
 * web theme is loaded when theme= is omitted
 
 ## Version 1.0.2.1
