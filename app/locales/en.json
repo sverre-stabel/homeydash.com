@@ -50,7 +50,10 @@
         },
         "appearance": {
             "logo": "Logo (url)",
-            "background": "Background (url)"
+            "background": "Background (url)",
+            "opacity": "Background opacity",
+            "clock": "Show clock",
+            "zoom": "Zoom"
         },
         "errors": {
             "logo": "Please fix logo url",

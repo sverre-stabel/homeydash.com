@@ -50,7 +50,10 @@
         },
         "appearance": {
             "logo": "Logo (url)",
-            "background": "Fundal (url)"
+            "background": "Fundal (url)",
+            "opacity": "Opacitatea de fond",
+            "clock": "Afișare ceas",
+            "zoom": "Zoom"
         },
         "errors": {
             "logo": "Vă rugăm să remediați urlul logo-ului",

@@ -50,7 +50,10 @@
         },
         "appearance": {
             "logo": "Logo (url)",
-            "background": "Bakgrund (url)"
+            "background": "Bakgrund (url)",
+            "opacity": "Bakgrundsopacitet",
+            "clock": "Visa klocka",
+            "zoom": "Zoom"
         },
         "errors": {
             "logo": "Vänligen fixa logoadressen",

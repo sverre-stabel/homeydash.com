@@ -17,22 +17,8 @@ body {
   font-family: Roboto, Helvetica, sans-serif;
   background: -webkit-linear-gradient(55deg, #009785 0%, #245AA5 50%, #B800E9 100%);
   background-attachment: fixed;
-  background: black;
   color: white;
 }
-
-/*body::after {     http://jsfiddle.net/sjFML/
-  content: "";
-  background: url('https://ak3.picdn.net/shutterstock/videos/31090903/thumb/1.jpg');
-  opacity: 0.5;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
-  background-size:cover;
-}*/
 
 .tablecell {
   display: table-cell;
@@ -81,7 +67,7 @@ a {
   #settings-panel {
     position: absolute;
     width: 80vw;
-    height: 60vh;
+    height: 70vh;
     left: 10vw;
     top: 10vh;
     padding: 3vh 2vw;
@@ -97,7 +83,7 @@ a {
       position: absolute;
       right: 2vw;
       width: 76vw;
-      height: 80%;
+      height: 85%;
       background: white;
       margin-bottom: 2vh;
     }
@@ -129,33 +115,7 @@ a {
     left: 10px;
     width: 350px
   }
-    #weather-temperature {
-      display: inline-block;
-      font-size: 50px;
-      font-weight: 500;
-      line-height: 50px;
-    }
-    #weather-temperature:after {
-      content: "°";
-    }
-    #weather-state-icon {
-      display: inline-block;
-      width: 50px;
-      height: 50px;
-      margin-left: 0;
-      margin-right: auto;
-      -webkit-mask-size: contain;
-      -webkit-mask-repeat: no-repeat;
-      -webkit-mask-position: center center;
-      background-size: 50px;
-    }
-
-  #sun-events {
-    display: inline-block;
-    /*left: 128px;
-    width: 128px*/
-  }
-  #sunrise, #sunset {
+  #sunstate {
     display: inline-block;
   }
     #sunrise-icon, #sunset-icon {
@@ -179,6 +139,63 @@ a {
       font-size: 16px;
       line-height: 10px;
     }
+    #weather-state-icon {
+      display: inline-block;
+      vertical-align: top;
+      width: 4vw;
+      height: 4vw;
+      margin-left: 3vw;
+      margin-right: auto;
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center center;
+      background-size: 4vW 4vw;
+    }
+    #weather-temperature {
+      display: inline-block;
+      margin-left: -7vw;
+      font-size: 4vw;
+      line-height: 4vw;
+      font-weight: 500;
+    }
+    #weather-temperature:after {
+      content: "°";
+      font-size: 3vw;
+      vertical-align: text-top;
+    }
+    #weather-roof {
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 0vw;
+      width: 5vw;
+      height: 5vw;
+      margin-left: 1vw;
+      margin-right: auto;
+      background: no-repeat center center;
+      background-size: contain;
+      background-image: url(../img/roof.png);
+      visibility: hidden;
+    }
+    #weather-temperature-inside {
+      display: inline-block;
+      margin-left: -5.5vw;
+      font-size: 3vw;
+      line-height: 3vw;
+      font-weight: 400;
+      visibility: hidden;
+    }
+    #weather-temperature-inside:after {
+      content: "°";
+      font-size: 3vw;
+      /*vertical-align: top;*/
+    }
+
+  #sun-events {
+    display: inline-block;
+    /*left: 128px;
+    width: 128px*/
+  }
+
 
   #nav {
     position: absolute;

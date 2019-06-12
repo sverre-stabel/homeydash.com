@@ -1,63 +1,103 @@
+var newindoortemperature
 var newlanguage
 var newtheme
 var token
 var urlbackground
+var opacitybackground
 var ulrbackgrounderror
 var urllogo
 var urllogoerror
+var newshowTime
+var newZoom
+var $styleElem
+var $content
+var $settingspanel
+var homey
 
 window.addEventListener('load', function() {
     var $version = document.getElementById('version');
     $version.innerHTML = "homeydash version " + parent.version
 
+    newindoortemperature = parent.indoortemperature
     newlanguage = parent.locale
     newtheme = parent.theme
     token = parent.urltoken
+    $styleElem = parent.styleElem
+    $content = parent.$content
+    $settingspanel = parent.$settingspanel
+    homey = parent.homey
 
     var prevLogo;
     var prevBackground;
 
-    var $languages = document.getElementById('languages');
-    var $themes = document.getElementById('themes');
+    var $bodysettings = document.getElementById('body-settings');
+    var $indoortemperature = document.getElementById('settings-temperature-select');
+    var $languages = document.getElementById('settings-language-select');
+    var $themes = document.getElementById('settings-theme-select');
     var $urllogo = document.getElementById('url-logo');
     var $btndeletelogo = document.getElementById('btn-delete-logo');
-    var $btnpreviewlogo = document.getElementById('btn-preview-logo');
     var $urlbackground = document.getElementById('url-background');
+    var $opacitybackground = document.getElementById("opacity-background");
     var $btndeletebackground = document.getElementById('btn-delete-background');
-    var $btnpreviewbackground = document.getElementById('btn-preview-background');
+    var $switchshowtime = document.getElementById('switch-show-time');
+    var $zoomcontent = document.getElementById('zoom-content');
+    
     var $preview = document.getElementById('preview');
 
-    document.getElementById('settings-title-language').innerHTML = parent.texts.settings.title.language;
-    document.getElementById('settings-title-theme').innerHTML = parent.texts.settings.title.theme;
-    document.getElementById('settings-title-appearance').innerHTML = parent.texts.settings.title.appearance;
+    document.getElementById('settings-language-title').innerHTML = parent.texts.settings.title.language;
+    document.getElementById('settings-theme-title').innerHTML = parent.texts.settings.title.theme;
     document.getElementById('appearance-logo').innerHTML = parent.texts.settings.appearance.logo;
     document.getElementById('appearance-background').innerHTML = parent.texts.settings.appearance.background;
+    document.getElementById('appearance-opacity').innerHTML = parent.texts.settings.appearance.opacity;
+    document.getElementById('appearance-clock').innerHTML = parent.texts.settings.appearance.clock;
+    document.getElementById('appearance-zoom').innerHTML = parent.texts.settings.appearance.zoom;
 
-    for ( node in $languages.childNodes) {
-        var text = $languages.childNodes[node].id
-        if ( text == "lang-" + newlanguage  ) {
-            $languages.childNodes[node].classList.add("selected")
+    var $css = document.createElement('link');
+    $css.rel = 'stylesheet';
+    $css.type = 'text/css';
+    $css.href = './css/themes/' + newtheme + '.settings.css';
+    document.head.appendChild($css);
+
+    homey.devices.getDevices().then(function(devices) {
+        var temperaturesensors = ""
+        for (item in devices) {
+            device = devices[item]
+            if ( device.ready ) {
+                if ( device.capabilitiesObj.measure_temperature ) {
+                    temperaturesensors = temperaturesensors + "<option value='" + device.id + "'>" + device.name + "</option>"
+                }
+            }
         }
-        attachListeners($languages.childNodes[node],$languages)
-    }
+        $indoortemperature.innerHTML = temperaturesensors
+    }).then(function(){
+        $indoortemperature.value = newindoortemperature
+    })
 
-    for ( node in $themes.childNodes) { 
-        var text = $themes.childNodes[node].id
+    $indoortemperature.addEventListener('change', function() {
+        newindoortemperature = $indoortemperature.value
+    })
 
-        if ( text == "theme-" + newtheme  ) {
-            $themes.childNodes[node].classList.add("selected")
-        }
-        attachListeners($themes.childNodes[node],$themes)
-    }
+    $languages.value = newlanguage
+
+    $languages.addEventListener('change', function() {
+        newlanguage = $languages.value
+    })
+
+    $themes.value = newtheme
+
+    $themes.addEventListener('change', function() {
+        newtheme = $themes.value
+    })
 
     urllogo = getCookie('logo')
     $urllogo.value = urllogo
-    $urllogo.addEventListener('blur', function() {
+    $urllogo.addEventListener('change', function() {
         urllogo = $urllogo.value
 
         checkImage( $urllogo.value, function(){ 
             urllogoerror = false
             $urllogo.style.color = "#000000"
+            showPreview($urllogo.value)
           }, function(){ 
             urllogoerror = true              
             $urllogo.style.color = "#ff0000"
@@ -66,15 +106,22 @@ window.addEventListener('load', function() {
 
     urlbackground = getCookie('background')
     $urlbackground.value = urlbackground
-    $urlbackground.addEventListener('blur', function() {
+    if ( $urlbackground.value != "" ) {
+        showPreview($urlbackground.value,true)
+    }
+
+    $urlbackground.addEventListener('change', function() {
         urlbackground = $urlbackground.value
         
         checkImage( $urlbackground.value, function(){ 
             urlbackgrounderror = false
             $urlbackground.style.color = "#000000"
+            $opacitybackground.disabled = false;
+            showPreview($urlbackground.value,true)
           }, function(){ 
             urlbackgrounderror = true              
             $urlbackground.style.color = "#ff0000"
+            $opacitybackground.disabled = true;
           } );
     })
 
@@ -83,47 +130,45 @@ window.addEventListener('load', function() {
         urllogoerror = false
         $urllogo.value = ""
         $urllogo.style.color = "#000000"
+        showPreview("")
     })
     $btndeletebackground.addEventListener('click', function() {
         urlbackground = ""
         urlbackgrounderror = false
         $urlbackground.value = ""
         $urlbackground.style.color = "#000000"
-    })
-
-    $btnpreviewlogo.addEventListener('touchstart', function() {
-        showPreview($urllogo.value)
-    })
-    $btnpreviewlogo.addEventListener('touchend', function() {
-        showPreview("")
-    })
-    $btnpreviewlogo.addEventListener('mousedown', function() {
-        showPreview($urllogo.value)
-    })
-    $btnpreviewlogo.addEventListener('mouseup', function() {
-        showPreview("")
-    })
-
-    $btnpreviewbackground.addEventListener('touchstart', function() {
-        showPreview($urlbackground.value,true)
-    })
-    $btnpreviewbackground.addEventListener('touchend', function() {
+        $opacitybackground.value = 50
+        $opacitybackground.disabled = true
         showPreview("",true)
     })
-    $btnpreviewbackground.addEventListener('mousedown', function() {
-        showPreview($urlbackground.value,true)
+
+    opacitybackground = getCookie('backgroundopacity')
+    if ( !urlbackground == "" ) {
+        $opacitybackground.value = opacitybackground*100
+    } else {
+        $opacitybackground.value = 50
+        opacitybackground = 50
+    }
+
+    newshowTime = getCookie("showtime")
+    newshowTime = ( newshowTime == "true") ? true: false;
+    $switchshowtime.checked = newshowTime
+
+    $switchshowtime.addEventListener('click', function() {
+        newshowTime = $switchshowtime.checked
     })
-    $btnpreviewbackground.addEventListener('mouseup', function() {
-        showPreview("",true)
-    })
+
+    newZoom = getCookie("zoom")
+    $zoomcontent.value = newZoom*100
 
     function showPreview(image,background) {
         if ( image ) {
             if ( background ) {
-                prevBackground = parent.document.body.style.background
-                parent.document.body.style.background = "no-repeat center center fixed"
-                parent.document.body.style.backgroundImage = "url('" + image + "')"
-                parent.document.body.style.backgroundSize = "cover"
+                var css = "content: ''; background: url('" + $urlbackground.value + "');"
+                css = css + " top: 0; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-size:cover;"
+                css = css + " opacity: " + $opacitybackground.value/100 + ";"
+                $styleElem.innerHTML = "#body:after {" + css + "}";
+                parent.document.body.style.background = "black"
             } else {
                 var $logo = parent.document.getElementById('logo');
                 prevLogo = $logo.style.backgroundImage
@@ -131,49 +176,61 @@ window.addEventListener('load', function() {
             }
         } else {
             if ( background ) {
-                parent.document.body.style.background = prevBackground
+                $styleElem.innerHTML = ""
+                parent.document.body.style.background = ""
             } else {
                 var $logo = parent.document.getElementById('logo');
                 $logo.style.backgroundImage = prevLogo
             }
         }        
     }
-
-    function attachListeners(element, type) {
-        try {
-            element.addEventListener('touchstart', function() {
-                element.classList.add('push')
-            })
-            element.addEventListener('touchend', function() {
-                element.classList.remove('push')
-            })
-            element.addEventListener('mousedown', function() {
-                element.classList.add('push')
-            });
-            element.addEventListener('mouseup', function() {
-                element.classList.remove('push')
-            });
-            
-            element.addEventListener('click', function() {
-                for ( node2 in type.childNodes) {
-                    try {
-                        type.childNodes[node2].classList.remove('selected')
-                    }
-                    catch(err) {}
-                    if ( type.childNodes[node2] == element) {
-                        type.childNodes[node2].classList.add('selected')
-                        if ( type.childNodes[node2].id.substr(0, 4) == "lang" ) {
-                            newlanguage = type.childNodes[node2].id.substr(5, 2)
-                        } else if ( type.childNodes[node2].id.substr(0, 4) == "them" ) {
-                            newtheme = type.childNodes[node2].id.substr(6, type.childNodes[node2].id.length - 6 )
-                        }
-                    }
-                }
-            });
-             
-        }
-        catch(err) {}
-
+    
+    $opacitybackground.oninput = function() {
+        setOpacity(this.value/100)
     }
+
+    function setOpacity(opacity) {
+        var style = $styleElem.innerHTML
+        oldStyle = style.split(";")
+        newStyle = ""
+        for (i=0; i < 9 ;i++) {
+            newStyle = newStyle + oldStyle[i] +";"
+        }
+        newStyle = newStyle + " opacity: " + opacity + ";}"
+        $styleElem.innerHTML = newStyle
+        opacitybackground = opacity
+    }
+
+    $zoomcontent.oninput = function() {
+        setZoom(this.value/100)
+    }
+
+    function setZoom(zoom) {
+        $content.style.zoom = zoom;
+        newZoom = zoom
+        document.getElementById('settings-title-theme').innerHTML = zoom
+    }
+
+    $zoomcontent.addEventListener('touchstart', function() {
+        $bodysettings.style.opacity = 0.5
+        $settingspanel.style.opacity = 0.5
+    })
+    $zoomcontent.addEventListener('touchend', function() {
+        setTimeout(function(){
+            $bodysettings.style.opacity = 1
+            $settingspanel.style.opacity = 1
+          }, 200);
+    })
+    $zoomcontent.addEventListener('mousedown', function() {
+        $bodysettings.style.opacity = 0.5
+        $settingspanel.style.opacity = 0.5
+    })
+    $zoomcontent.addEventListener('mouseup', function() {
+        setTimeout(function(){
+            $bodysettings.style.opacity = 1
+            $settingspanel.style.opacity = 1
+          }, 200);
+    })
+
     parent.iframesettings = window;
 })

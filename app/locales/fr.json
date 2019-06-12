@@ -50,7 +50,10 @@
         },
         "appearance": {
             "logo": "Logo (url)",
-            "background": "Fond (url)"
+            "background": "Fond (url)",
+            "opacity": "opacité du fond",
+            "clock": "Afficher l'horloge",
+            "zoom": "Zoom"
         },
         "errors": {
             "logo": "S'il vous plaît corriger l'URL du logo",

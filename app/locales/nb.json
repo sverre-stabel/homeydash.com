@@ -50,7 +50,10 @@
         },
         "appearance": {
             "logo": "Logo (url)",
-            "background": "Bakgrunn (url)"
+            "background": "Bakgrunn (url)",
+            "opacity": "Bakgrunnsdyktighet",
+            "clock": "Vis klokke",
+            "zoom": "Zoom"
         },
         "errors": {
             "logo": "Vennligst lagre logoadresse",

@@ -49,7 +49,10 @@
         },
         "appearance": {
             "logo": "Logo (url)",
-            "background": "Baggrund (url)"
+            "background": "Baggrund (url)",
+            "opacity": "Baggrundsopacitet",
+            "clock": "Vis ur",
+            "zoom": "Zoom"
         },
         "errors": {
             "logo": "Ret venligst logoadressen",

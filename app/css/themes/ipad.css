@@ -30,25 +30,6 @@
   width: 42vw;
   top: 0vw;
 }
-  #weather-temperature {
-    display: inline-block;
-    font-size: 5vw;
-    line-height: 1vw;
-    vertical-align: text-top;
-  }
-  #weather-temperature:after {
-    content: "°";
-  }
-  #weather-state-icon {
-    display: inline-block;
-    top: 1vw;
-    width: 4vw;
-    height: 4vw;
-    background-size: 4vW 4vw;
-  }
-  #sunrise, #sunset {
-    display: inline-block;
-  }      
   #sunrise-icon, #sunset-icon  {
     width: 3vw;
     height: 3vw;
@@ -58,7 +39,13 @@
     font-size: 1.2vw;
     line-height: 0vh;
   }
-
+  #weather-state-icon {
+  }
+  #weather-temperature {
+  }
+  #weather-temperature:after {
+    content: "°";
+  }     
 
   #text {
     position: absolute;
@@ -184,37 +171,37 @@
   position: static;
 }
   .device {
-    width: 20vh;
-    height: 20vh;
-    padding: 2vh;
-    margin-right: 1.9vh;
-    margin-bottom: 2vh;
-    border-radius: 3vh;
+    width: 150px; /*20vh;*/
+    height: 150px; /*20vh;*/
+    padding: 15px; /*2vh;*/
+    margin-right: 13px; /*1.9vh;*/
+    margin-bottom: 15px; /*2vh;*/
+    border-radius: 22px; /*3vh;*/
   }
     .device .icon {
       position: absolute;
-      top: 2vh;
-      left: 2vh;
-      width: 7vh;
-      height: 7vh;
+      top: 15px; /*2vh;*/
+      left: 15px; /*2vh;*/
+      width: 52px; /*7vh;*/
+      height: 52px; /*7vh;*/
     }
     .device .icon-capability {
       position: absolute;
-      top: 6vh;
-      left: 2.5vh;
-      width: 5vh;
-      height: 5vh;
+      top: 45px; /*6vh;*/
+      left: 19px; /*2.5vh;*/
+      width: 38px; /*5vh;*/
+      height: 38px; /*5vh;*/
     }
     .device .value {
       position: absolute;
-      top: 3vh;
-      right: 2vh;
-      font-size: 4.2vh;
+      top: 22px; /*3vh;*/
+      right: 15px; /*2vh;*/
+      font-size: 31px; /*4.2vh;*/
       font-weight: 300;
-      line-height: 4.2vh;
+      line-height: 31px; /*4.2vh;*/
       width: auto;
       height: auto;
-      max-height: 8vh;
+      max-height: 60px; /*8vh;*/
       text-align: right;
     }
 
@@ -223,15 +210,15 @@
     }
     .device .name {
       position: absolute;
-      bottom: 2vh;
-      left: 2vh;
-      right: 2vh;
-      font-size: 2.7vh;
+      bottom: 15px; /*2vh;*/
+      left: 15px; /*2vh;*/
+      right: 15px; /*2vh;*/
+      font-size: 20px; /*2.7vh;*/
       font-weight: 300;
-      line-height: 3.5vh;
+      line-height: 26px; /*3.5vh;*/
       width: auto;
       height: auto;
-      max-height: 7vh;
+      max-height: 52px; /*7vh;*/
     }
     .device .name.highlight {
       font-weight: 500;

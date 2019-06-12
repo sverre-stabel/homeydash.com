@@ -50,7 +50,10 @@
         },
         "appearance": {
             "logo": "Logo (url)",
-            "background": "Achtergrond (url)"
+            "background": "Achtergrond (url)",
+            "opacity": "Achtergrond transparantie",
+            "clock": "Toon klok",
+            "zoom": "Zoom"
         },
         "errors": {
             "logo": "Corrigeer logo url",

@@ -9,35 +9,40 @@
         <script type="text/javascript" src="./js/homeydash.helpers.js"></script>
         <script type="text/javascript" src="./js/homeydash.settings.js"></script>
     </head>
-    <body>
+    <body id="body-settings">
         <fieldset >
-            <legend id="settings-title-language">Select your language</legend>
-            <div id="languages">
-                <div id="lang-cs" class="language">🇨🇿 Český</div>
-                <div id="lang-da" class="language">🇩🇰 Dansk</div>
-                <div id="lang-de" class="language">🇩🇪 Deutsch</div>
-                <div id="lang-en" class="language">🇬🇧 English</div>
-                <div id="lang-es" class="language">🇪🇸 Español</div>
-                <div id="lang-fr" class="language">🇫🇷 Français</div>
-                <div id="lang-nl" class="language">🇳🇱 Nederlands</div>
-                <div id="lang-nb" class="language">🇳🇴 Norsk</div>
-                <div id="lang-ro" class="language">🇷🇴 Română</div>
-                <div id="lang-sv" class="language">🇸🇪 Svenska</div>
-            </div>
+            <div id="settings-language-title" class="language-description">Select your language</div>
+            <select id="settings-language-select" class="language-select">
+                <option value="cs">🇨🇿 Český</option>
+                <option value="da">🇩🇰 Dansk</option>
+                <option value="de">🇩🇪 Deutsch</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="fr">🇫🇷 Français</option>
+                <option value="nl">🇳🇱 Nederlands</option>
+                <option value="nb">🇳🇴 Norsk</option>
+                <option value="ro">🇷🇴 Română</option>
+                <option value="sv">🇸🇪 Svenska</option>
+            </select>
+            <div id="settings-theme-title" class="theme-description">Select your theme</div>
+            <select id="settings-theme-select" class="theme-select">
+                <option value="ipad">iPad</option>
+                <option value="iphone">iPhone</option>
+                <option value="web">web</option>
+            </select>
         </fieldset>
 
         <fieldset >
-            <legend id="settings-title-theme">Select your theme</legend>
-            <div id="themes">
-                <div id="theme-ipad" class="theme">iPad</div>
-                <div id="theme-iphone" class="theme">iPhone</div>
-                <div id="theme-web" class="theme">web</div>
-            </div>
-        </fieldset>
-
-        <fieldset >
-            <legend id="settings-title-appearance">Appearance</legend>
             <div id="appearance">
+                <div>
+                    <div id="appearance-temperature"class="appearance-description">
+                        Indoor temperature
+                    </div>
+                    <select id="settings-temperature-select" class="temperature-select">
+                        <option value="">Toon</option>
+                        <option value="">Aqara Temperature sensor</option>
+                    </select>
+                </div>
                 <div>
                     <div id="appearance-logo" class="appearance-description">
                         Logo (url) 
@@ -47,7 +52,6 @@
                     </div>
                     <div class="appearance-buttons">
                         <div id="btn-delete-logo"></div>
-                        <div id="btn-preview-logo"></div>
                     </div>
                 </div>
 
@@ -60,9 +64,33 @@
                     </div>
                     <div class="appearance-buttons">
                         <div id="btn-delete-background"></div>
-                        <div id="btn-preview-background"></div>
                     </div>
                 </div>  
+                <div>
+                    <div id="appearance-opacity" class="appearance-description">
+                        Background opacity
+                    </div>
+                    <div class="slidecontainer">
+                        <input type="range" min="0" max="100" value="50" class="slider" id="opacity-background">
+                    </div>
+                </div>
+                <div id="setting-showtime">
+                    <div id="appearance-clock" class="appearance-description">
+                        Show clock
+                    </div>
+                    <label class="form-switch">
+                        <input id="switch-show-time" type="checkbox">
+                        <i></i>
+                    </label>
+                </div>
+                <div id="settings-zoom">
+                    <div id="appearance-zoom" class="appearance-description">
+                        Zoom
+                    </div>
+                    <div class="slidecontainer">
+                        <input type="range" min="50" max="100" value="100" class="slider" id="zoom-content">
+                    </div>
+                </div>
                 <div id="preview"></div>
             </div>
         </fieldset>

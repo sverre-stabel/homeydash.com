@@ -1,11 +1,16 @@
-var version = "1.0.6"
+var version = "1.0.7.2"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
 
+var homey;
+var indoortemperature
 var locale = 'en'
 var theme;
 var urltoken;
+var styleElem;
+var $content
+var $settingspanel
 var iframesettings;
 var lang = getQueryVariable('lang');
 if ( lang ) {
@@ -15,9 +20,9 @@ var texts = getTexts(locale)
 loadScript(locale, setLocale)
 
 window.addEventListener('load', function() {
-  var $log = document.getElementById('log');
+  //var $log = document.getElementById('log');
 
-  var homey;
+  //var homey;
   var me;
   var sunrise = "";
   var sunset = "";
@@ -30,15 +35,16 @@ window.addEventListener('load', function() {
   var faultyDevice = false;
   var nameChange = false;
   var longtouch = false;
-  var scale= 8;
+  var showTime;
 
   var $body = document.getElementById('body');
   var $favoriteflows = document.getElementById('favorite-flows');
   var $favoritedevices = document.getElementById('favorite-devices');
   var $container = document.getElementById('container');
   var $header = document.getElementById('header');
+  $content = document.getElementById('content');
   var $infopanel = document.getElementById('info-panel');
-  var $settingspanel = document.getElementById('settings-panel');
+  $settingspanel = document.getElementById('settings-panel');
   var $text = document.getElementById('text');
   var $textLarge = document.getElementById('text-large');
   var $textSmall = document.getElementById('text-small');
@@ -48,16 +54,16 @@ window.addEventListener('load', function() {
   var $batterydetails = document.getElementById('battery-details');
   var $sensordetails = document.getElementById('sensor-details');
   var $notificationdetails = document.getElementById('notification-details');
+  var $sunrisetime = document.getElementById('sunrise-time');
+  var $sunsettime = document.getElementById('sunset-time');
   var $weather = document.getElementById('weather');
   var $weatherTemperature = document.getElementById('weather-temperature');
   var $weatherStateIcon = document.getElementById('weather-state-icon');
-  var $sunevents = document.getElementById('sun-events');
-  var $sunriseicon = document.getElementById('sunrise-icon');
-  var $sunrisetime = document.getElementById('sunrise-time');
-  var $sunsettime = document.getElementById('sunset-time');
+  var $weatherroof = document.getElementById('weather-roof');
+  var $weathertemperatureinside = document.getElementById('weather-temperature-inside');
   var $flows = document.getElementById('flows');
   var $flowsInner = document.getElementById('flows-inner');
-  var $devicesInner = document.getElementById('devices-inner');
+  var $devicesInner = document.getElementById('devices-inner');  
 
   try {
     $favoriteflows.innerHTML = texts.favoriteflows
@@ -103,10 +109,19 @@ window.addEventListener('load', function() {
     })
   });
 
+  indoortemperature = getCookie("indoortemperature")
+
+  if ( indoortemperature ) {
+    $weatherroof.style.visibility = "visible"
+    $weathertemperatureinside.style.visibility = "visible"
+  }
+
+  showTime = getCookie("showtime")
+  showTime = ( showTime == "true") ? true: false;
   renderText();
   later.setInterval(function(){
     renderText();
-  }, later.parse.text('every 1 hour'));
+  }, later.parse.text('every 1 second'));
 
   var api = new AthomCloudAPI({
     clientId: CLIENT_ID,
@@ -122,6 +137,9 @@ window.addEventListener('load', function() {
   $css.type = 'text/css';
   $css.href = './css/themes/' + theme + '.css';
   document.head.appendChild($css);
+
+  var zoom = getCookie("zoom")
+  $content.style.zoom = zoom;
 
   var token = getQueryVariable('token');
   urltoken = token;
@@ -252,13 +270,13 @@ window.addEventListener('load', function() {
           if (!device.ready) {
             faultyDevice=true; 
             $sensordetails.classList.add('fault')  
-            return}
+            return
+          }
           if ( device.ui.quickAction ) {
             device.makeCapabilityInstance(device.ui.quickAction, function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 $deviceElement.classList.toggle('on', !!value);
-                checkSensorStates();
               }
             });
           }
@@ -303,7 +321,6 @@ window.addEventListener('load', function() {
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 $deviceElement.classList.toggle('day', !value);
-                checkSensorStates();
               }
             });
           }
@@ -484,7 +501,22 @@ window.addEventListener('load', function() {
             });
           }
         });
-        return renderDevices(favoriteDevices);
+        for (item in devices) {
+          device = devices[item]
+          if ( device.ready ) {
+              if ( device.id == indoortemperature ) {
+                if ( device.capabilitiesObj.measure_temperature ) {
+                  value = device.capabilitiesObj.measure_temperature.value
+                  renderValue($weathertemperatureinside, 'measure_temperature', value)  
+                  device.makeCapabilityInstance('measure_temperature', function(value){
+                    renderValue($weathertemperatureinside, 'measure_temperature', value)              
+                  });
+                }
+
+              }
+          }
+        }
+        return renderDevices(favoriteDevices);        
       }).catch(console.error);
     }).catch(console.error);
   }
@@ -498,23 +530,28 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* Added ability to select your own logo<br />"
-        changeLog = changeLog + "* Added ability to select your own background image<br />"
-        changeLog = changeLog + "* Daily production and production from solar panels update in realtime<br />"
-        changeLog = changeLog + "* Changed color presence indication on UniFi devices<br />"
+        changeLog = changeLog + "* Added indoor temperature<br />"
+        changeLog = changeLog + "* Changed settings layout<br />"
+
         renderInfoPanel("u",changeLog)
       })
     }
   }
 
   function renderImages() {
-    var background = getCookie('background')
+    var backgroundUrl = getCookie('background')
+    var backgroundColor = getCookie('backgroundcolor')
+    var backgroundOpacity = getCookie('backgroundopacity')
     var logo = getCookie('logo')
-    if ( background != "" ) {
-      document.body.style.background = "no-repeat center center fixed"
-      document.body.style.backgroundImage = "url('" + background + "')";
-      document.body.style.backgroundSize = "cover";
+    var css = ""
+    if ( backgroundUrl != "" ) {
+      document.body.style.background = backgroundColor;
+      css = "content: ''; background: url('" + backgroundUrl + "');"
+      css = css + " top: 0; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-size:cover;"
+      css = css + " opacity: " + backgroundOpacity + ";"
     }
+    styleElem = document.head.appendChild(document.createElement("style"));
+    styleElem.innerHTML = "#body:after {" + css + "}";
     if ( logo != "" ) {
       $logo.style.background = "no-repeat center center";
       $logo.style.backgroundImage = "url('" + logo + "')";
@@ -886,7 +923,14 @@ window.addEventListener('load', function() {
   function renderText() {
     var now = new Date();
     var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var seconds = now.getSeconds();
     
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+    var currentTime = hours + ":" + minutes + ":" + seconds;
+
     var tod;
     if( hours >= 18 ) {
       tod = texts.text.evening;
@@ -898,8 +942,11 @@ window.addEventListener('load', function() {
       tod = texts.text.night;
     }
 
-    //moment.locale(locale)
-    $textLarge.innerHTML = texts.text.good + tod + '!';
+    if ( showTime ) { 
+      $textLarge.innerHTML = currentTime
+    } else {
+      $textLarge.innerHTML = texts.text.good + tod + '!';
+    }
     $textSmall.innerHTML = texts.text.today + moment(now).format('dddd[, ' + texts.text.the + ' ]Do[ ' + texts.text.of + ' ]MMMM YYYY[.]');
   }
 
@@ -1010,6 +1057,7 @@ window.addEventListener('load', function() {
       $settingspanel.style.visibility = "hidden"
       $settingspanel.removeChild($settingsiframe)
       $settingsiframe = null
+      location.reload(true)
     })
 
     $settingspanel.style.visibility = "visible"
@@ -1026,14 +1074,21 @@ window.addEventListener('load', function() {
     }
     if ( iframesettings.urlbackground != undefined ) {
       setCookie("background",iframesettings.urlbackground,12)  
+      setCookie('backgroundopacity',iframesettings.opacitybackground,12)
+      setCookie('backgroundcolor',"black",12)
     } else {
       setCookie("background","",12)
+      setCookie('backgroundopacity',"",12)
+      setCookie('backgroundcolor',"",12)
     }
     if ( iframesettings.urllogo != undefined ) {
       setCookie("logo",iframesettings.urllogo,12)  
     } else {
       setCookie("logo","",12)
     }
+    setCookie("indoortemperature",iframesettings.newindoortemperature,12)
+    setCookie("showtime",iframesettings.newshowTime,12)
+    setCookie("zoom",iframesettings.newZoom,12)
     location.assign(location.protocol + "//" + location.host + location.pathname + "?theme="+iframesettings.newtheme+"&lang="+iframesettings.newlanguage+"&token="+iframesettings.token)
   }
 
@@ -1104,7 +1159,6 @@ window.addEventListener('load', function() {
 
 
   function calculateTOD() {
-
     var d = new Date();
     var m = d.getMinutes();
     var h = d.getHours();

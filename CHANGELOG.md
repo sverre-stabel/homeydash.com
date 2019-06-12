@@ -1,4 +1,17 @@
-## Version 1.0.6
+## Version 1.0.7.2
+* Added indoor temperature
+
+## Version 1.0.7.1
+* Changed settings layout
+
+## Version 1.0.7 - published on homeydash.com
+* Added ability to zoom
+
+## Version 1.0.6.1
+* Added opacity setting for background image
+* Added option to show time
+
+## Version 1.0.6 - published on homeydash.com
 * Added ability to select your own logo
 * Added ability to select your own background image
 

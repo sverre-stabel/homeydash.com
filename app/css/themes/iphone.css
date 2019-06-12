@@ -15,6 +15,26 @@ h2 {
   padding: 0vw 2vw;
 }
 
+#settings-panel {
+  width: 90vw;
+  height: 60vh;
+  left: 5vw;
+  top: 10vh;
+}
+  #settings-iframe {
+    position: absolute;
+    right: 2vw;
+    width: 86vw;
+    height: 85%;
+    background: white;
+    margin-bottom: 2vh;
+  }
+  .btn { 
+    width: 10vw;
+    line-height: 3vh;
+    font-size: 8px;
+  }
+
 #info-panel {
   padding: 3vh 4vh;
 }

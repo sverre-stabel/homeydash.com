@@ -4,7 +4,7 @@
  */
 
 body {
-  zoom: .8;
+  
 }
 
 #container {
@@ -16,6 +16,10 @@ body {
 #header {
   height: 6vw;
   margin-bottom: 1vw;
+}
+
+#content {
+  zoom: .8;
 }
 
 .info-message {
@@ -32,20 +36,12 @@ body {
   top: 0vw;
 }
   #weather-temperature {
-    display: inline-block;
-    font-size: 5vw;
-    line-height: 1vw;
-    vertical-align: text-top;
   }
   #weather-temperature:after {
     content: "°";
   }
   #weather-state-icon {
-    display: inline-block;
     top: 1vw;
-    width: 4vw;
-    height: 4vw;
-    background-size: 4vW 4vw;
   }
 
   #sun-events {
