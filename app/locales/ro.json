@@ -46,7 +46,11 @@
         "title": {
             "language": "Selectați limba dvs.",
             "theme": "Selectați tema",
-            "appearance": "Aspect"
+            "appearance": "Aspect",
+            "temperature": {
+                "outdoor": "Temperatură exterioară",
+                "indoor": "Temperatură interioară"
+            }
         },
         "appearance": {
             "logo": "Logo (url)",

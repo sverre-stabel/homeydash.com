@@ -45,7 +45,11 @@
         "title": {
             "language": "Vælg dit sprog",
             "theme": "Vælg dit tema",
-            "appearance": "Udseende"
+            "appearance": "Udseende",
+            "temperature": {
+                "outdoor": "Udetemperatur",
+                "indoor": "Indendørs temperatur"
+            }
         },
         "appearance": {
             "logo": "Logo (url)",

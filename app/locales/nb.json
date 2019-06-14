@@ -46,7 +46,11 @@
         "title": {
             "language": "Velg språk",
             "theme": "Velg ditt tema",
-            "appearance": "Utseende"
+            "appearance": "Utseende",
+            "temperature": {
+                "outdoor": "Utetemperatur",
+                "indoor": "Innetemperatur"
+            }
         },
         "appearance": {
             "logo": "Logo (url)",

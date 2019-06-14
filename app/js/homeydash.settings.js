@@ -1,3 +1,4 @@
+var newoutdoortemperature
 var newindoortemperature
 var newlanguage
 var newtheme
@@ -18,6 +19,7 @@ window.addEventListener('load', function() {
     var $version = document.getElementById('version');
     $version.innerHTML = "homeydash version " + parent.version
 
+    newoutdoortemperature = parent.outdoortemperature
     newindoortemperature = parent.indoortemperature
     newlanguage = parent.locale
     newtheme = parent.theme
@@ -31,7 +33,8 @@ window.addEventListener('load', function() {
     var prevBackground;
 
     var $bodysettings = document.getElementById('body-settings');
-    var $indoortemperature = document.getElementById('settings-temperature-select');
+    var $outdoortemperature = document.getElementById('settings-temperature-outdoor-select');
+    var $indoortemperature = document.getElementById('settings-temperature-indoor-select');
     var $languages = document.getElementById('settings-language-select');
     var $themes = document.getElementById('settings-theme-select');
     var $urllogo = document.getElementById('url-logo');
@@ -46,6 +49,10 @@ window.addEventListener('load', function() {
 
     document.getElementById('settings-language-title').innerHTML = parent.texts.settings.title.language;
     document.getElementById('settings-theme-title').innerHTML = parent.texts.settings.title.theme;
+
+    document.getElementById('appearance-temperature-outdoor').innerHTML = parent.texts.settings.title.temperature.outdoor;
+    document.getElementById('appearance-temperature-indoor').innerHTML = parent.texts.settings.title.temperature.indoor;
+
     document.getElementById('appearance-logo').innerHTML = parent.texts.settings.appearance.logo;
     document.getElementById('appearance-background').innerHTML = parent.texts.settings.appearance.background;
     document.getElementById('appearance-opacity').innerHTML = parent.texts.settings.appearance.opacity;
@@ -68,9 +75,16 @@ window.addEventListener('load', function() {
                 }
             }
         }
-        $indoortemperature.innerHTML = temperaturesensors
+        $indoortemperature.innerHTML = "<option value='none'>None</option>" + temperaturesensors
+        $outdoortemperature.innerHTML = "<option value='homey'>Homey built-in</option>" + temperaturesensors
     }).then(function(){
         $indoortemperature.value = newindoortemperature
+        $outdoortemperature.value = newoutdoortemperature
+    })
+
+    $outdoortemperature.addEventListener('change', function() {
+        newoutdoortemperature = $outdoortemperature.value
+        console.log(newoutdoortemperature)
     })
 
     $indoortemperature.addEventListener('change', function() {

@@ -20,10 +20,10 @@ fieldset {
     display: inline-block;
 }
 
-.language-description, .language-select, .theme-description, .theme-select, .temperature-select {
+.language-description, .language-select, .theme-description, .theme-select, .temperature-description, .temperature-select {
     display: inline-block;
-    width: 20vw;
-    line-height: 32px;
+    width: 22vw;
+    line-height: 50px;
 }
 
 .language-select, .theme-select, .temperature-select {
@@ -79,7 +79,7 @@ fieldset {
 }
 
 .appearance-description {
-    width: 20vw;
+    width: 22vw;
 }
 
 .appearance-input {

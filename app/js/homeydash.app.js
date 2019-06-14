@@ -1,9 +1,10 @@
-var version = "1.0.7.2"
+var version = "1.0.8.1"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
 
 var homey;
+var outdoortemperature
 var indoortemperature
 var locale = 'en'
 var theme;
@@ -109,9 +110,11 @@ window.addEventListener('load', function() {
     })
   });
 
-  indoortemperature = getCookie("indoortemperature")
+  outdoortemperature = getCookie("outdoortemperature")
+  if ( outdoortemperature == undefined || outdoortemperature == "" ) { outdoortemperature = "homey"}
 
-  if ( indoortemperature ) {
+  indoortemperature = getCookie("indoortemperature")
+  if ( indoortemperature != "" && indoortemperature != "none" ) {
     $weatherroof.style.visibility = "visible"
     $weathertemperatureinside.style.visibility = "visible"
   }
@@ -132,11 +135,16 @@ window.addEventListener('load', function() {
   if ( theme == undefined) {
     theme = "web";
   }
+
   var $css = document.createElement('link');
   $css.rel = 'stylesheet';
   $css.type = 'text/css';
   $css.href = './css/themes/' + theme + '.css';
   document.head.appendChild($css);
+
+  var backgroundfromurl = getQueryVariable('background');
+  var vadjust = getQueryVariable('vadjust');
+  if ( vadjust == undefined ) { vadjust = 0}
 
   var zoom = getCookie("zoom")
   $content.style.zoom = zoom;
@@ -501,6 +509,7 @@ window.addEventListener('load', function() {
             });
           }
         });
+        var HomeydashDeviceBrightness = getCookie("HomeydashDeviceBrightness")
         for (item in devices) {
           device = devices[item]
           if ( device.ready ) {
@@ -512,7 +521,34 @@ window.addEventListener('load', function() {
                     renderValue($weathertemperatureinside, 'measure_temperature', value)              
                   });
                 }
-
+              }
+              if ( device.id == outdoortemperature ) {
+                if ( device.capabilitiesObj.measure_temperature ) {
+                  value = device.capabilitiesObj.measure_temperature.value
+                  renderValue($weatherTemperature, 'measure_temperature', value)
+                  device.makeCapabilityInstance('measure_temperature', function(value){
+                    renderValue($weatherTemperature, 'measure_temperature', value)
+                  });
+                }
+              }
+              if ( device.name == HomeydashDeviceBrightness ) {
+                if ( device.capabilitiesObj.measure_luminance ) {
+                  var brightness = device.capabilitiesObj.measure_luminance.value
+                  if ( brightness == null ) { brightness = 100 }
+                  if ( brightness <0 || brightness > 100 ) {
+                    console.log("Homeydash-brightness value is out of bounds")
+                    break
+                  }
+                  setBrightness(brightness)
+                  device.makeCapabilityInstance('measure_luminance', function(value){
+                    if ( brightness <0 || brightness > 100 ) {
+                      console.log("Homeydash-brightness value is out of bounds")
+                    }
+                    setBrightness(value)
+                  });
+                } else {
+                  console.log("Homeydash-brightness device found, device does not have luminance capability!")
+                }
               }
           }
         }
@@ -530,8 +566,7 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* Added indoor temperature<br />"
-        changeLog = changeLog + "* Changed settings layout<br />"
+        changeLog = changeLog + "* Added adjustable brightness<br />"
 
         renderInfoPanel("u",changeLog)
       })
@@ -547,9 +582,16 @@ window.addEventListener('load', function() {
     if ( backgroundUrl != "" ) {
       document.body.style.background = backgroundColor;
       css = "content: ''; background: url('" + backgroundUrl + "');"
-      css = css + " top: 0; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-size:cover;"
+      css = css + " top: 0px; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-size:cover;"
       css = css + " opacity: " + backgroundOpacity + ";"
     }
+    if ( backgroundUrl == "" && backgroundfromurl != "" ) {
+      document.body.style.background = backgroundColor;
+      css = "content: ''; background: url('" + backgroundfromurl + "');"
+      css = css + " top: " + vadjust + "px; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-size:cover;"
+      css = css + " opacity: " + backgroundOpacity + ";"
+    }
+
     styleElem = document.head.appendChild(document.createElement("style"));
     styleElem.innerHTML = "#body:after {" + css + "}";
     if ( logo != "" ) {
@@ -723,7 +765,9 @@ window.addEventListener('load', function() {
   }
 
   function renderWeather(weather) {
-    $weatherTemperature.innerHTML = Math.round(weather.temperature);
+    if ( outdoortemperature == "homey" ) {
+      $weatherTemperature.innerHTML = Math.round(weather.temperature);
+    }
     $weatherStateIcon.classList.add(weather.state.toLowerCase());
     $weatherStateIcon.style.backgroundImage = 'url(img/weather/' + weather.state.toLowerCase() + dn + '.svg)';    
     $weatherStateIcon.style.webkitMaskImage = 'url(img/weather/' + weather.state.toLowerCase() + dn + '.svg)';
@@ -987,6 +1031,23 @@ window.addEventListener('load', function() {
       deviceElement.classList.remove('push-long')
     }, 1000);
   }
+
+  function setBrightness(brightness) {
+    brightness = brightness/100
+    if ( brightness < 0.1) { brightness = 0.1}
+    $container.style.opacity = brightness
+      var style = styleElem.innerHTML
+      oldStyle = style.split(";")
+      newStyle = ""
+      for (i=0; i < 9 ;i++) {
+          newStyle = newStyle + oldStyle[i] +";"
+      }
+      var backgroundOpacity = getCookie('backgroundopacity')
+      var newOpacity = backgroundOpacity * brightness
+      if ( newOpacity < 0.1 ) { newOpacity = 0.1 }
+      newStyle = newStyle + " opacity: " + newOpacity + ";}"
+      styleElem.innerHTML = newStyle
+  }
   
   function selectValue(device, elementToShow) {
     for ( item in device.capabilitiesObj ) {
@@ -1086,10 +1147,13 @@ window.addEventListener('load', function() {
     } else {
       setCookie("logo","",12)
     }
+    setCookie("outdoortemperature",iframesettings.newoutdoortemperature,12)
     setCookie("indoortemperature",iframesettings.newindoortemperature,12)
+    setCookie("HomeydashDeviceBrightness","Homeydash-brightness",12)
     setCookie("showtime",iframesettings.newshowTime,12)
     setCookie("zoom",iframesettings.newZoom,12)
-    location.assign(location.protocol + "//" + location.host + location.pathname + "?theme="+iframesettings.newtheme+"&lang="+iframesettings.newlanguage+"&token="+iframesettings.token)
+    location.assign(location.protocol + "//" + location.host + location.pathname + "?theme="+iframesettings.newtheme+"&lang="+iframesettings.newlanguage+"&token="+iframesettings.token+"&background="+encodeURIComponent(iframesettings.urlbackground))
+
   }
 
   function valueCycle(device) {

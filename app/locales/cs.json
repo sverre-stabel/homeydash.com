@@ -46,7 +46,11 @@
         "title": {
             "language": "Vyberte jazyk",
             "theme": "Vyberte motiv",
-            "appearance": "Vzhled"
+            "appearance": "Vzhled",
+            "temperature": {
+                "outdoor": "Venkovní teplota",
+                "indoor": "Vnitřní teplota"
+            }
         },
         "appearance": {
             "logo": "Logo (url)",

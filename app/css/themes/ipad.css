@@ -142,29 +142,29 @@
     }
 
 #flows {
-  margin-bottom: 2vh;
+  margin-bottom: 15px; /*2vh;*/
 }
   .flow {
-    height: 7vh;
-    margin-bottom: 2vh;
-    border-radius: 7vh;
+    height: 52px; /*7vh;*/
+    margin-bottom: 15px; /*2vh;*/
+    border-radius: 52px; /*7vh;*/
   }
   .flow.running:before {
-    font-size: 3.2vh;    
-    line-height: 7vh;
+    font-size: 24px; /*3.2vh;*/
+    line-height: 52px; /*7vh;*/
   }
     .flow .play {
-      width: 7vh;
-      height: 7vh;
+      width: 52px; /*7vh;*/
+      height: 52px; /*7vh;*/
     }
     .flow .name {
       font-weight: 300;
-      height: 7vh;
-      line-height: 7vh;
-      font-size: 2.8vh;
-      padding: 0 3vh;
-      padding-right: 4vh;
-      max-width: 20vw;
+      height: 52px; /*7vh;*/
+      line-height: 52px; /*7vh;*/
+      font-size: 21px; /*2.8vh;*/
+      padding: 0 22px; /*3vh;*/
+      padding-right: 30px; /*8vh;*/
+      max-width: 150px; /*20vw;*/
     }
 
 #devices {

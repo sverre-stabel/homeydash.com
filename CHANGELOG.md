@@ -1,3 +1,9 @@
+## Version 1.0.8.1
+* Added adjustable brightness
+
+## Version 1.0.8
+* Added selectable outdoor temperature
+
 ## Version 1.0.7.2
 * Added indoor temperature
 

@@ -46,7 +46,11 @@
         "title": {
             "language": "Selecteer uw taal",
             "theme": "Selecteer uw thema",
-            "appearance": "Uiterlijk"
+            "appearance": "Uiterlijk",
+            "temperature": {
+                "outdoor": "Buiten temperatuur",
+                "indoor": "Binnen temperatur"
+            }
         },
         "appearance": {
             "logo": "Logo (url)",

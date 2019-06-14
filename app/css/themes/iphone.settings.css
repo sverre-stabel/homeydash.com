@@ -1,8 +1,4 @@
 
-fieldset {
-    font-size: 1.9vh;
-}
-
 .language {
     width: 18vw;
     margin-bottom: 4px;
@@ -15,16 +11,29 @@ fieldset {
     line-height: 9px;
 }
 
+.language-description, .language-select, .theme-description, .theme-select, .temperature-description, .temperature-select {
+    width: 40vw;
+    font-size: 2.5vh;
+    line-height: 25px;
+}
+
+.language-select, .theme-select, .temperature-select {
+    height: 20px;
+    margin-right: 2px;
+}
+
+
 .appearance-description {
-    width: 20vw;
+    width: 25vw;
+    font-size: 2.5vh;
 }
 
 .appearance-input {
-    width: 60vw;
+    width: 62vw;
 }
 
 .appearance-buttons {
-    width: 7vw;
+    width: 5vw;
 }
     /*#btn-delete-logo, #btn-delete-background, #btn-preview-logo, #btn-preview-background {*/
     #btn-delete-logo, #btn-delete-background {

@@ -46,7 +46,11 @@
         "title": {
             "language": "Wählen Sie Ihre Sprache",
             "theme": "Wählen Sie Ihr Thema",
-            "appearance": "aussehen"
+            "appearance": "aussehen",
+            "temperature": {
+                "outdoor": "Außentemperatur",
+                "indoor": "Innentemperatur"
+            }
         },
         "appearance": {
             "logo": "Logo (url)",

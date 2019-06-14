@@ -10,7 +10,7 @@
         <script type="text/javascript" src="./js/homeydash.settings.js"></script>
     </head>
     <body id="body-settings">
-        <fieldset >
+        
             <div id="settings-language-title" class="language-description">Select your language</div>
             <select id="settings-language-select" class="language-select">
                 <option value="cs">🇨🇿 Český</option>
@@ -30,19 +30,23 @@
                 <option value="iphone">iPhone</option>
                 <option value="web">web</option>
             </select>
-        </fieldset>
 
-        <fieldset >
             <div id="appearance">
                 <div>
-                    <div id="appearance-temperature"class="appearance-description">
+                    <div id="appearance-temperature-outdoor"class="temperature-description">
+                        Outdoor temperature
+                    </div>
+                    <select id="settings-temperature-outdoor-select" class="temperature-select">
+                        <option>Homey built-in</option>
+                    </select>
+
+                    <div id="appearance-temperature-indoor" class="temperature-description">
                         Indoor temperature
                     </div>
-                    <select id="settings-temperature-select" class="temperature-select">
-                        <option value="">Toon</option>
-                        <option value="">Aqara Temperature sensor</option>
+                    <select id="settings-temperature-indoor-select" class="temperature-select">
                     </select>
                 </div>
+                <br />
                 <div>
                     <div id="appearance-logo" class="appearance-description">
                         Logo (url) 
@@ -93,7 +97,7 @@
                 </div>
                 <div id="preview"></div>
             </div>
-        </fieldset>
+
 
         <div id="version"></div>
     </body>

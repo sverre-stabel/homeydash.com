@@ -3,6 +3,14 @@
     /*visibility: hidden;*/
 }
 
+.language-description, .theme-description, .temperature-description {
+    width: 24vw;
+}
+
+.language-select, .theme-select, .temperature-select {
+    margin-right: 17px;
+}
+
 .appearance-description {
     width: 24vw;
 }
