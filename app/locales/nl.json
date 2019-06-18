@@ -1,6 +1,7 @@
 {
     "favoriteflows": "Favoriete flows",
     "favoritedevices": "Favoriete apparaten",
+    "alarms": "Alarmen",
     "text" : {
         "good": "Goede",
         "evening": "navond",
@@ -18,7 +19,7 @@
     "weather": {
         "title": "Weer informatie voor ",
         "temperature": "De huidige temperatuur is ",
-        "degrees": " graden, ", 
+        "degrees": " graden, ",
         "humidity": "de luchtvochtigheid is ",
         "pressure": "% en de druk is ",
         "mbar": " mbar"
@@ -30,7 +31,7 @@
         "postsunset": " en ging onder om "
     },
     "battery": {
-        "title": "Batterij informatie", 
+        "title": "Batterij informatie",
         "in": " in ",
         "has": " heeft ",
         "left": "% over"

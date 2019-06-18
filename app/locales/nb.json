@@ -1,6 +1,7 @@
 {
     "favoriteflows": "Favoritt flows",
     "favoritedevices": "Favoritt enheter",
+    "alarms": "Alarmer",
     "text" : {
         "good": "God ",
         "morning": "morgen",
@@ -18,7 +19,7 @@
     "weather": {
         "title": "V&aelig;r informasjon for ",
         "temperature": "Temperaturen er ",
-        "degrees": " grader, ", 
+        "degrees": " grader, ",
         "humidity": "luftfuktigheten er ",
         "pressure": "% og trykket er ",
         "mbar": " mbar"
@@ -30,7 +31,7 @@
         "postsunset": " og gikk ned klokken "
     },
     "battery": {
-        "title": "Batteri informasjon", 
+        "title": "Batteri informasjon",
         "in": ": ",
         "has": " har ",
         "left": "% igjen"

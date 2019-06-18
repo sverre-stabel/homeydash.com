@@ -1,6 +1,7 @@
 {
     "favoriteflows": "Geunstiche flows",
     "favoritedevices": "Geunstiche apparaten",
+    "alarms": "Alaarms",
     "text" : {
         "good": "",
         "evening": "Goej n",
@@ -18,7 +19,7 @@
     "weather": {
         "title": "Wetter-ynformaasje foar ",
         "temperature": "De aktuele temperatuer is ",
-        "degrees": " de, ", 
+        "degrees": " de, ",
         "humidity": "de waarmheid is ",
         "pressure": "% en de druk is ",
         "mbar": " mbar"
@@ -30,7 +31,7 @@
         "postsunset": " en gong ûnder "
     },
     "battery": {
-        "title": "Akkount ynformaasje", 
+        "title": "Akkount ynformaasje",
         "in": " in ",
         "has": " hat ",
         "left": "% oerlibbe"

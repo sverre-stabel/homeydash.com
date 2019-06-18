@@ -41,7 +41,7 @@ a {
     background-color: Black;
     opacity: 0.6;
   }
-  
+
   #info-panel {
     position: absolute;
     width: 80vw;
@@ -53,7 +53,7 @@ a {
     background-attachment: fixed;
     border: 1px solid #009785;
     border-radius: 6px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     z-index: 99;
     visibility: hidden;
     overflow: auto;
@@ -61,7 +61,7 @@ a {
   }
     .info-message {
       font-size: 24px;
-      font-weight: 350; 
+      font-weight: 350;
     }
 
   #settings-panel {
@@ -74,7 +74,7 @@ a {
     background: white;
     border: 1px solid #009785;
     border-radius: 6px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
     z-index: 99;
     visibility: hidden;
     overflow: auto;
@@ -203,13 +203,13 @@ a {
     width: 128px;
   }
 
-  
+
   #text {
     text-align: center;
   }
     #text-large {
       font-size: 44px;
-      font-weight: 700;  
+      font-weight: 700;
       margin-top: 20px;
     }
     #text-large:after {
@@ -243,7 +243,7 @@ a {
       -webkit-mask-repeat: no-repeat;
       -webkit-mask-position: center center;
       -webkit-mask-image: url(../img/new.png);
-      visibility: hidden;    
+      visibility: hidden;
     }
     #battery-details {
       display: inline-block;
@@ -317,7 +317,7 @@ a {
     }
 
   .favorites {
-    
+
   }
     .favorites h2 {
       display: block;
@@ -341,7 +341,7 @@ a {
       overflow: hidden;
       -webkit-mask-image: linear-gradient(to right, #000000 90%, rgba(0,0,0,0) 100%);
     }
-  
+
   #flows {
   }
     .flows {
@@ -400,9 +400,68 @@ a {
           max-width: 300px;
           color: white;
         }
-     
+
+  #alarms {
+
+    }
+      .alarms {
+        overflow-y: visible;
+      }
+        .alarm {
+          display: inline-block;
+          vertical-align: middle;
+          position: relative;
+          width: 100px;
+          height: 100px;
+          border: 2px solid black;
+          background-color: white;
+          border: none;
+          box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+          border-radius: 16px;
+          box-sizing: border-box;
+          padding: 12px;
+          margin-right: 12px;
+          opacity: 0.5;
+          -webkit-user-select: none;
+        }
+          .alarm.on {
+            opacity: 1;
+          }
+          .alarm .name {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            width: 86%;
+            height: 100%;
+            max-height: 14px;
+            font-size: 14px;
+            line-height: 15px;
+            font-weight: 300;
+            overflow: hidden;
+            white-space: normal;
+            text-overflow: ellipsis;
+            -webkit-user-select: none;
+            color: black;
+          }
+          .alarm .value {
+            position: absolute;
+            top: 15px;
+            right: 12px;
+            width: 100%;
+            font-size: 18px;
+            height: 42px;
+            line-height: 18px;
+            font-weight: 300;
+            vertical-align: text-top;
+            overflow: hidden;
+            white-space: normal;
+            text-overflow: ellipsis;
+            -webkit-user-select: none;
+            color: black;
+          }
   #devices {
-    
+
   }
     .devices {
       overflow-y: visible;
