@@ -51,7 +51,8 @@
             "temperature": {
                 "outdoor": "Venkovní teplota",
                 "indoor": "Vnitřní teplota"
-            }
+            },
+            "brightnessdevice": "Zařízení jasu"
         },
         "appearance": {
             "logo": "Logo (url)",

@@ -1,7 +1,7 @@
-## Version 1.0.8.1
+## Version 1.1.0 - published on homeydash.com
 * Added adjustable brightness
 
-## Version 1.0.8
+## Version 1.0.8 - published on homeydash.com
 * Added selectable outdoor temperature
 
 ## Version 1.0.7.2

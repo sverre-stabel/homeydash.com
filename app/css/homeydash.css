@@ -231,6 +231,7 @@ a {
     top: 10px;
     right: 10px;
     width: 290px;
+    /*-webkit-user-select: none;*/
   }
     #version-icon {
       display: inline-block;
@@ -314,6 +315,7 @@ a {
       background:  no-repeat center center;
       background-image: url(../img/logo-white.png);
       background-size: contain;
+      -webkit-user-select: none;
     }
 
   .favorites {

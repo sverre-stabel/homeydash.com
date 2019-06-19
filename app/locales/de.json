@@ -51,7 +51,8 @@
             "temperature": {
                 "outdoor": "Außentemperatur",
                 "indoor": "Innentemperatur"
-            }
+            },
+            "brightnessdevice": "Helligkeitsgerät"
         },
         "appearance": {
             "logo": "Logo (url)",

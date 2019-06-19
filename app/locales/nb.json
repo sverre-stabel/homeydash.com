@@ -51,7 +51,8 @@
             "temperature": {
                 "outdoor": "Utetemperatur",
                 "indoor": "Innetemperatur"
-            }
+            },
+            "brightnessdevice": "Lysstyrke enhet"
         },
         "appearance": {
             "logo": "Logo (url)",

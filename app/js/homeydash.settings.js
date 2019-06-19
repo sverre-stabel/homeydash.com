@@ -1,5 +1,7 @@
 var newoutdoortemperature
 var newindoortemperature
+var newhomeydashdevicebrightness
+var nohomeybrightnessdevice
 var newlanguage
 var newtheme
 var token
@@ -21,6 +23,7 @@ window.addEventListener('load', function() {
 
     newoutdoortemperature = parent.outdoortemperature
     newindoortemperature = parent.indoortemperature
+    newhomeydashdevicebrightness = parent.homeydashdevicebrightness
     newlanguage = parent.locale
     newtheme = parent.theme
     token = parent.urltoken
@@ -35,6 +38,8 @@ window.addEventListener('load', function() {
     var $bodysettings = document.getElementById('body-settings');
     var $outdoortemperature = document.getElementById('settings-temperature-outdoor-select');
     var $indoortemperature = document.getElementById('settings-temperature-indoor-select');
+    var $devicebrightnessdescription = document.getElementById('appearance-device-brightness');
+    var $devicebrightnessselect = document.getElementById('settings-device-brightness-select');
     var $languages = document.getElementById('settings-language-select');
     var $themes = document.getElementById('settings-theme-select');
     var $urllogo = document.getElementById('url-logo');
@@ -43,16 +48,14 @@ window.addEventListener('load', function() {
     var $opacitybackground = document.getElementById("opacity-background");
     var $btndeletebackground = document.getElementById('btn-delete-background');
     var $switchshowtime = document.getElementById('switch-show-time');
-    var $zoomcontent = document.getElementById('zoom-content');
-    
-    var $preview = document.getElementById('preview');
+    var $zoomcontent = document.getElementById('zoom-content'); 
+    //var $preview = document.getElementById('preview');
 
     document.getElementById('settings-language-title').innerHTML = parent.texts.settings.title.language;
     document.getElementById('settings-theme-title').innerHTML = parent.texts.settings.title.theme;
-
     document.getElementById('appearance-temperature-outdoor').innerHTML = parent.texts.settings.title.temperature.outdoor;
     document.getElementById('appearance-temperature-indoor').innerHTML = parent.texts.settings.title.temperature.indoor;
-
+    $devicebrightnessdescription.innerHTML = parent.texts.settings.title.brightnessdevice;
     document.getElementById('appearance-logo').innerHTML = parent.texts.settings.appearance.logo;
     document.getElementById('appearance-background').innerHTML = parent.texts.settings.appearance.background;
     document.getElementById('appearance-opacity').innerHTML = parent.texts.settings.appearance.opacity;
@@ -67,19 +70,40 @@ window.addEventListener('load', function() {
 
     homey.devices.getDevices().then(function(devices) {
         var temperaturesensors = ""
+        var homeydashdevicesbrightness = ""
+        nohomeybrightnessdevice = true
         for (item in devices) {
             device = devices[item]
             if ( device.ready ) {
                 if ( device.capabilitiesObj.measure_temperature ) {
                     temperaturesensors = temperaturesensors + "<option value='" + device.id + "'>" + device.name + "</option>"
                 }
+                if ( device.capabilitiesObj.dim && device.name.substring(0,10) == "Homeydash-" ) {
+                    homeydashdevicesbrightness = homeydashdevicesbrightness  + "<option value='" + device.id + "'>" + device.name + "</option>"
+                    // temp code
+                    if ( device.id == newhomeydashdevicebrightness ) { 
+                        nohomeybrightnessdevice = false 
+                    }
+                    // temp code
+                }
             }
         }
         $indoortemperature.innerHTML = "<option value='none'>None</option>" + temperaturesensors
         $outdoortemperature.innerHTML = "<option value='homey'>Homey built-in</option>" + temperaturesensors
+
+        if ( homeydashdevicesbrightness != "" ) {
+            $devicebrightnessselect.innerHTML = "<option value='none'>None</option>" + homeydashdevicesbrightness
+            $devicebrightnessdescription.classList.remove("hidden")
+            $devicebrightnessselect.classList.remove("hidden")
+        }
     }).then(function(){
         $indoortemperature.value = newindoortemperature
         $outdoortemperature.value = newoutdoortemperature
+        if ( nohomeybrightnessdevice ) {
+            $devicebrightnessselect.value = "none"
+        } else {
+            $devicebrightnessselect.value = newhomeydashdevicebrightness
+        }
     })
 
     $outdoortemperature.addEventListener('change', function() {
@@ -91,6 +115,10 @@ window.addEventListener('load', function() {
         newindoortemperature = $indoortemperature.value
     })
 
+    $devicebrightnessselect.addEventListener('change', function() {
+        newhomeydashdevicebrightness = $devicebrightnessselect.value
+    })
+    
     $languages.value = newlanguage
 
     $languages.addEventListener('change', function() {

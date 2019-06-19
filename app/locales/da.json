@@ -50,7 +50,8 @@
             "temperature": {
                 "outdoor": "Udetemperatur",
                 "indoor": "Indendørs temperatur"
-            }
+            },
+            "brightnessdevice": "Lysstyrke enhed"
         },
         "appearance": {
             "logo": "Logo (url)",

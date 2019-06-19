@@ -11,13 +11,13 @@
     line-height: 9px;
 }
 
-.language-description, .language-select, .theme-description, .theme-select, .temperature-description, .temperature-select {
+.language-description, .language-select, .theme-description, .theme-select, .temperature-description, .temperature-select, .device-description, .device-select {
     width: 40vw;
     font-size: 2.5vh;
     line-height: 25px;
 }
 
-.language-select, .theme-select, .temperature-select {
+.language-select, .theme-select, .temperature-select, .device-select {
     height: 20px;
     margin-right: 2px;
 }
