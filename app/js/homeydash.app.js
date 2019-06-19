@@ -42,6 +42,7 @@ window.addEventListener('load', function() {
   var $body = document.getElementById('body');
   var $favoriteflows = document.getElementById('favorite-flows');
   var $favoritedevices = document.getElementById('favorite-devices');
+  var $favoritealarms = document.getElementById('favorite-alarms');
   var $container = document.getElementById('container');
   var $header = document.getElementById('header');
   $content = document.getElementById('content');
@@ -65,11 +66,14 @@ window.addEventListener('load', function() {
   var $weathertemperatureinside = document.getElementById('weather-temperature-inside');
   var $flows = document.getElementById('flows');
   var $flowsInner = document.getElementById('flows-inner');
-  var $devicesInner = document.getElementById('devices-inner');  
+  var $devicesInner = document.getElementById('devices-inner');
+  var $devicesInner = document.getElementById('devices-inner');
+  var $alarmsInner = document.getElementById('alarms-inner');
 
   try {
     $favoriteflows.innerHTML = texts.favoriteflows
     $favoritedevices.innerHTML = texts.favoritedevices
+    $favoritealarms.innerHTML = texts.alarms
   } catch(err) {}
 
   $infopanel.addEventListener('click', function() {
@@ -132,7 +136,7 @@ window.addEventListener('load', function() {
       return renderInfoPanel('t',notifications);
     })
   });
- 
+
   $weather.addEventListener('click', function() {
     homey.weather.getWeather().then(function(weather) {
       return renderInfoPanel("w", weather)
@@ -173,7 +177,7 @@ window.addEventListener('load', function() {
     clientId: CLIENT_ID,
     clientSecret: CLIENT_SECRET,
   });
-  
+
   theme = getQueryVariable('theme');
   if ( theme == undefined) {
     theme = "web";
@@ -209,10 +213,10 @@ window.addEventListener('load', function() {
     $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Token invalid. Please log-in again.<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
     return
   }
-  
+
   token = JSON.parse(token);
   api.setToken(token);
-  
+
   api.isLoggedIn().then(function(loggedIn) {
     if(!loggedIn)
       $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Token Expired. Please log-in again.<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
@@ -227,7 +231,7 @@ window.addEventListener('load', function() {
   }).then(function(homey_) {
     homey = homey_;
 
-    renderHomey();    
+    renderHomey();
     later.setInterval(function(){
       renderHomey();
     }, later.parse.text('every 1 hour'));
@@ -266,7 +270,7 @@ window.addEventListener('load', function() {
           }
           if ( tokens[token].id == "measure_battery" ) {
             var batteryLevel = tokens[token].value
-            if ( batteryLevel != null ) { 
+            if ( batteryLevel != null ) {
               var element = {}
               element.name = tokens[token].uriObj.name
               element.zone = tokens[token].uriObj.meta.zoneName
@@ -299,16 +303,20 @@ window.addEventListener('load', function() {
       homey.weather.getWeather().then(function(weather) {
         return renderWeather(weather);
       }).catch(console.error);
-      
+
       homey.flow.getFlows().then(function(flows) {
         var favoriteFlows = me.properties.favoriteFlows.map(function(flowId){
           return flows[flowId];
         }).filter(function(flow){
           return !!flow;
         });
-        return renderFlows(favoriteFlows);        
+        return renderFlows(favoriteFlows);
       }).catch(console.error);
-      
+
+      homey.alarms.getAlarms().then(function(alarms) {
+        return renderAlarms(alarms);
+      }).catch(console.error);
+
       homey.devices.getDevices().then(function(devices) {
         var favoriteDevices = me.properties.favoriteDevices.map(function(deviceId){
           return devices[deviceId];
@@ -319,13 +327,13 @@ window.addEventListener('load', function() {
           //if(!device.ui.quickAction) return false;
           return true;
         });
-        
+
         favoriteDevices.forEach(function(device){
           // console.log(device.name)
           // console.log(device.capabilitiesObj)
           if (!device.ready) {
-            faultyDevice=true; 
-            $sensordetails.classList.add('fault')  
+            faultyDevice=true;
+            $sensordetails.classList.add('fault')
             return
           }
           if ( device.ui.quickAction ) {
@@ -336,7 +344,7 @@ window.addEventListener('load', function() {
               }
             });
           }
-          if ( device.capabilitiesObj.alarm_generic ) {        
+          if ( device.capabilitiesObj.alarm_generic ) {
             device.makeCapabilityInstance('alarm_generic', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
@@ -345,7 +353,7 @@ window.addEventListener('load', function() {
               }
             });
           }
-          if ( device.capabilitiesObj.alarm_motion ) {        
+          if ( device.capabilitiesObj.alarm_motion ) {
             device.makeCapabilityInstance('alarm_motion', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
@@ -354,7 +362,7 @@ window.addEventListener('load', function() {
               }
             });
           }
-          if ( device.capabilitiesObj.alarm_contact ) {        
+          if ( device.capabilitiesObj.alarm_contact ) {
             device.makeCapabilityInstance('alarm_contact', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
@@ -363,7 +371,7 @@ window.addEventListener('load', function() {
               }
             });
           }
-          if ( device.capabilitiesObj.alarm_connected ) {        
+          if ( device.capabilitiesObj.alarm_connected ) {
             device.makeCapabilityInstance('alarm_connected', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
@@ -372,7 +380,7 @@ window.addEventListener('load', function() {
               }
             });
           }
-          if ( device.capabilitiesObj.alarm_night ) {        
+          if ( device.capabilitiesObj.alarm_night ) {
             device.makeCapabilityInstance('alarm_night', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
@@ -380,7 +388,7 @@ window.addEventListener('load', function() {
               }
             });
           }
-          if ( device.capabilitiesObj.alarm_vibration ) {        
+          if ( device.capabilitiesObj.alarm_vibration ) {
             device.makeCapabilityInstance('alarm_vibration', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
@@ -389,17 +397,17 @@ window.addEventListener('load', function() {
               }
             });
           }
-          if ( device.capabilitiesObj.measure_temperature ) {        
+          if ( device.capabilitiesObj.measure_temperature ) {
             device.makeCapabilityInstance('measure_temperature', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_temperature");
                 capability = device.capabilitiesObj['measure_temperature']
-                renderValue($valueElement, capability.id, capability.value, capability.units)              
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
-          if ( device.capabilitiesObj.target_temperature ) {        
+          if ( device.capabilitiesObj.target_temperature ) {
             device.makeCapabilityInstance('target_temperature', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
@@ -409,84 +417,84 @@ window.addEventListener('load', function() {
                 if (device.name=="Bier") {renderValue($valueElement, capability.id, capability.value, "")}
               }
             });
-          }          
-          if ( device.capabilitiesObj.measure_humidity ) {        
+          }
+          if ( device.capabilitiesObj.measure_humidity ) {
             device.makeCapabilityInstance('measure_humidity', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_humidity");
                 capability = device.capabilitiesObj['measure_humidity']
-                renderValue($valueElement, capability.id, capability.value, capability.units)              
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
-          if ( device.capabilitiesObj.measure_pressure ) {        
+          if ( device.capabilitiesObj.measure_pressure ) {
             device.makeCapabilityInstance('measure_pressure', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_pressure");
                 capability = device.capabilitiesObj['measure_pressure']
-                renderValue($valueElement, capability.id, capability.value, capability.units)              
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
-          if ( device.capabilitiesObj.measure_luminance ) {        
+          if ( device.capabilitiesObj.measure_luminance ) {
             device.makeCapabilityInstance('measure_luminance', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_luminance");
                 capability = device.capabilitiesObj['measure_luminance']
-                renderValue($valueElement, capability.id, capability.value, capability.units)                
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
-          if ( device.capabilitiesObj.measure_power ) {        
+          if ( device.capabilitiesObj.measure_power ) {
             device.makeCapabilityInstance('measure_power', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_power");
                 capability = device.capabilitiesObj['measure_power']
-                renderValue($valueElement, capability.id, capability.value, capability.units)               
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
-          if ( device.capabilitiesObj.meter_power ) {        
+          if ( device.capabilitiesObj.meter_power ) {
             device.makeCapabilityInstance('meter_power', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":meter_power");
                 capability = device.capabilitiesObj['meter_power']
-                renderValue($valueElement, capability.id, capability.value, capability.units)             
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
-          if ( device.capabilitiesObj.measure_current ) {        
+          if ( device.capabilitiesObj.measure_current ) {
             device.makeCapabilityInstance('measure_current', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_current");
                 capability = device.capabilitiesObj['measure_current']
-                renderValue($valueElement, capability.id, capability.value, capability.units)         
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
-          if ( device.capabilitiesObj.measure_voltage ) {        
+          if ( device.capabilitiesObj.measure_voltage ) {
             device.makeCapabilityInstance('measure_voltage', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_voltage");
                 capability = device.capabilitiesObj['measure_voltage']
-                renderValue($valueElement, capability.id, capability.value, capability.units)               
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
-          if ( device.capabilitiesObj.meter_gas ) {        
+          if ( device.capabilitiesObj.meter_gas ) {
             device.makeCapabilityInstance('meter_gas', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":meter_gas");
                 capability = device.capabilitiesObj['meter_gas']
-                renderValue($valueElement, capability.id, capability.value, capability.units)               
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
@@ -496,7 +504,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":measure_water");
                 capability = device.capabilitiesObj['measure_water']
-                renderValue($valueElement, capability.id, capability.value, capability.units)                
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
@@ -506,7 +514,7 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":daily_production");
                 capability = device.capabilitiesObj['daily_production']
-                renderValue($valueElement, capability.id, capability.value, capability.units)                
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
@@ -516,17 +524,17 @@ window.addEventListener('load', function() {
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":production");
                 capability = device.capabilitiesObj['production']
-                renderValue($valueElement, capability.id, capability.value, capability.units)                
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
-          }          
+          }
           if ( device.capabilitiesObj.dim ) {
             device.makeCapabilityInstance('dim', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
               if( $deviceElement ) {
                 var $valueElement = document.getElementById('value:' + device.id + ":dim");
                 capability = device.capabilitiesObj['dim']
-                renderValue($valueElement, capability.id, capability.value, capability.units)                
+                renderValue($valueElement, capability.id, capability.value, capability.units)
               }
             });
           }
@@ -565,9 +573,9 @@ window.addEventListener('load', function() {
               if ( device.id == indoortemperature ) {
                 if ( device.capabilitiesObj.measure_temperature ) {
                   value = device.capabilitiesObj.measure_temperature.value
-                  renderValue($weathertemperatureinside, 'measure_temperature', value)  
+                  renderValue($weathertemperatureinside, 'measure_temperature', value)
                   device.makeCapabilityInstance('measure_temperature', function(value){
-                    renderValue($weathertemperatureinside, 'measure_temperature', value)              
+                    renderValue($weathertemperatureinside, 'measure_temperature', value)
                   });
                 }
               }
@@ -605,12 +613,14 @@ window.addEventListener('load', function() {
               }
           }
         }
+
         setBrightness(brightness)
         return renderDevices(favoriteDevices);        
+
       }).catch(console.error);
     }).catch(console.error);
   }
-  
+
   function renderVersion() {
     var newVersion = false;
     var savedVersion = getCookie('version')
@@ -668,12 +678,12 @@ window.addEventListener('load', function() {
         if (tokens[token].id == "alarm_generic" && tokens[token].value == true ||
             tokens[token].id == "alarm_motion" && tokens[token].value == true ||
             tokens[token].id == "alarm_contact" && tokens[token].value == true ||
-            tokens[token].id == "alarm_vibration" && tokens[token].value == true 
+            tokens[token].id == "alarm_vibration" && tokens[token].value == true
           ) {
             var element = {}
             element.name = tokens[token].uriObj.name
             element.zone = tokens[token].uriObj.meta.zoneName
-            sensorDetails.push(element)  
+            sensorDetails.push(element)
             sensorAlarm = true
         }
       }
@@ -723,7 +733,7 @@ window.addEventListener('load', function() {
 
         $infoPanelNotifications.innerHTML = $ni
         break;
-      case "w": 
+      case "w":
         $infopanel.innerHTML = '';
         var $infoPanelWeather = document.createElement('div');
         $infoPanelWeather.id = "infopanel-weather"
@@ -743,7 +753,7 @@ window.addEventListener('load', function() {
         var $icon = document.createElement('div');
         $icon.id = 'weather-state-icon';
         $icon.classList.add(info.state.toLowerCase());
-        $icon.style.backgroundImage = 'url(img/weather/' + info.state.toLowerCase() + dn + '.svg)';    
+        $icon.style.backgroundImage = 'url(img/weather/' + info.state.toLowerCase() + dn + '.svg)';
         $icon.style.webkitMaskImage = 'url(img/weather/' + info.state.toLowerCase() + dn + '.svg)';
 
         $infopanelState.appendChild($icon)
@@ -791,7 +801,7 @@ window.addEventListener('load', function() {
         $si = "<center><h1>" + texts.sensor.title + "</h1></center><br /><br />"
         if ( Object.keys(sensorDetails).length ) {
           for ( device in sensorDetails) {
-            $si = $si + "<h2>" + sensorDetails[device].name + texts.sensor.in 
+            $si = $si + "<h2>" + sensorDetails[device].name + texts.sensor.in
             $si = $si + sensorDetails[device].zone + texts.sensor.alarm + "</h2>"
           }
         } else {
@@ -803,7 +813,7 @@ window.addEventListener('load', function() {
         $infopanel.innerHTML = $si
         break;
       case "u":
-        
+
         $infopanel.innerHTML = '';
         var $infoPanelUpdate = document.createElement('div');
         $infoPanelUpdate.id = "infopanel-update"
@@ -828,8 +838,47 @@ window.addEventListener('load', function() {
       $weatherTemperature.innerHTML = Math.round(weather.temperature);
     }
     $weatherStateIcon.classList.add(weather.state.toLowerCase());
-    $weatherStateIcon.style.backgroundImage = 'url(img/weather/' + weather.state.toLowerCase() + dn + '.svg)';    
+    $weatherStateIcon.style.backgroundImage = 'url(img/weather/' + weather.state.toLowerCase() + dn + '.svg)';
     $weatherStateIcon.style.webkitMaskImage = 'url(img/weather/' + weather.state.toLowerCase() + dn + '.svg)';
+  }
+
+  function renderAlarms(alarms) {
+    if ( alarms != "" ) {
+      $alarmsInner.innerHTML = '';
+
+      for (var key in alarms) {
+        var alarm = alarms[key];
+
+        var $alarm = document.createElement('div');
+        $alarm.id = 'alarm-' + alarm.id;
+        $alarm.classList.add('alarm');
+        if(alarm.enabled)
+        {
+          $alarm.classList.add('on');
+        }
+        $alarm.addEventListener('click', function(){
+          // what to do on click?
+        });
+        $alarmsInner.appendChild($alarm);
+
+        // Name
+        var $name = document.createElement('div');
+        $name.classList.add('name');
+        $name.innerHTML = alarm.name;
+        $alarm.appendChild($name);
+
+        // Time
+        var $time = document.createElement('div');
+        $time.classList.add('value');
+        $time.innerHTML = alarm.time;
+        $alarm.appendChild($time);
+      }
+
+    } else {
+      $alarms.style.visibility = 'hidden';
+      $alarms.style.height = '0';
+      $alarms.style.marginBottom = '0';
+    }
   }
   
   function renderFlows(flows) {
@@ -839,24 +888,24 @@ window.addEventListener('load', function() {
         var $flow = document.createElement('div');
         $flow.id = 'flow-' + flow.id;
         $flow.classList.add('flow');
-        $flow.addEventListener('click', function(){        
+        $flow.addEventListener('click', function(){
           if( $flow.classList.contains('running') ) return;
           homey.flow.triggerFlow({
             id: flow.id,
-          }).then(function(){          
-            
-            $flow.classList.add('running');                
+          }).then(function(){
+
+            $flow.classList.add('running');
             setTimeout(function(){
               $flow.classList.remove('running');
             }, 3000);
           }).catch(console.error);
         });
         $flowsInner.appendChild($flow);
-        
+
         var $play = document.createElement('div');
         $play.classList.add('play');
         $flow.appendChild($play);
-        
+
         var $name = document.createElement('div');
         $name.classList.add('name');
         $name.innerHTML = flow.name;
@@ -868,7 +917,7 @@ window.addEventListener('load', function() {
       $flows.style.marginBottom = '0';
     }
   }
-  
+
   function renderDevices(devices) {
     $devicesInner.innerHTML = '';
     devices.forEach(function(device) {
@@ -881,7 +930,7 @@ window.addEventListener('load', function() {
         $deviceElement.classList.toggle('on', true)
       }
       $devicesInner.appendChild($deviceElement);
-      
+
       if (device.capabilitiesObj && device.capabilitiesObj.alarm_generic && device.capabilitiesObj.alarm_generic.value ||
           device.capabilitiesObj && device.capabilitiesObj.alarm_motion && device.capabilitiesObj.alarm_motion.value ||
           device.capabilitiesObj && device.capabilitiesObj.alarm_contact && device.capabilitiesObj.alarm_contact.value ||
@@ -910,9 +959,9 @@ window.addEventListener('load', function() {
       $icon.id = 'icon:' + device.id
       $icon.classList.add('icon');
       $icon.style.webkitMaskImage = 'url(https://icons-cdn.athom.com/' + device.iconObj.id + '-128.png)';
-      if ( device.name == "Bier" || device.name == "Bier temperatuur" ) { 
-        $icon.style.webkitMaskImage = 'url(img/capabilities/beer.png)'; 
-        $icon.style.backgroundImage = 'url(img/capabilities/beer.png)'; 
+      if ( device.name == "Bier" || device.name == "Bier temperatuur" ) {
+        $icon.style.webkitMaskImage = 'url(img/capabilities/beer.png)';
+        $icon.style.backgroundImage = 'url(img/capabilities/beer.png)';
         $icon.style.backgroundSize = 'contain'
       }
 
@@ -940,7 +989,7 @@ window.addEventListener('load', function() {
             itemNr =itemNr + 1
           }
         }
-        if ( itemNr > 0 ) { 
+        if ( itemNr > 0 ) {
           // Touch functions
           $deviceElement.addEventListener('touchstart', function() {
             if ( nameChange ) { return }
@@ -998,7 +1047,7 @@ window.addEventListener('load', function() {
               $deviceElement.classList.remove('push')
             });
           }
-  
+
           $deviceElement.addEventListener('click', function() {
             if ( nameChange ) { return } // No click when shown capability just changed
             if ( longtouch ) {return} // No click when longtouch was performed
@@ -1022,13 +1071,13 @@ window.addEventListener('load', function() {
       $deviceElement.appendChild($nameElement);
     });
   }
-  
+
   function renderText() {
     var now = new Date();
     var hours = now.getHours();
     var minutes = now.getMinutes();
     var seconds = now.getSeconds();
-    
+
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     seconds = (seconds < 10) ? "0" + seconds : seconds;
@@ -1045,7 +1094,7 @@ window.addEventListener('load', function() {
       tod = texts.text.night;
     }
 
-    if ( showTime ) { 
+    if ( showTime ) {
       $textLarge.innerHTML = currentTime
     } else {
       $textLarge.innerHTML = texts.text.good + tod + '!';
@@ -1055,15 +1104,15 @@ window.addEventListener('load', function() {
 
   function renderValue ($value, capabilityId, capabilityValue, capabilityUnits) {
     if ( capabilityUnits == null) { capabilityUnits = "" }
-    if (capabilityId == "measure_temperature" || 
-        capabilityId == "target_temperature" || 
-        capabilityId == "measure_humidity" 
+    if (capabilityId == "measure_temperature" ||
+        capabilityId == "target_temperature" ||
+        capabilityId == "measure_humidity"
         ) {
       var integer = Math.floor(capabilityValue)
       n = Math.abs(capabilityValue)
       var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
       var decimal = decimal.substring(2,3)
-      
+
       $value.innerHTML = integer + "<span id='decimal'>" + decimal + capabilityUnits.substring(0,1) + "</span>"
     } else if ( capabilityId == "measure_pressure" ) {
       $value.innerHTML = Math.round(capabilityValue) + "<br /><sup>" + capabilityUnits + "</sup>"
@@ -1083,7 +1132,7 @@ window.addEventListener('load', function() {
     nameChange=true;
     nameElement.classList.add('highlight')
     nameElement.innerHTML = elementToShow.title
-    setTimeout( function(){ 
+    setTimeout( function(){
       nameChange = false;
       nameElement.innerHTML = currentName
       nameElement.classList.remove('highlight')
@@ -1107,7 +1156,7 @@ window.addEventListener('load', function() {
       newStyle = newStyle + " opacity: " + newOpacity + ";}"
       styleElem.innerHTML = newStyle
   }
-  
+
   function selectValue(device, elementToShow) {
     for ( item in device.capabilitiesObj ) {
       capability = device.capabilitiesObj[item]
@@ -1189,7 +1238,7 @@ window.addEventListener('load', function() {
       return
     }
     if ( iframesettings.urlbackground != undefined ) {
-      setCookie("background",iframesettings.urlbackground,12)  
+      setCookie("background",iframesettings.urlbackground,12)
       setCookie('backgroundopacity',iframesettings.opacitybackground,12)
       setCookie('backgroundcolor',"black",12)
     } else {
@@ -1198,7 +1247,7 @@ window.addEventListener('load', function() {
       setCookie('backgroundcolor',"",12)
     }
     if ( iframesettings.urllogo != undefined ) {
-      setCookie("logo",iframesettings.urllogo,12)  
+      setCookie("logo",iframesettings.urllogo,12)
     } else {
       setCookie("logo","",12)
     }
@@ -1235,8 +1284,8 @@ window.addEventListener('load', function() {
             capability.id == "light_temperature" ||
             capability.id == "light_saturation" ||
             capability.id == "light_hue"
-            ) { 
-          continue; 
+            ) {
+          continue;
         }
         searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
         if (itemNr == showElement ) {
@@ -1261,7 +1310,7 @@ window.addEventListener('load', function() {
     }
     $icon = document.getElementById('icon:'+device.id);
     $iconcapability = document.getElementById('icon-capability:'+device.id);
-    if ( showElement != itemNr ) { 
+    if ( showElement != itemNr ) {
       elementToShow.classList.remove('hidden')
       elementToShow.classList.add('visible')
       renderName(device,elementToShow)
@@ -1276,7 +1325,7 @@ window.addEventListener('load', function() {
       $iconcapability.style.visibility = 'hidden';
       deviceElement = document.getElementById('device:' + device.id)
       nameChange=true;
-      setTimeout( function(){ 
+      setTimeout( function(){
         nameChange = false;
         deviceElement.classList.remove('push-long')
       }, 1000);
@@ -1305,7 +1354,7 @@ window.addEventListener('load', function() {
     if ( parseFloat(currentTime,10) < parseFloat(sunriseTime,10)  ) {
       tod = 1;
       dn = "n";
-    } 
+    }
     else if ( parseFloat(currentTime,10) < parseFloat(sunsetTime,10) ) {
       tod = 2;
       dn = "";
@@ -1313,5 +1362,4 @@ window.addEventListener('load', function() {
       tod = 3;
       dn = "n";
     }
-  }
-});
+  }});

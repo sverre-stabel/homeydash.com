@@ -4,7 +4,7 @@
  */
 
 body {
-  
+
 }
 
 #container {
@@ -24,7 +24,7 @@ body {
 
 .info-message {
   font-size: 3.4vh;
-  font-weight: 350; 
+  font-weight: 350;
 }
 
 .info-date {
@@ -50,7 +50,7 @@ body {
   }
     #sunrise, #sunset {
       display: inline-block;
-    }      
+    }
     #sunrise-icon, #sunset-icon  {
       width: 3vw;
       height: 3vw;
@@ -87,7 +87,7 @@ body {
     width: 22vw;
   }
     #version-icon {
-      display: inline-block; 
+      display: inline-block;
       width: 3vw;
       height: 5vw;
     }
@@ -97,17 +97,17 @@ body {
       height: 5vw;
     }
     #notification-details {
-      display: inline-block; 
+      display: inline-block;
       width: 3vw;
       height: 5vw;
     }
     #sensor-details {
-      display: inline-block; 
+      display: inline-block;
       width: 3vw;
       height: 5vw;
     }
     #settings-icon {
-      display: inline-block; 
+      display: inline-block;
       width: 3vw;
       height: 5vw;
     }
@@ -124,7 +124,7 @@ body {
 }
   .favorites-inner {
     white-space: normal;
-    -webkit-mask-image: none;    
+    -webkit-mask-image: none;
   }
   .favorites h2 {
     display: block;
@@ -132,11 +132,11 @@ body {
     font-size: 2vh;
     margin-bottom: 1vh;
     text-transform: uppercase;
-    
+
     display: flex;
     flex-direction: row;
     align-items: center;
-    
+
     opacity: 0.3;
   }
   .favorites h2:after {
@@ -164,7 +164,7 @@ body {
     border-radius: 7vh;
   }
   .flow.running:before {
-    font-size: 3.2vh;    
+    font-size: 3.2vh;
     line-height: 7vh;
   }
     .flow .play {
@@ -179,6 +179,41 @@ body {
       padding: 0 3vh;
       padding-right: 4vh;
       max-width: 20vw;
+    }
+
+#alarms {
+  position: static;
+}
+  .alarm {
+    width: 20vh;
+    height: 13vh;
+    padding: 2vh;
+    margin-right: 1.36vw;
+    margin-bottom: 3vh;
+    border-radius: 3vh;
+  }
+    .alarm .name {
+      position: absolute;
+      bottom: 2vh;
+      left: 2vh;
+      right: 2vh;
+      font-size: 2.7vh;
+      font-weight: 300;
+      line-height: 3.5vh;
+      width: auto;
+      height: auto;
+      max-height: 7vh;
+    }
+    .alarm .value {
+      position: absolute;
+      top: 3vh;
+      left: 2vh;
+      right: 2vh;
+      font-size: 4.2vh;
+      font-weight: 300;
+      line-height: 4.2vh;
+      height: auto;
+      max-height: 8vh;
     }
 
 #devices {

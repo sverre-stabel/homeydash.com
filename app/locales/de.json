@@ -1,6 +1,7 @@
 {
     "favoriteflows": "Favoritisierte Flows",
     "favoritedevices": "Favorisierte Geräte",
+    "alarms": "Alarme",
     "text" : {
         "good": "Gute",
         "evening": "n Abend",
@@ -18,7 +19,7 @@
     "weather": {
         "title": "Wetterinformationen für ",
         "temperature": "Die aktuelle Temperatur beträgt ",
-        "degrees": " Grad, ", 
+        "degrees": " Grad, ",
         "humidity": "die Luftfeuchtigkeit beträgt ",
         "pressure": "% und der Druck beträgt ",
         "mbar": " mbar"
@@ -30,7 +31,7 @@
         "postsunset": " Sonnenuntergang war um "
     },
     "battery": {
-        "title": "Batterieinformation", 
+        "title": "Batterieinformation",
         "in": " in ",
         "has": " hat ",
         "left": "% verbleibend"

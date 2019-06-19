@@ -1,6 +1,7 @@
 {
     "favoriteflows": "Fluxuri Favorite",
     "favoritedevices": "Dispozitive Favorite",
+    "alarms": "Alarma",
     "text" : {
         "good": "",
         "evening": "Buna seara",
@@ -18,7 +19,7 @@
     "weather": {
         "title": "Informatii meteo pentru ",
         "temperature": "Temperatura actuala este ",
-        "degrees": " grade, ", 
+        "degrees": " grade, ",
         "humidity": "umiditatea este ",
         "pressure": "% si presiunea atmosferica ",
         "mbar": " mbar"
@@ -30,7 +31,7 @@
         "postsunset": " si apune la "
     },
     "battery": {
-        "title": "Informatii despre baterii", 
+        "title": "Informatii despre baterii",
         "in": " in ",
         "has": " are ",
         "left": "% ramas"
@@ -41,7 +42,7 @@
         "alarm": " este in stare de alerta.",
         "noalarm": " nici un senzor in stare de alerta.",
         "fault": "Este o problema cu dispozitivul,verificati dispozitivele si aplicatiile in aplicatia lui Homey"
-    },    
+    },
     "settings": {
         "title": {
             "language": "Selectați limba dvs.",
