@@ -50,7 +50,8 @@
             "temperature": {
                 "outdoor": "Temperatura exterior",
                 "indoor": "Temperatura interior"
-            }
+            },
+            "brightnessdevice": "Dispositivo de brillo"
         },
         "appearance": {
             "logo": "Logo (url)",

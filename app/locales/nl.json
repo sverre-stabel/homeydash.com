@@ -49,8 +49,9 @@
             "appearance": "Uiterlijk",
             "temperature": {
                 "outdoor": "Buiten temperatuur",
-                "indoor": "Binnen temperatur"
-            }
+                "indoor": "Binnen temperatuur"
+            },
+            "brightnessdevice": "Helderheidsapparaat"
         },
         "appearance": {
             "logo": "Logo (url)",

@@ -1,4 +1,4 @@
-var version = "1.0.8.1"
+var version = "1.1.0"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -6,6 +6,7 @@ var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
 var homey;
 var outdoortemperature
 var indoortemperature
+var homeydashdevicebrightness
 var locale = 'en'
 var theme;
 var urltoken;
@@ -21,7 +22,6 @@ var texts = getTexts(locale)
 loadScript(locale, setLocale)
 
 window.addEventListener('load', function() {
-  //var $log = document.getElementById('log');
 
   //var homey;
   var me;
@@ -37,6 +37,7 @@ window.addEventListener('load', function() {
   var nameChange = false;
   var longtouch = false;
   var showTime;
+  var cancelUndim = false;
 
   var $body = document.getElementById('body');
   var $favoriteflows = document.getElementById('favorite-flows');
@@ -76,9 +77,51 @@ window.addEventListener('load', function() {
     $infopanel.style.visibility = "hidden";
   });
 
+  $logo.addEventListener('mousedown', function() {
+    logoStart();
+  });
+  
+  $logo.addEventListener('touchstart', function() {
+    logoStart();
+  });
+
+  $logo.addEventListener('mouseup', function() {
+    timeout = setTimeout(function() {
+      longtouch = false;
+    },100)
+    $logo.classList.remove('startTouch')
+  });
+
+  $logo.addEventListener('touchend', function() {
+    timeout = setTimeout(function() {
+      longtouch = false;
+    },200)
+    $logo.classList.remove('startTouch')
+  });
+
   $logo.addEventListener('click', function(){
+    if ( longtouch ) {return} // No click when longtouch was performed
     window.location.reload();
   });
+
+  function logoStart() {
+    longtouch = false;
+    $logo.classList.add('startTouch')
+    timeout = setTimeout(function() {
+      if ( $logo.classList.contains('startTouch') ) {
+        longtouch = true;
+        var currentBrightness = $container.style.opacity*100
+        var undim = ( currentBrightness + 50)
+        if ( undim > 100 ) { undim = 100}
+        setBrightness(undim)
+        timeout2 = setTimeout(function() {
+          if ( !cancelUndim ) {
+            setBrightness(currentBrightness)
+          }
+        }, 7500)
+      }
+    }, 300)
+  }
 
   $settingsIcon.addEventListener('click', function() {
     renderSettingsPanel();
@@ -143,8 +186,13 @@ window.addEventListener('load', function() {
   document.head.appendChild($css);
 
   var backgroundfromurl = getQueryVariable('background');
+  if ( backgroundfromurl == undefined ) { backgroundfromurl = "" }
+  
   var vadjust = getQueryVariable('vadjust');
   if ( vadjust == undefined ) { vadjust = 0}
+
+  var logofromurl = getQueryVariable('logo');
+  if ( logofromurl == undefined ) { logofromurl = "" }
 
   var zoom = getCookie("zoom")
   $content.style.zoom = zoom;
@@ -273,8 +321,8 @@ window.addEventListener('load', function() {
         });
         
         favoriteDevices.forEach(function(device){
-          //console.log(device.name)
-          //console.log(device.capabilitiesObj)
+          // console.log(device.name)
+          // console.log(device.capabilitiesObj)
           if (!device.ready) {
             faultyDevice=true; 
             $sensordetails.classList.add('fault')  
@@ -509,7 +557,8 @@ window.addEventListener('load', function() {
             });
           }
         });
-        var HomeydashDeviceBrightness = getCookie("HomeydashDeviceBrightness")
+        homeydashdevicebrightness = getCookie("homeydashdevicebrightness")
+        var brightness = 100
         for (item in devices) {
           device = devices[item]
           if ( device.ready ) {
@@ -531,27 +580,32 @@ window.addEventListener('load', function() {
                   });
                 }
               }
-              if ( device.name == HomeydashDeviceBrightness ) {
-                if ( device.capabilitiesObj.measure_luminance ) {
-                  var brightness = device.capabilitiesObj.measure_luminance.value
+              if ( device.id == homeydashdevicebrightness ) {
+                if ( device.capabilitiesObj.dim) {
+                  brightness = Math.round(device.capabilitiesObj.dim.value*100)
                   if ( brightness == null ) { brightness = 100 }
                   if ( brightness <0 || brightness > 100 ) {
-                    console.log("Homeydash-brightness value is out of bounds")
+                    console.log(device.name + " dim value is out of bounds")
                     break
                   }
-                  setBrightness(brightness)
-                  device.makeCapabilityInstance('measure_luminance', function(value){
-                    if ( brightness <0 || brightness > 100 ) {
-                      console.log("Homeydash-brightness value is out of bounds")
+                  device.makeCapabilityInstance('dim', function(value){
+                    value = Math.round(value * 100)
+                    if ( value <0 || value > 100 ) {
+                      console.log(device.name + " dim value is out of bounds")
                     }
+                    cancelUndim = true
                     setBrightness(value)
+                    timeout2 = setTimeout(function() {
+                      cancelUndim = false
+                    }, 7500)
                   });
                 } else {
-                  console.log("Homeydash-brightness device found, device does not have luminance capability!")
+                  console.log(device.name + " device found, device does not have dim capability!")
                 }
               }
           }
         }
+        setBrightness(brightness)
         return renderDevices(favoriteDevices);        
       }).catch(console.error);
     }).catch(console.error);
@@ -566,8 +620,8 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* Added adjustable brightness<br />"
-
+        changeLog = changeLog + "* Removed dimming functionality for Virtual Device with luminance capability<br />"
+        changeLog = changeLog + "* Added dimming functionality for Virtual Device with dim capability<br />"
         renderInfoPanel("u",changeLog)
       })
     }
@@ -582,7 +636,7 @@ window.addEventListener('load', function() {
     if ( backgroundUrl != "" ) {
       document.body.style.background = backgroundColor;
       css = "content: ''; background: url('" + backgroundUrl + "');"
-      css = css + " top: 0px; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-size:cover;"
+      css = css + " top: " + vadjust + "px; left: 0; bottom: 0; right: 0; position: absolute; z-index: -1; background-size:cover;"
       css = css + " opacity: " + backgroundOpacity + ";"
     }
     if ( backgroundUrl == "" && backgroundfromurl != "" ) {
@@ -597,6 +651,11 @@ window.addEventListener('load', function() {
     if ( logo != "" ) {
       $logo.style.background = "no-repeat center center";
       $logo.style.backgroundImage = "url('" + logo + "')";
+      $logo.style.backgroundSize = "contain";
+    }
+    if ( logo == "" && logofromurl != "") {
+      $logo.style.background = "no-repeat center center";
+      $logo.style.backgroundImage = "url('" + logofromurl + "')";
       $logo.style.backgroundSize = "contain";
     }
   }
@@ -888,8 +947,8 @@ window.addEventListener('load', function() {
             longtouch = false;
             $deviceElement.classList.add('startTouch')
             timeout = setTimeout(function() {
-              longtouch = true;
               if ( $deviceElement.classList.contains('startTouch') ) {
+                longtouch = true;
                 $deviceElement.classList.add('push-long')
                 valueCycle(device);
               }
@@ -907,8 +966,8 @@ window.addEventListener('load', function() {
             longtouch = false;
             $deviceElement.classList.add('startTouch')
             timeout = setTimeout(function() {
-              longtouch = true;
               if ( $deviceElement.classList.contains('startTouch') ) {
+                longtouch = true;
                 $deviceElement.classList.add('push-long')
                 valueCycle(device);
               }
@@ -1034,7 +1093,7 @@ window.addEventListener('load', function() {
 
   function setBrightness(brightness) {
     brightness = brightness/100
-    if ( brightness < 0.1) { brightness = 0.1}
+    //if ( brightness < 0.01) { brightness = 0.01}
     $container.style.opacity = brightness
       var style = styleElem.innerHTML
       oldStyle = style.split(";")
@@ -1044,7 +1103,7 @@ window.addEventListener('load', function() {
       }
       var backgroundOpacity = getCookie('backgroundopacity')
       var newOpacity = backgroundOpacity * brightness
-      if ( newOpacity < 0.1 ) { newOpacity = 0.1 }
+      //if ( newOpacity < 0.01 ) { newOpacity = 0.01 }
       newStyle = newStyle + " opacity: " + newOpacity + ";}"
       styleElem.innerHTML = newStyle
   }
@@ -1091,7 +1150,6 @@ window.addEventListener('load', function() {
       $settingsiframe.id = "settings-iframe"
       $settingsiframe.src = "./settings.html"
       $settingspanel.appendChild($settingsiframe)
-      
     }
 
     var $buttonssettings = document.createElement('div')
@@ -1115,10 +1173,7 @@ window.addEventListener('load', function() {
     })
 
     $cancelsettings.addEventListener('click', function() {
-      $settingspanel.style.visibility = "hidden"
-      $settingspanel.removeChild($settingsiframe)
-      $settingsiframe = null
-      location.reload(true)
+      cancelsettings();
     })
 
     $settingspanel.style.visibility = "visible"
@@ -1149,11 +1204,18 @@ window.addEventListener('load', function() {
     }
     setCookie("outdoortemperature",iframesettings.newoutdoortemperature,12)
     setCookie("indoortemperature",iframesettings.newindoortemperature,12)
-    setCookie("HomeydashDeviceBrightness","Homeydash-brightness",12)
+    setCookie("homeydashdevicebrightness",iframesettings.newhomeydashdevicebrightness,12)
     setCookie("showtime",iframesettings.newshowTime,12)
-    setCookie("zoom",iframesettings.newZoom,12)
-    location.assign(location.protocol + "//" + location.host + location.pathname + "?theme="+iframesettings.newtheme+"&lang="+iframesettings.newlanguage+"&token="+iframesettings.token+"&background="+encodeURIComponent(iframesettings.urlbackground))
+    setCookie("zoom",iframesettings.newZoom,12)   
+    location.assign(location.protocol + "//" + location.host + location.pathname + "?theme="+iframesettings.newtheme+"&lang="+iframesettings.newlanguage+"&token="+iframesettings.token+"&background="+encodeURIComponent(iframesettings.urlbackground)+"&logo="+encodeURIComponent(iframesettings.urllogo))
+  }
 
+  function cancelsettings() {
+    $settingspanel.style.visibility = "hidden"
+    //
+    $settingspanel.removeChild($settingsiframe)
+    $settingsiframe = null
+    location.reload(true)
   }
 
   function valueCycle(device) {
@@ -1221,7 +1283,6 @@ window.addEventListener('load', function() {
     }
   }
 
-
   function calculateTOD() {
     var d = new Date();
     var m = d.getMinutes();
@@ -1253,5 +1314,4 @@ window.addEventListener('load', function() {
       dn = "n";
     }
   }
-
 });

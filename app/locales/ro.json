@@ -50,7 +50,8 @@
             "temperature": {
                 "outdoor": "Temperatură exterioară",
                 "indoor": "Temperatură interioară"
-            }
+            },
+            "brightnessdevice": "Dispozitiv de luminozitate"
         },
         "appearance": {
             "logo": "Logo (url)",
