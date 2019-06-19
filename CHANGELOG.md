@@ -1,3 +1,7 @@
+## Version 1.1.0.1
+* Alarms added, Pull Request by Salingduck
+* Added schedule to alarm tile
+
 ## Version 1.1.0 - published on homeydash.com
 * Added adjustable brightness
 

@@ -168,30 +168,17 @@
     }
 
 #alarms {
-  position: static;
+  
 }
-  .alarm {
+  .alarms .alarm {
     width: 150px; /*20vh;*/
-    height: 100px; /*20vh;*/
+    height: 120px; /*16vh;*/
     padding: 15px; /*2vh;*/
     margin-right: 13px; /*1.9vh;*/
     margin-bottom: 15px; /*2vh;*/
     border-radius: 22px; /*3vh;*/
   }
-    .alarm .name {
-      position: absolute;
-      bottom: 15px; /*2vh;*/
-      left: 15px; /*2vh;*/
-      right: 15px; /*2vh;*/
-      font-size: 20px; /*2.7vh;*/
-      font-weight: 300;
-      line-height: 26px; /*3.5vh;*/
-      width: auto;
-      height: auto;
-      max-height: 52px; /*7vh;*/
-    }
-    .alarm .value {
-      position: absolute;
+    .alarms .alarm .value {
       top: 22px; /*3vh;*/
       left: 15px; /*2vh;*/
       right: 15px; /*2vh;*/
@@ -200,6 +187,26 @@
       line-height: 31px; /*4.2vh;*/
       height: auto;
       max-height: 60px; /*8vh;*/
+    }
+    .alarms .alarm .name {
+      bottom: 37px; /*5vh;*/
+      left: 15px; /*2vh;*/
+      right: 15px; /*2vh;*/
+      font-size: 20px; /*2.7vh;*/
+      font-weight: 300;
+      line-height: 20px; /*2.7vh;*/
+      max-height: 20px; /*2.7vh;*/
+      width: auto;
+      height: auto;
+    }
+    .alarms .alarm .schedule {
+      bottom: 15px; /*2vh;*/
+      left: 15px; /*2vh;*/
+      right: 15px; /*2vh;*/
+      max-height: 19px; /*2.5vh;*/
+      font-size: 14px; /*1.8vh;*/
+      line-height: 22px; /*3vh;*/
+      font-weight: 200;
     }
 
 #devices {

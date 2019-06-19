@@ -404,12 +404,12 @@ a {
         }
 
   #alarms {
-
+    position: static;
     }
       .alarms {
         overflow-y: visible;
       }
-        .alarm {
+        .alarms .alarm {
           display: inline-block;
           vertical-align: middle;
           position: relative;
@@ -426,30 +426,13 @@ a {
           opacity: 0.5;
           -webkit-user-select: none;
         }
-          .alarm.on {
+          .alarms .alarm.on {
             opacity: 1;
           }
-          .alarm .name {
-            position: absolute;
-            bottom: 12px;
-            left: 12px;
-            right: 12px;
-            width: 86%;
-            height: 100%;
-            max-height: 14px;
-            font-size: 14px;
-            line-height: 15px;
-            font-weight: 300;
-            overflow: hidden;
-            white-space: normal;
-            text-overflow: ellipsis;
-            -webkit-user-select: none;
-            color: black;
-          }
-          .alarm .value {
+          .alarms .alarm .value {
             position: absolute;
             top: 15px;
-            right: 12px;
+            left: 12px;
             width: 100%;
             font-size: 18px;
             height: 42px;
@@ -462,6 +445,41 @@ a {
             -webkit-user-select: none;
             color: black;
           }
+          .alarms .alarm .name {
+            position: absolute;
+            bottom: 34px;
+            left: 12px;
+            right: 12px;
+            width: 86%;
+            height: 100%;
+            max-height: 28px;
+            font-size: 14px;
+            line-height: 15px;
+            font-weight: 300;
+            overflow: hidden;
+            white-space: normal;
+            text-overflow: ellipsis;
+            -webkit-user-select: none;
+            color: black;
+          }
+          .alarms .alarm .schedule {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            width: 80%;
+            height: 100%;
+            max-height: 12px;
+            font-size: 10px;
+            line-height: 15px;
+            font-weight: 200;
+            overflow: hidden;
+            white-space: normal;
+            text-overflow: ellipsis;
+            -webkit-user-select: none;
+            color: black;
+          }
+
   #devices {
 
   }

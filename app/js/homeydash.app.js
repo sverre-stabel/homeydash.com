@@ -1,4 +1,4 @@
-var version = "1.1.0"
+var version = "1.1.0.1"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -68,6 +68,7 @@ window.addEventListener('load', function() {
   var $flowsInner = document.getElementById('flows-inner');
   var $devicesInner = document.getElementById('devices-inner');
   var $devicesInner = document.getElementById('devices-inner');
+  var $alarms = document.getElementById('alarms');
   var $alarmsInner = document.getElementById('alarms-inner');
 
   try {
@@ -630,8 +631,8 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* Removed dimming functionality for Virtual Device with luminance capability<br />"
-        changeLog = changeLog + "* Added dimming functionality for Virtual Device with dim capability<br />"
+        changeLog = changeLog + "* Alarms added, Pull Request by Salingduck<br />"
+        changeLog = changeLog + "* Added schedule to alarm tile<br />"
         renderInfoPanel("u",changeLog)
       })
     }
@@ -843,11 +844,26 @@ window.addEventListener('load', function() {
   }
 
   function renderAlarms(alarms) {
-    if ( alarms != "" ) {
+    if ( Object.keys(alarms).length != 0 ) {
       $alarmsInner.innerHTML = '';
 
       for (var key in alarms) {
         var alarm = alarms[key];
+        var week = ""
+        var weekend = ""
+        var schedule = ""
+
+        if ( alarm.repetition["monday"] ) { week = week + "mo,"}
+        if ( alarm.repetition["tuesday"] ) { week = week + "tu,"}
+        if ( alarm.repetition["wednesday"] ) { week = week + "we,"}
+        if ( alarm.repetition["thursday"] ) { week = week + "th,"}
+        if ( alarm.repetition["friday"] ) { week = week + "fr,"}
+        if ( week == "mo,tu,we,th,fr," ) { week = "weekdays," }
+        if ( alarm.repetition["saturday"] ) { weekend = weekend + "sa,"}
+        if ( alarm.repetition["sunday"] ) { weekend = weekend + "su,"}
+        if ( weekend == "sa,su," ) { weekend = "weekend," }
+        schedule = week + weekend
+        schedule = schedule.substr(schedule,schedule.length-1)
 
         var $alarm = document.createElement('div');
         $alarm.id = 'alarm-' + alarm.id;
@@ -861,17 +877,23 @@ window.addEventListener('load', function() {
         });
         $alarmsInner.appendChild($alarm);
 
-        // Name
-        var $name = document.createElement('div');
-        $name.classList.add('name');
-        $name.innerHTML = alarm.name;
-        $alarm.appendChild($name);
-
         // Time
         var $time = document.createElement('div');
         $time.classList.add('value');
         $time.innerHTML = alarm.time;
         $alarm.appendChild($time);
+
+        // Name
+        var $name = document.createElement('div');
+        $name.classList.add('name');
+        $name.innerHTML = alarm.name
+        $alarm.appendChild($name);
+
+        // Schedule
+        var $schedule = document.createElement('div');
+        $schedule.classList.add('schedule');
+        $schedule.innerHTML = schedule
+        $alarm.appendChild($schedule);
       }
 
     } else {
