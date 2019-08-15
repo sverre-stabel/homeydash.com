@@ -1,6 +1,35 @@
-## Version 1.1.0.1
+## Version 1.1.2 - published on homeydash.com
+* Added WeatherFlow's Smart Weather Station capabilities
+
+## Version 1.1.1.8
+* Tweaked placement of slider
+* Added Italian translations
+
+## Version 1.1.1.7
+* Added option to change volume on audio devices
+
+## Version 1.1.1.6
+* Added option to change target temperature on thermostat devices
+
+## Version 1.1.1.5
+* fixed rounding error in temperature
+
+## Version 1.1.1.4
+* fixed settings wrong brightness on closing slider
+
+## Version 1.1.1.3
+* minor css fixes
+
+## Version 1.1.1.2
+* Added option to dim on supported devices
+
+## Version 1.1.1.1
+* Added option to change order of devices/flows/alarms
+
+## Version 1.1.1 - published on homeydash.com
 * Alarms added, Pull Request by Salingduck
 * Added schedule to alarm tile
+* Added ability to alarm tiles to disable/enable alarms
 
 ## Version 1.1.0 - published on homeydash.com
 * Added adjustable brightness
