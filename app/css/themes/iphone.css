@@ -10,24 +10,22 @@ h2 {
   font-size: 2vh;
 }
 #container {
-  /*width: 100%;*/
-  height: 100%;
-  padding: 0vw 2vw;
+
 }
 
 #settings-panel {
   width: 90vw;
-  height: 60vh;
+  height: 80vh;
   left: 5vw;
-  top: 10vh;
+  top: 5vh;
 }
   #settings-iframe {
     position: absolute;
     right: 2vw;
     width: 86vw;
-    height: 85%;
+    height: 95%;
     background: white;
-    margin-bottom: 2vh;
+    overflow: hidden;
   }
   .btn {
     width: 10vw;
@@ -236,7 +234,7 @@ h2 {
 }
   .alarms .alarm {
     width: 16.9vh;
-    height: 10.9vh;
+    height: 11.9vh;
     padding: 1.6vh;
     margin-right: 2.2vh;
     margin-bottom: 2.2vh;
@@ -244,7 +242,7 @@ h2 {
   }
     .alarms .alarm .name {
       position: absolute;
-      bottom: 1.6vh;
+      bottom: 2.6vh;
       left: 1.6vh;
       right: 1.6vh;
       font-size: 2.2vh;

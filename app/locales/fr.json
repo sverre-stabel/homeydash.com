@@ -2,6 +2,11 @@
     "favoriteflows": "Flux préférés",
     "favoritedevices": "Appareils favoris",
     "alarms": "Les alarmes",
+    "schedules": {
+        "weekdays": "jours de la semaine",
+        "weekend": "weekend",
+        "alldays": "tous les jours"
+    },
     "text" : {
         "good": "Bonne ",
         "evening": "soirée",

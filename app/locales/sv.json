@@ -2,6 +2,11 @@
     "favoriteflows": "Favoritflöden",
     "favoritedevices": "Favoritenheter",
     "alarms": "Larm",
+    "schedules": {
+        "weekdays": "vardagar",
+        "weekend": "helgen",
+        "alldays": "alla dagar"
+    },
     "text" : {
         "good": "God ",
         "evening": "kväll",

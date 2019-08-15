@@ -41,6 +41,7 @@ var setLocale = function () {
 }
 
 function setCookie(cname, cvalue, exweeks) {
+  //console.log(uid + cname)
   var d = new Date();
   d.setTime(d.getTime() + (exweeks*5*7*24*60*60*1000));
   var expires = "expires="+ d.toUTCString();

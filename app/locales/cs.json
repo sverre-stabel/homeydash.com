@@ -2,6 +2,11 @@
     "favoriteflows": "Oblíbená Flows",
     "favoritedevices": "Oblíbená zařízení",
     "alarms": "Alarmy",
+    "schedules": {
+        "weekdays": "Pracovní dny",
+        "weekend": "Víkend",
+        "alldays": "všechny dny"
+    },
     "text" : {
         "good": "",
         "evening": "Dobrý večer",

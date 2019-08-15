@@ -1,4 +1,4 @@
-var version = "1.1.0.1"
+var version = "1.1.2"
 
 var CLIENT_ID = '5cbb504da1fc782009f52e46';
 var CLIENT_SECRET = 'gvhs0gebgir8vz8yo2l0jfb49u9xzzhrkuo1uvs8';
@@ -10,6 +10,7 @@ var homeydashdevicebrightness
 var locale = 'en'
 var theme;
 var urltoken;
+var uid;
 var styleElem;
 var $content
 var $settingspanel
@@ -29,7 +30,7 @@ window.addEventListener('load', function() {
   var sunset = "";
   var tod = "";
   var dn = "";
-  var batteryDetails =[];
+  var batteryDetails = [];
   var batteryAlarm = false;
   var sensorDetails =[];
   var nrMsg = 8;
@@ -38,38 +39,66 @@ window.addEventListener('load', function() {
   var longtouch = false;
   var showTime;
   var cancelUndim = false;
+  var currentBrightness;
+  var selectedDevice;
+  var slideDebounce = false;
+  var sliderUnit = "";
 
-  var $body = document.getElementById('body');
-  var $favoriteflows = document.getElementById('favorite-flows');
-  var $favoritedevices = document.getElementById('favorite-devices');
-  var $favoritealarms = document.getElementById('favorite-alarms');
-  var $container = document.getElementById('container');
-  var $header = document.getElementById('header');
-  $content = document.getElementById('content');
   var $infopanel = document.getElementById('info-panel');
   $settingspanel = document.getElementById('settings-panel');
-  var $text = document.getElementById('text');
-  var $textLarge = document.getElementById('text-large');
-  var $textSmall = document.getElementById('text-small');
-  var $logo = document.getElementById('logo');
-  var $settingsIcon = document.getElementById('settings-icon');
-  var $versionIcon = document.getElementById('version-icon');
-  var $batterydetails = document.getElementById('battery-details');
-  var $sensordetails = document.getElementById('sensor-details');
-  var $notificationdetails = document.getElementById('notification-details');
-  var $sunrisetime = document.getElementById('sunrise-time');
-  var $sunsettime = document.getElementById('sunset-time');
-  var $weather = document.getElementById('weather');
-  var $weatherTemperature = document.getElementById('weather-temperature');
-  var $weatherStateIcon = document.getElementById('weather-state-icon');
-  var $weatherroof = document.getElementById('weather-roof');
-  var $weathertemperatureinside = document.getElementById('weather-temperature-inside');
-  var $flows = document.getElementById('flows');
-  var $flowsInner = document.getElementById('flows-inner');
-  var $devicesInner = document.getElementById('devices-inner');
-  var $devicesInner = document.getElementById('devices-inner');
-  var $alarms = document.getElementById('alarms');
-  var $alarmsInner = document.getElementById('alarms-inner');
+  var $sliderpanel = document.getElementById('slider-panel');
+  var $slider = document.getElementById('slider');
+  var $sliderclose = document.getElementById('slider-close');
+  var $slidericon = document.getElementById('slider-icon');
+  var $slidercapability = document.getElementById('slider-capability');
+  var $slidername = document.getElementById('slider-name');
+  var $slidervalue = document.getElementById('slider-value');
+  var $container = document.getElementById('container');
+
+  var $containerinner = document.getElementById('container-inner');
+
+    var $header = document.getElementById('header');
+      var $weather = document.getElementById('weather');
+        var $sunrisetime = document.getElementById('sunrise-time');
+        var $sunsettime = document.getElementById('sunset-time');
+        var $weatherStateIcon = document.getElementById('weather-state-icon');
+        var $weatherTemperature = document.getElementById('weather-temperature');
+        var $weatherroof = document.getElementById('weather-roof');
+        var $weathertemperatureinside = document.getElementById('weather-temperature-inside');
+      var $text = document.getElementById('text');
+        var $textLarge = document.getElementById('text-large');
+        var $textSmall = document.getElementById('text-small');
+      var $details = document.getElementById('details');
+        var $versionIcon = document.getElementById('version-icon');
+        var $batterydetails = document.getElementById('battery-details');
+        var $notificationdetails = document.getElementById('notification-details');
+        var $sensordetails = document.getElementById('sensor-details');
+        var $settingsIcon = document.getElementById('settings-icon');
+        var $logo = document.getElementById('logo');
+    $content = document.getElementById('content');
+      var $row1 = document.getElementById('row1'); 
+        var $flows = document.getElementById('flows');
+          var $favoriteflows = document.getElementById('favorite-flows');  
+            var $flowsInner = document.getElementById('flows-inner');
+      var $row2 = document.getElementById('row2');
+        var $devices = document.getElementById('devices');
+          var $favoritedevices = document.getElementById('favorite-devices');
+            var $devicesInner = document.getElementById('devices-inner');
+      var $row3 = document.getElementById('row3');
+        var $alarms = document.getElementById('alarms');
+          var $favoritealarms = document.getElementById('favorite-alarms');
+            var $alarmsInner = document.getElementById('alarms-inner');
+
+  var order = getCookie("order")
+  if ( order != "") {
+    row = order.split(",")
+  } else {
+    row = "1,2,3".split(",")
+  }
+  
+  $row1.style.order = row[0]
+  $row2.style.order = row[1]
+  $row3.style.order = row[2]
 
   try {
     $favoriteflows.innerHTML = texts.favoriteflows
@@ -78,7 +107,7 @@ window.addEventListener('load', function() {
   } catch(err) {}
 
   $infopanel.addEventListener('click', function() {
-    $container.classList.remove('container-dark');
+    $containerinner.classList.remove('container-dark');
     $infopanel.style.visibility = "hidden";
   });
 
@@ -109,13 +138,17 @@ window.addEventListener('load', function() {
     window.location.reload();
   });
 
+  $sliderclose.addEventListener('click', function(){
+    $sliderpanel.style.display = "none"
+  })
+
   function logoStart() {
     longtouch = false;
     $logo.classList.add('startTouch')
     timeout = setTimeout(function() {
       if ( $logo.classList.contains('startTouch') ) {
         longtouch = true;
-        var currentBrightness = $container.style.opacity*100
+        currentBrightness = $container.style.opacity*100
         var undim = ( currentBrightness + 50)
         if ( undim > 100 ) { undim = 100}
         setBrightness(undim)
@@ -206,15 +239,18 @@ window.addEventListener('load', function() {
   urltoken = token;
 
   if ( token == undefined || token == "undefined" || token == "") {
-    $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Please log-in<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
+    $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Please log-in at<br /><br /><a href='https://homey.ink'>homey.ink</a></center><br /><br /><center><a href='https://community.athom.com/t/homeydash-com-a-homey-dashboard/13509'>More information</a></center>"
     return
   }
+  /*
+  uid = token.slice(-5)
+  this.console.log(uid) // MzIn0
+  */
   try { token = atob(token) }
   catch(err) {
-    $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Token invalid. Please log-in again.<br /><br /><a href='https://homey.ink'>homey.ink</a></center>"
+    $container.innerHTML ="<br /><br /><br /><br /><center>homeydash.com<br /><br />Token invalid. Please log-in again.<br /><br /><a href='https://homey.ink'>homey.ink</a></center><br /><br /><center><a href='https://community.athom.com/t/homeydash-com-a-homey-dashboard/13509'>More information</a></center>"
     return
   }
-
   token = JSON.parse(token);
   api.setToken(token);
 
@@ -260,6 +296,8 @@ window.addEventListener('load', function() {
 
       homey.i18n.getOptionLanguage().then(function(language) {
       }).catch(console.error);
+
+      batteryDetails = [];
 
       homey.flowToken.getFlowTokens().then(function(tokens) {
         for ( token in tokens) {
@@ -449,6 +487,68 @@ window.addEventListener('load', function() {
               }
             });
           }
+          // new 1.1.1.9
+          if ( device.capabilitiesObj.measure_gust_strength ) {
+            device.makeCapabilityInstance('measure_gust_strength', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_gust_strength");
+                capability = device.capabilitiesObj['measure_gust_strength']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+              }
+            });
+          }
+          if ( device.capabilitiesObj.measure_rain ) {
+            device.makeCapabilityInstance('measure_rain', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_rain");
+                capability = device.capabilitiesObj['measure_rain']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+              }
+            });
+          }
+          if ( device.capabilitiesObj.measure_solarradiation ) {
+            device.makeCapabilityInstance('measure_solarradiation', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_solarradiation");
+                capability = device.capabilitiesObj['measure_solarradiation']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+              }
+            });
+          }
+          if ( device.capabilitiesObj.measure_uv ) {
+            device.makeCapabilityInstance('measure_uv', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_uv");
+                capability = device.capabilitiesObj['measure_uv']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+              }
+            });
+          }
+          if ( device.capabilitiesObj.measure_wind_angle ) {
+            device.makeCapabilityInstance('measure_wind_angle', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_wind_angle");
+                capability = device.capabilitiesObj['measure_wind_angle']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+              }
+            });
+          }
+          if ( device.capabilitiesObj.measure_wind_strength ) {
+            device.makeCapabilityInstance('measure_wind_strength', function(value){
+              var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":measure_wind_strength");
+                capability = device.capabilitiesObj['measure_wind_strength']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+              }
+            });
+          }
+          // /new 1.1.1.9
           if ( device.capabilitiesObj.measure_power ) {
             device.makeCapabilityInstance('measure_power', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
@@ -539,13 +639,26 @@ window.addEventListener('load', function() {
               }
             });
           }
-          if ( device.capabilitiesObj.flora_measure_moisture ) {
-            device.makeCapabilityInstance('flora_measure_moisture', function(moisture) {
+          if ( device.capabilitiesObj.volume_set ) {
+            device.makeCapabilityInstance('volume_set', function(value){
               var $deviceElement = document.getElementById('device:' + device.id);
+              if( $deviceElement ) {
+                var $valueElement = document.getElementById('value:' + device.id + ":volume_set");
+                capability = device.capabilitiesObj['volume_set']
+                renderValue($valueElement, capability.id, capability.value, capability.units)
+              }
+            });
+          }
+          if ( device.capabilitiesObj.flora_measure_moisture ) {
+            device.makeCapabilityInstance('flora_measure_moisture', function(value) {
+              var $deviceElement = document.getElementById('device:' + device.id);
+              var moisture = value;
               if( $deviceElement) {
                 var $element = document.getElementById('value:' + device.id +":flora_measure_moisture");
                 $element.innerHTML = Math.round(moisture) + "<span id='decimal'>%</span><br />"
+                console.log(moisture)
                 if ( moisture < 15 || moisture > 65 ) {
+                  console.log("moisture out of bounds")
                   $deviceElement.classList.add('alarm')
                   selectValue(device, $element)
                   selectIcon($element, $element.id, device, device.capabilitiesObj['flora_measure_moisture'])
@@ -631,8 +744,17 @@ window.addEventListener('load', function() {
       $versionIcon.addEventListener('click', function() {
         setCookie('version', version ,12)
         changeLog = ""
-        changeLog = changeLog + "* Alarms added, Pull Request by Salingduck<br />"
-        changeLog = changeLog + "* Added schedule to alarm tile<br />"
+        changeLog = changeLog + "* Added option to change order of devices/flows/alarms<br />"
+        changeLog = changeLog + "* Added option to dim on supported devices<br />"
+        changeLog = changeLog + "* minor css fixes<br />"
+        changeLog = changeLog + "* fixed setting wrong brightness on closing slider<br />"
+        changeLog = changeLog + "* fixed rounding error in temperature<br />"
+        changeLog = changeLog + "* Added option to change target temperature on thermostat devices<br />"
+        changeLog = changeLog + "* Added option to change volume on audio devices<br />"
+        changeLog = changeLog + "* Tweaked placement of slider<br />"
+        changeLog = changeLog + "* Added Italian translations<br />"
+        changeLog = changeLog + "* Added WeatherFlow's Smart Weather Station capabilities<br />"
+        
         renderInfoPanel("u",changeLog)
       })
     }
@@ -825,8 +947,9 @@ window.addEventListener('load', function() {
         $infopanel.innerHTML = $ui
         break;
     }
+    $sliderpanel.style.display = "none"
     $infopanel.style.visibility = "visible";
-    $container.classList.add('container-dark');
+    $containerinner.classList.add('container-dark');
   }
 
   function renderSunevents() {
@@ -853,54 +976,77 @@ window.addEventListener('load', function() {
         var weekend = ""
         var schedule = ""
 
-        if ( alarm.repetition["monday"] ) { week = week + "mo,"}
-        if ( alarm.repetition["tuesday"] ) { week = week + "tu,"}
-        if ( alarm.repetition["wednesday"] ) { week = week + "we,"}
-        if ( alarm.repetition["thursday"] ) { week = week + "th,"}
-        if ( alarm.repetition["friday"] ) { week = week + "fr,"}
-        if ( week == "mo,tu,we,th,fr," ) { week = "weekdays," }
-        if ( alarm.repetition["saturday"] ) { weekend = weekend + "sa,"}
-        if ( alarm.repetition["sunday"] ) { weekend = weekend + "su,"}
-        if ( weekend == "sa,su," ) { weekend = "weekend," }
+        if ( alarm.repetition["monday"] ) { week = week + moment.weekdaysMin(1) + ","}
+        if ( alarm.repetition["tuesday"] ) { week = week + moment.weekdaysMin(2) + ","}
+        if ( alarm.repetition["wednesday"] ) { week = week + moment.weekdaysMin(3) + ","}
+        if ( alarm.repetition["thursday"] ) { week = week + moment.weekdaysMin(4) + ","}
+        if ( alarm.repetition["friday"] ) { week = week + moment.weekdaysMin(5) + ","}
+
+        if ( week == moment.weekdaysMin(1) + "," +
+              moment.weekdaysMin(2) + "," +
+              moment.weekdaysMin(3) + "," +
+              moment.weekdaysMin(4) + "," +
+              moment.weekdaysMin(5) + ","
+            ) { week = texts.schedules.weekdays + "," }
+
+        if ( alarm.repetition["saturday"] ) { weekend = weekend + moment.weekdaysMin(6) + ","}
+        if ( alarm.repetition["sunday"] ) { weekend = weekend + moment.weekdaysMin(7) + ","}
+        if ( weekend == moment.weekdaysMin(6) + "," +
+              moment.weekdaysMin(7) + "," 
+            ) { weekend = texts.schedules.weekend + "," }
         schedule = week + weekend
         schedule = schedule.substr(schedule,schedule.length-1)
+        if ( schedule == texts.schedules.weekdays + "," + texts.schedules.weekend ) {
+          schedule = texts.schedules.alldays
+        }
 
-        var $alarm = document.createElement('div');
-        $alarm.id = 'alarm-' + alarm.id;
-        $alarm.classList.add('alarm');
+        var $alarmElement = document.createElement('div');
+        $alarmElement.id = 'alarm:' + alarm.id;
+        $alarmElement.classList.add('alarm');
         if(alarm.enabled)
         {
-          $alarm.classList.add('on');
+          $alarmElement.classList.add('on');
         }
-        $alarm.addEventListener('click', function(){
-          // what to do on click?
-        });
-        $alarmsInner.appendChild($alarm);
+        $alarmsInner.appendChild($alarmElement);
 
         // Time
         var $time = document.createElement('div');
         $time.classList.add('value');
         $time.innerHTML = alarm.time;
-        $alarm.appendChild($time);
+        $alarmElement.appendChild($time);
 
         // Name
         var $name = document.createElement('div');
         $name.classList.add('name');
         $name.innerHTML = alarm.name
-        $alarm.appendChild($name);
+        $alarmElement.appendChild($name);
 
         // Schedule
         var $schedule = document.createElement('div');
         $schedule.classList.add('schedule');
         $schedule.innerHTML = schedule
-        $alarm.appendChild($schedule);
-      }
+        $alarmElement.appendChild($schedule);
 
+        attachEvent($alarmElement,alarm)
+
+      }
     } else {
       $alarms.style.visibility = 'hidden';
       $alarms.style.height = '0';
       $alarms.style.marginBottom = '0';
     }
+  }
+
+  function attachEvent($alarmElement,alarm) {
+    $alarmElement.addEventListener('click', function(){
+      var value = !$alarmElement.classList.contains('on');
+      $alarmElement.classList.toggle('on', value);
+      var newValue = {enabled:value}
+      homey.alarms.updateAlarm({
+        id: alarm.id,
+        alarm: newValue,
+      }).catch(console.error);
+    });
   }
   
   function renderFlows(flows) {
@@ -961,6 +1107,17 @@ window.addEventListener('load', function() {
             $deviceElement.classList.add('alarm')
       }
 
+      if ( device.capabilitiesObj && device.capabilitiesObj.flora_measure_moisture ) {
+        var moisture = device.capabilitiesObj.flora_measure_moisture.value
+        console.log(moisture)
+        if ( moisture < 15 || moisture > 65 ) {
+          console.log("moisture out of bounds")
+          $deviceElement.classList.add('alarm')
+          //selectValue(device, $element)
+          //selectIcon($element, $element.id, device, device.capabilitiesObj['flora_measure_moisture'])
+        }
+      }
+
       if ( device.capabilitiesObj && device.capabilitiesObj.alarm_connected ) {
         if ( device.capabilitiesObj.alarm_connected.value ) {
           $deviceElement.classList.remove('away')
@@ -1012,43 +1169,20 @@ window.addEventListener('load', function() {
           }
         }
         if ( itemNr > 0 ) {
-          // Touch functions
-          $deviceElement.addEventListener('touchstart', function() {
-            if ( nameChange ) { return }
-            longtouch = false;
-            $deviceElement.classList.add('startTouch')
-            timeout = setTimeout(function() {
-              if ( $deviceElement.classList.contains('startTouch') ) {
-                longtouch = true;
-                $deviceElement.classList.add('push-long')
-                valueCycle(device);
-              }
-            }, 300)
+          // start touch/click functions
+          $deviceElement.addEventListener('touchstart', function(event) {
+            deviceStart($deviceElement, device, event)
           });
+          $deviceElement.addEventListener('mousedown', function(event) {
+            deviceStart($deviceElement, device, event)
+          });
+
+          // stop touch/click functions
           $deviceElement.addEventListener('touchend', function() {
-            timeout = setTimeout(function() {
-              longtouch = false;
-            },100)
-            $deviceElement.classList.remove('startTouch')
-          });
-          // Mouse functions
-          $deviceElement.addEventListener('mousedown', function() {
-            if ( nameChange ) { return }
-            longtouch = false;
-            $deviceElement.classList.add('startTouch')
-            timeout = setTimeout(function() {
-              if ( $deviceElement.classList.contains('startTouch') ) {
-                longtouch = true;
-                $deviceElement.classList.add('push-long')
-                valueCycle(device);
-              }
-            }, 300)
+            deviceStop($deviceElement)
           });
           $deviceElement.addEventListener('mouseup', function() {
-            timeout = setTimeout(function() {
-              longtouch = false;
-            },100)
-            $deviceElement.classList.remove('startTouch')
+            deviceStop($deviceElement)
           });
         }
 
@@ -1094,6 +1228,38 @@ window.addEventListener('load', function() {
     });
   }
 
+// New code start    
+  function deviceStart($deviceElement, device, event) {
+    if ( nameChange ) { return }
+    longtouch = false;
+    $deviceElement.classList.add('startTouch')
+         
+    timeout = setTimeout(function() {
+      if ( $deviceElement.classList.contains('startTouch') ) {
+        //console.log("first timeout");
+        longtouch = true;
+        showSecondary(device, event);
+      }
+    }, 300)
+    timeout2 = setTimeout(function() {
+      if ( $deviceElement.classList.contains('startTouch') ) {
+        //console.log("second timeout");
+        longtouch = true;
+        $deviceElement.classList.add('push-long');
+        hideSecondary(device);
+        valueCycle(device);
+      }
+    }, 900)
+  }
+
+  function deviceStop($deviceElement) {
+    timeout = setTimeout(function() {
+      longtouch = false;
+    },100)
+    $deviceElement.classList.remove('startTouch')
+  }
+// New code end
+
   function renderText() {
     var now = new Date();
     var hours = now.getHours();
@@ -1125,11 +1291,14 @@ window.addEventListener('load', function() {
   }
 
   function renderValue ($value, capabilityId, capabilityValue, capabilityUnits) {
-    if ( capabilityUnits == null) { capabilityUnits = "" }
+    if ( capabilityUnits == null ) { capabilityUnits = "" }
+    if ( capabilityUnits == "W/m^2" ) { capabilityUnits = "W/m²" }
+    if ( capabilityValue == null ) { capabilityValue = "-" }
     if (capabilityId == "measure_temperature" ||
         capabilityId == "target_temperature" ||
         capabilityId == "measure_humidity"
         ) {
+      capabilityValue = Math.round(capabilityValue*10)/10
       var integer = Math.floor(capabilityValue)
       n = Math.abs(capabilityValue)
       var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
@@ -1138,7 +1307,7 @@ window.addEventListener('load', function() {
       $value.innerHTML = integer + "<span id='decimal'>" + decimal + capabilityUnits.substring(0,1) + "</span>"
     } else if ( capabilityId == "measure_pressure" ) {
       $value.innerHTML = Math.round(capabilityValue) + "<br /><sup>" + capabilityUnits + "</sup>"
-    } else if ( capabilityId == "dim" ) {
+    } else if ( capabilityId == "dim" || capabilityId == "volume_set") {
       $value.innerHTML = Math.round(capabilityValue*100) + "<br /><sup>" + capabilityUnits + "</sup>"
     } else {
       $value.innerHTML = capabilityValue + "<br /><sup>" + capabilityUnits + "</sup>"
@@ -1196,7 +1365,8 @@ window.addEventListener('load', function() {
   }
 
   function selectIcon($value, searchFor, device, capability) {
-    if ( capability.iconObj ) {
+    // measure_uv and measure_solarradiation icons are broken at icons-cdn.athom.com
+    if ( capability.iconObj && capability.id != "measure_uv" && capability.id != "measure_solarradiation" ) {
       iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
     } else {
       iconToShow = 'img/capabilities/' + capability.id + '.png'
@@ -1216,6 +1386,7 @@ window.addEventListener('load', function() {
   }
 
   function renderSettingsPanel() {
+    $sliderpanel.style.display = "none"
     if ( !$settingsiframe ) {
       var $settingsiframe = document.createElement('iframe')
       $settingsiframe.id = "settings-iframe"
@@ -1248,6 +1419,8 @@ window.addEventListener('load', function() {
     })
 
     $settingspanel.style.visibility = "visible"
+
+    $containerinner.classList.add('container-dark');
   }
 
   function saveSettings() {
@@ -1278,15 +1451,112 @@ window.addEventListener('load', function() {
     setCookie("homeydashdevicebrightness",iframesettings.newhomeydashdevicebrightness,12)
     setCookie("showtime",iframesettings.newshowTime,12)
     setCookie("zoom",iframesettings.newZoom,12)   
+    setCookie("order",iframesettings.neworder,12)
     location.assign(location.protocol + "//" + location.host + location.pathname + "?theme="+iframesettings.newtheme+"&lang="+iframesettings.newlanguage+"&token="+iframesettings.token+"&background="+encodeURIComponent(iframesettings.urlbackground)+"&logo="+encodeURIComponent(iframesettings.urllogo))
   }
 
   function cancelsettings() {
     $settingspanel.style.visibility = "hidden"
-    //
+    $containerinner.classList.remove('container-dark');
+
     $settingspanel.removeChild($settingsiframe)
     $settingsiframe = null
     location.reload(true)
+  }
+
+  function showSecondary(device, event) {
+    var showSlider = false
+    var xpos
+    try {
+      //xpos = event.touches[0].clientX
+      xpos = Math.round( 25 + ( parseInt((event.touches[0].clientX - 25)/(163*zoom) ) * (163*zoom) ) )
+    }
+    catch(err) {
+      if ( theme == "web" ) { 
+        xpos = event.clientX - event.offsetX
+      } else {
+        xpos = Math.round( 25 + ( parseInt((event.clientX - 25)/(163*zoom) ) * (163*zoom) ) )
+      }
+      /*
+      console.log( event.clientX - event.offsetX )
+      console.log( event.clientX )
+      console.log( zoom )
+      console.log( (event.clientX-25)/163/zoom )
+      console.log( parseInt((event.clientX-25)/(163*zoom)) )
+      console.log( Math.round( 25 + ( parseInt((event.clientX-25)/(163*zoom) ) * (163*zoom) ) ) )
+      */
+    }
+
+    var newX = xpos + (150*zoom) + 5
+    if ( newX + window.innerWidth* 0.35 > window.innerWidth ) {
+      var newX = (xpos - (0.35 * window.innerWidth)) - 13
+    }
+
+    $sliderpanel.style.left = newX  + "px"
+    $slidericon.style.webkitMaskImage = 'url(https://icons-cdn.athom.com/' + device.iconObj.id + '-128.png)';
+    $slidername.innerHTML = device.name
+
+    if ( device.capabilitiesObj && device.capabilitiesObj.dim || device.capabilitiesObj && device.capabilitiesObj.volume_set ) {
+      $slider.min = 0
+      $slider.max = 100
+      $slider.step = 1
+      sliderUnit = " %"
+      if ( device.capabilitiesObj.dim ) {
+        $slidercapability.style.webkitMaskImage = 'url(img/capabilities/dim.png)';
+        $slider.value = device.capabilitiesObj.dim.value*100
+      } else if ( device.capabilitiesObj.volume_set ) {
+        $slidercapability.style.webkitMaskImage = 'url(img/capabilities/volume_set.png)';
+        $slider.value = device.capabilitiesObj.volume_set.value*100
+      }
+      $slidervalue.innerHTML = $slider.value + sliderUnit
+      showSlider = true
+    } else if ( device.capabilitiesObj && device.capabilitiesObj.target_temperature ) {
+      $slider.min = device.capabilitiesObj.target_temperature.min
+      $slider.max = device.capabilitiesObj.target_temperature.max
+      $slider.step = device.capabilitiesObj.target_temperature.step
+      $slidercapability.style.webkitMaskImage = 'url(img/capabilities/target_temperature.png)';
+      sliderUnit = "°"
+      $slider.value = device.capabilitiesObj.target_temperature.value
+      $slidervalue.innerHTML = $slider.value + sliderUnit
+      showSlider = true
+    }
+    if ( showSlider ) {
+      $sliderpanel.style.display = "block"
+      selectedDevice = device
+    }
+  }
+
+  function hideSecondary() {
+    $sliderpanel.style.display = "none"
+
+  }
+
+  $slider.oninput = function() {
+    $slidervalue.innerHTML = $slider.value + sliderUnit
+    if ( slideDebounce ) {return}
+    slideDebounce = true
+    var newCapabilityValue
+    var newCapabilityId
+    setTimeout( function () {
+      if ( selectedDevice.capabilitiesObj && selectedDevice.capabilitiesObj.dim ) {
+        newCapabilityId = 'dim'
+        newCapabilityValue = ($slider.value/100)
+      } else if ( selectedDevice.capabilitiesObj && selectedDevice.capabilitiesObj.volume_set ) {
+        newCapabilityId = 'volume_set'
+        newCapabilityValue = ($slider.value/100)
+      } else if ( selectedDevice.capabilitiesObj && selectedDevice.capabilitiesObj.target_temperature ) {
+        newCapabilityId = 'target_temperature'
+        newCapabilityValue = ($slider.value/1)
+      }
+      //console.log(newCapabilityId)
+      homey.devices.setCapabilityValue({
+        deviceId: selectedDevice.id,
+        capabilityId: newCapabilityId,
+        value: newCapabilityValue,
+      }).catch(console.error);
+      slideDebounce = false
+    },200)
+    
   }
 
   function valueCycle(device) {
@@ -1310,11 +1580,13 @@ window.addEventListener('load', function() {
           continue;
         }
         searchElement = document.getElementById('value:' + device.id + ':' + capability.id)
-        if (itemNr == showElement ) {
+        if ( itemNr == showElement ) {
           elementToShow = searchElement
           capabilityToShow = capability.id
-          if ( capability.iconObj ) {
+          // measure_uv and measure_solarradiation icons are broken at icons-cdn.athom.com
+          if ( capability.iconObj && capability.id != "measure_uv" && capability.id != "measure_solarradiation" ) {
             iconToShow = 'https://icons-cdn.athom.com/' + capability.iconObj.id + '-128.png'
+
           } else {
             iconToShow = 'img/capabilities/' + capability.id + '.png'
           }

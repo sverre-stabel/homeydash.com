@@ -3,11 +3,11 @@
     /*visibility: hidden;*/
 }
 
-.language-description, .theme-description, .temperature-description, .device-description {
+.select, .select-description {
     width: 24vw;
 }
 
-.language-select, .theme-select, .temperature-select, .device-select  {
+.select {
     margin-right: 17px;
 }
 

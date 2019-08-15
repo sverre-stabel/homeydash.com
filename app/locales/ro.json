@@ -2,6 +2,11 @@
     "favoriteflows": "Fluxuri Favorite",
     "favoritedevices": "Dispozitive Favorite",
     "alarms": "Alarma",
+    "schedules": {
+        "weekdays": "zilele saptamanii",
+        "weekend": "sfârșit de săptămână",
+        "alldays": "toate zilele"
+    },
     "text" : {
         "good": "",
         "evening": "Buna seara",

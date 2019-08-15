@@ -2,6 +2,11 @@
     "favoriteflows": "Geunstiche flows",
     "favoritedevices": "Geunstiche apparaten",
     "alarms": "Alaarms",
+    "schedules": {
+        "weekdays": "weekdagen",
+        "weekend": "Wykein",
+        "alldays": "alle dage"
+    },
     "text" : {
         "good": "",
         "evening": "Goej n",
