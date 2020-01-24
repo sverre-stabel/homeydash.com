@@ -663,6 +663,25 @@ a {
           -webkit-mask-position: center center;
           -webkit-user-select: none;
         }
+        .device .icon-capability-lock {
+          position: absolute;
+          top: 30px;
+          right: 15px;
+          width: 35px;
+          height: 35px;
+          background: black;
+          margin-bottom: 3px;
+          -webkit-mask-size: contain;
+          -webkit-mask-repeat: no-repeat;
+          -webkit-mask-position: center center;
+          -webkit-user-select: none;
+        }
+        .device .icon-capability-lock.locked {
+          -webkit-mask-image: url(../img/capabilities/locklocked.png);
+        }
+        .device .icon-capability-lock.unlocked {
+          -webkit-mask-image: url(../img/capabilities/lockunlocked.png);
+        }
         .device .value {
           position: absolute;
           top: 15px;

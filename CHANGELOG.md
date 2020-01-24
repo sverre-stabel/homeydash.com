@@ -1,3 +1,8 @@
+## Version 1.1.3
+* Added lock status icon
+* Prevent unloadable device icons causing display problems
+* Corrected Italian translations
+
 ## Version 1.1.2 - published on homeydash.com
 * Added WeatherFlow's Smart Weather Station capabilities
 
