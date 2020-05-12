@@ -1,0 +1,74 @@
+{
+    "favoriteflows": "Obľúbené Flows",
+    "favoritedevices": "Obľúbené zariadenia",
+    "alarms": "Alarmy",
+    "schedules": {
+        "weekdays": "pracovné dni",
+        "weekend": "víkend",
+        "alldays": "všetky dni"
+    },
+    "text" : {
+        "good": "Dobre ",
+        "evening": "večer",
+        "afternoon": "popoludní",
+        "morning": "ráno",
+        "night": "noc",
+        "today": "Dnes je ",
+        "the": " ",
+        "of": ""
+    },
+    "notification": {
+        "title": "Posledné oznámenia",
+        "nonotification": "Nie sú žiadne oznámenia"
+    },
+    "weather": {
+        "title": "Informácie o počasí pre ",
+        "temperature": "Aktuálna teplota je ",
+        "degrees": " stupňa, ",
+        "humidity": "vlhkosť je ",
+        "pressure": "% a tlak je ",
+        "mbar": " mbar"
+    },
+    "sunevent": {
+        "presunrise": "Slnko vychádza o ",
+        "postsunrise": "Slnko vyjde o ",
+        "presunset": " a zapadne o ",
+        "postsunset": " a zapadlo o "
+    },
+    "battery": {
+        "title": "Informácie o batérii",
+        "in": " in ",
+        "has": " has ",
+        "left": "% left"
+    },
+    "sensor": {
+        "title": "Informácie o senzoroch",
+        "in": " v ",
+        "alarm": " je v stave alarmu.",
+        "noalarm": " Žiadne senzory nie sú v stave alarmu.",
+        "fault": "Pri načítaní zariadení sa vyskytol problém, skontrolujte svoje zariadenia a aplikácie v aplikácii Homey"
+    },
+    "settings": {
+        "title": {
+            "language": "Výber jazyka",
+            "theme": "Výber témy",
+            "appearance": "Vzhľad",
+            "temperature": {
+                "outdoor": "Vonkajšia teplota",
+                "indoor": "Vnútorná teplota"
+            },
+            "brightnessdevice": "Jas zariadenia"
+        },
+        "appearance": {
+            "logo": "Logo (url)",
+            "background": "Pozadie (url)",
+            "opacity": "Nepriehľadnosť pozadia",
+            "clock": "Zobraziť čas",
+            "zoom": "Zoom"
+        },
+        "errors": {
+            "logo": "Opravte adresu URL loga",
+            "background": "Opravte adresu URL pozadia"
+        }
+    }
+}
