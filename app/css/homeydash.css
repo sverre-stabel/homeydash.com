@@ -53,6 +53,14 @@ a {
   .column {
     float: left;
     width: 33.33%;
+    padding-top: 10vh;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
   }
 
   #info-panel {
@@ -227,7 +235,7 @@ a {
 
   #weather-time {
       display: flex; 
-      flex-direction: column;
+      height: 39vh;
   }
   #content {
     display: flex; 
@@ -238,9 +246,7 @@ a {
     #content > #row3 { order: 3; }
 
   #weather {
-    position: relative;
-    left: 0px;
-    width: 350px
+
   }
   #sunstate {
     display: inline-block;
@@ -279,24 +285,17 @@ a {
       background-size: 4vW 4vw;
     }
     #weather-temperature {
-      display: inline-block;
-      margin-left: 0vw;
-      font-size: 10vw;
-      line-height: 4vw;
       font-weight: 200;
-      margin-top: 18vh;
-      letter-spacing: -6px;
+      font-size: 5vw;
     }
     #weather-temperature:after {
       
     }
     
     #weather-temperature-inside {
-      display: inline-block;
-      margin-left: -5.5vw;
-      font-size: 10vw;
-      line-height: 4vw;
+    
       font-weight: 200;
+      font-size: 5vw;
     }
     #weather-temperature-inside:after {
       
@@ -322,22 +321,13 @@ a {
     text-align: center;
   }
     #text-large {
-      font-size: 44px;
-      font-weight: 700;
-      margin-top: 20px;
+
     }
     #text-large:after {
-      content: "";
-      display: block;
-      height: 1px;
-      background: white;
-      width: 200px;
-      margin: auto;
-      margin: 10px auto;
+    
     }
     #text-small {
-      font-size: 14px;
-      font-weight: 500;
+ 
     }
 
   #details {
