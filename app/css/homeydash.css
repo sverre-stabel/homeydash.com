@@ -41,7 +41,7 @@ a {
 
   #header {
     display: flex;
-    height: 6vw;
+    height: 4vw;
     margin-bottom: 1vw;
   }
 
@@ -49,6 +49,10 @@ a {
     background-color: Black;
     opacity: 0.5;
     transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+  }
+  .column {
+    float: left;
+    width: 33.33%;
   }
 
   #info-panel {
@@ -221,6 +225,10 @@ a {
       cursor: pointer;
     }
 
+  #weather-time {
+      display: flex; 
+      flex-direction: column;
+  }
   #content {
     display: flex; 
     flex-direction: column;
@@ -272,39 +280,26 @@ a {
     }
     #weather-temperature {
       display: inline-block;
-      margin-left: -7vw;
-      font-size: 4vw;
+      margin-left: 0vw;
+      font-size: 10vw;
       line-height: 4vw;
-      font-weight: 500;
+      font-weight: 200;
+      margin-top: 18vh;
+      letter-spacing: -6px;
     }
     #weather-temperature:after {
-      content: "°";
-      font-size: 3vw;
-      vertical-align: text-top;
+      
     }
-    #weather-roof {
-      display: inline-block;
-      vertical-align: top;
-      margin-top: 0vw;
-      width: 5vw;
-      height: 5vw;
-      margin-left: 1vw;
-      margin-right: auto;
-      background: no-repeat center center;
-      background-size: contain;
-      background-image: url(../img/roof.png);
-      visibility: hidden;
-    }
+    
     #weather-temperature-inside {
       display: inline-block;
       margin-left: -5.5vw;
-      font-size: 3vw;
-      line-height: 3vw;
-      font-weight: 400;
-      visibility: hidden;
+      font-size: 10vw;
+      line-height: 4vw;
+      font-weight: 200;
     }
     #weather-temperature-inside:after {
-      content: "°";
+      
       font-size: 3vw;
       /*vertical-align: top;*/
     }
@@ -357,7 +352,7 @@ a {
       width: 40px;
       height: 40px;
       margin-left: auto;
-      margin-right: 20px;
+      margin-right: 10px;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
@@ -370,7 +365,7 @@ a {
       width: 40px;
       height: 40px;
       margin-left: auto;
-      margin-right: 20px;
+      margin-right: 10px;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
@@ -385,7 +380,7 @@ a {
       width: 40px;
       height: 40px;
       margin-left: auto;
-      margin-right: 20px;
+      margin-right: 10px;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
@@ -400,7 +395,7 @@ a {
       width: 40px;
       height: 40px;
       margin-left: auto;
-      margin-right: 20px;
+      margin-right: 10px;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
@@ -418,7 +413,7 @@ a {
       width: 40px;
       height: 40px;
       margin-left: auto;
-      margin-right: 20px;
+      margin-right: 10px;
       background: white;
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;

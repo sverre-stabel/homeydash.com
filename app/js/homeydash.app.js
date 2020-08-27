@@ -63,7 +63,6 @@ window.addEventListener('load', function() {
         var $sunsettime = document.getElementById('sunset-time');
         var $weatherStateIcon = document.getElementById('weather-state-icon');
         var $weatherTemperature = document.getElementById('weather-temperature');
-        var $weatherroof = document.getElementById('weather-roof');
         var $weathertemperatureinside = document.getElementById('weather-temperature-inside');
       var $text = document.getElementById('text');
         var $textLarge = document.getElementById('text-large');
@@ -196,7 +195,6 @@ window.addEventListener('load', function() {
 
   indoortemperature = getCookie("indoortemperature")
   if ( indoortemperature != "" && indoortemperature != "none" ) {
-    $weatherroof.style.visibility = "visible"
     $weathertemperatureinside.style.visibility = "visible"
   }
 
@@ -1334,8 +1332,8 @@ window.addEventListener('load', function() {
       n = Math.abs(capabilityValue)
       var decimal = Math.round((n - Math.floor(n))*10)/10 + "-"
       var decimal = decimal.substring(2,3)
-
-      $value.innerHTML = integer + "<span id='decimal'>" + decimal + capabilityUnits.substring(0,1) + "</span>"
+      
+      $value.innerHTML = capabilityValue+"°"
     } else if ( capabilityId == "measure_pressure" ) {
       $value.innerHTML = Math.round(capabilityValue) + "<br /><sup>" + capabilityUnits + "</sup>"
     } else if ( capabilityId == "dim" || capabilityId == "volume_set") {

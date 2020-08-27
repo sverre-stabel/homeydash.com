@@ -37,7 +37,6 @@
   #weather-temperature {
   }
   #weather-temperature:after {
-    content: "°";
   }
 
   #text {
@@ -63,36 +62,36 @@
   #details {
     top: 1vh;
     right: 0;
-    width: 26vw;
+    width: 21vw;
   }
     #version-icon {
       display: inline-block;
-      width: 3vw;
+      width: 2vw;
       height: 5vw;
     }
     #battery-details {
       display: inline-block;
-      width: 3vw;
+      width: 2vw;
       height: 5vw;
     }
     #notification-details {
       display: inline-block;
-      width: 3vw;
+      width: 2vw;
       height: 5vw;
     }
     #sensor-details {
       display: inline-block;
-      width: 3vw;
+      width: 2vw;
       height: 5vw;
     }
     #settings-icon {
       display: inline-block;
-      width: 3vw;
+      width: 2vw;
       height: 5vw;
     }
     #logo {
       display: inline-block;
-      width: 3vw;
+      width: 2vw;
       height: 5vw;
     }
 
@@ -241,7 +240,7 @@
     }
 
     #decimal {
-      font-size: 3vh;
+      font-size: 10vh;
     }
     .device .name {
       position: absolute;

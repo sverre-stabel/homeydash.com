@@ -31,7 +31,7 @@ body {
   #weather-temperature {
   }
   #weather-temperature:after {
-    content: "°";
+    
   }
   #weather-state-icon {
     top: 1vw;
