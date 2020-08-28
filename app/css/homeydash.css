@@ -235,13 +235,12 @@ a {
 
   #weather-time {
       display: flex; 
-      height: 39vh;
   }
   #content {
     display: flex; 
     flex-direction: column;
   }
-    #content > #row1 { order: 1; }
+    #content > #row1 { order: 1; height: 44vh;}
     #content > #row2 { order: 2; }
     #content > #row3 { order: 3; }
 
@@ -588,7 +587,11 @@ a {
 
   }
     .devices {
-      overflow-y: visible;
+      width: 101%;
+      height: 160px;
+      overflow-x: auto;
+      overflow-y: hidden;
+
     }
       .device {
         display: inline-block;
@@ -603,7 +606,7 @@ a {
         border-radius: 16px;
         box-sizing: border-box;
         padding: 12px;
-        margin-right: 12px;
+        margin-right: 17px;
         opacity: 0.5;
         -webkit-user-select: none;
       }
@@ -637,10 +640,10 @@ a {
         }
         .device .icon-capability {
           position: absolute;
-          top: 30px;
+          top: 15px;
           left: 15px;
-          width: 35px;
-          height: 35px;
+          width: 15px;
+          height: 15px;
           background: black;
           margin-bottom: 3px;
           -webkit-mask-size: contain;
@@ -650,10 +653,10 @@ a {
         }
         .device .icon-capability-lock {
           position: absolute;
-          top: 30px;
+          top: 15px;
           right: 15px;
-          width: 35px;
-          height: 35px;
+          width: 15px;
+          height: 15px;
           background: black;
           margin-bottom: 3px;
           -webkit-mask-size: contain;

@@ -1335,11 +1335,11 @@ window.addEventListener('load', function() {
       
       $value.innerHTML = capabilityValue+"°"
     } else if ( capabilityId == "measure_pressure" ) {
-      $value.innerHTML = Math.round(capabilityValue) + "<br /><sup>" + capabilityUnits + "</sup>"
+      $value.innerHTML = Math.round(capabilityValue) + " " + capabilityUnits
     } else if ( capabilityId == "dim" || capabilityId == "volume_set") {
-      $value.innerHTML = Math.round(capabilityValue*100) + "<br /><sup>" + capabilityUnits + "</sup>"
+      $value.innerHTML = Math.round(capabilityValue*100) + " " + capabilityUnits
     } else {
-      $value.innerHTML = capabilityValue + "<br /><sup>" + capabilityUnits + "</sup>"
+      $value.innerHTML = capabilityValue + " " + capabilityUnits
     }
   }
 
@@ -1405,7 +1405,7 @@ window.addEventListener('load', function() {
     $iconcapability = document.getElementById('icon-capability:'+device.id);
     if ( $value.id == searchFor ) {
       $value.classList.add('visible')
-      $icon.style.opacity = 0.1
+      $icon.style.opacity = 0.0
       if (device.name == "Bier" || device.name == "Bier temperatuur") { $icon.style.opacity = 0.5}
       $iconcapability.style.webkitMaskImage = 'url(' + iconToShow + ')';
       $iconcapability.style.visibility = 'visible';

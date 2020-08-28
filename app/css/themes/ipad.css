@@ -33,7 +33,10 @@
   #weather-state-icon {
   }
   #weather-temperature {
+    font-weight: 200;
+    font-size: 5vw;
   }
+  
   #weather-temperature:after {
   }
 
@@ -96,9 +99,14 @@
   left: 0;
   right: 0;
 }
+.content-row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
   .favorites-inner {
-    white-space: normal;
+    white-space: nowrap;
     -webkit-mask-image: none;
+    overflow-x: auto;
   }
   .favorites h2 {
     display: block;
@@ -107,7 +115,7 @@
     margin-bottom: 1vh;
     text-transform: uppercase;
 
-    display: flex;
+    display: none;
     flex-direction: row;
     align-items: center;
 
@@ -134,7 +142,7 @@
 }
   .flow {
     height: 52px; /*7vh;*/
-    margin-bottom: 15px; /*2vh;*/
+    
     border-radius: 52px; /*7vh;*/
   }
   .flow.running:before {
@@ -204,35 +212,34 @@
     width: 150px; /*20vh;*/
     height: 150px; /*20vh;*/
     padding: 15px; /*2vh;*/
-    margin-right: 13px; /*1.9vh;*/
-    margin-bottom: 15px; /*2vh;*/
+    margin-right: 17px; /*1.9vh;*/
     border-radius: 22px; /*3vh;*/
   }
     .device .icon {
       position: absolute;
-      top: 15px; /*2vh;*/
-      left: 15px; /*2vh;*/
-      width: 52px; /*7vh;*/
-      height: 52px; /*7vh;*/
+      top: 36px;
+      left: 41px;
+      width: 65px; /*7vh;*/
+      height: 65px; /*7vh;*/
     }
     .device .icon-capability {
       position: absolute;
-      top: 45px; /*6vh;*/
-      left: 19px; /*2.5vh;*/
-      width: 38px; /*5vh;*/
-      height: 38px; /*5vh;*/
+      top: 45px;
+      left: 48px;
+      width: 55px;
+      height: 55px;
     }
     .device .value {
       position: absolute;
-      top: 22px; /*3vh;*/
-      right: 15px; /*2vh;*/
-      font-size: 31px; /*4.2vh;*/
-      font-weight: 300;
-      line-height: 31px; /*4.2vh;*/
-      width: auto;
+      left: 15px;
+      top: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 30px;
+      width: 100%;
       height: auto;
-      max-height: 60px; /*8vh;*/
-      text-align: right;
+      max-height: 60px;
+      text-align: left;
     }
 
     #decimal {
@@ -243,13 +250,14 @@
       bottom: 15px; /*2vh;*/
       left: 15px; /*2vh;*/
       right: 15px; /*2vh;*/
-      font-size: 20px; /*2.7vh;*/
-      font-weight: 300;
-      line-height: 26px; /*3.5vh;*/
+      font-size: 13px; /*2.7vh;*/
+      font-weight: 500;
+      text-align: center;
+
       width: auto;
       height: auto;
       max-height: 52px; /*7vh;*/
     }
     .device .name.highlight {
-      font-weight: 500;
+      font-weight: 600;
     }
